@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
-import ParetoChart, { ExtraFront, AXIS_PAIRS, AxisKey } from "../components/ParetoChart";
-import { PARETO_SOLUTIONS, ParetoSolution } from "../data/mock";
+import ParetoChart, { AXIS_PAIRS, AxisKey } from "../components/ParetoChart";
+import type { ParetoSolution } from "../api/types";
 import { useLatestOptimization, useOptimizationRun, useNLPQuery } from "../api/hooks";
 
 interface Props {
@@ -30,30 +30,6 @@ const T = {
   redL:      "#FEF2F2",
 };
 
-// ── Synthetic scenario fronts ─────────────────────────────────────────────────
-const SCENARIO_FRONTS: Record<string, ExtraFront> = {
-  sustainability: {
-    id: "sustainability",
-    label: "Sustainability Priority",
-    color: "#059669",
-    data: PARETO_SOLUTIONS.filter(s => s.pareto).map(s => ({
-      cost: s.cost * 1.085,
-      ghg:  s.ghg  * 0.880,
-      fuel: s.fuel * 0.898,
-    })),
-  },
-  cost_prio: {
-    id: "cost_prio",
-    label: "Cost Priority",
-    color: "#B45309",
-    data: PARETO_SOLUTIONS.filter(s => s.pareto).map(s => ({
-      cost: s.cost * 0.914,
-      ghg:  s.ghg  * 1.165,
-      fuel: s.fuel * 1.062,
-    })),
-  },
-};
-
 function computeLiveFront(solutions: ParetoSolution[], xKey: AxisKey, yKey: AxisKey): ParetoSolution[] {
   const nd = solutions.filter(candidate =>
     !solutions.some(other =>
@@ -65,15 +41,6 @@ function computeLiveFront(solutions: ParetoSolution[], xKey: AxisKey, yKey: Axis
     )
   );
   return nd.sort((a, b) => (a[xKey] as number) - (b[xKey] as number));
-}
-
-function solutionConfidence(sol: ParetoSolution): number {
-  const constraintConf = sol.constraintsSatisfied / sol.totalConstraints;
-  const allPareto = PARETO_SOLUTIONS.filter(s => s.pareto).sort((a, b) => a.cost - b.cost);
-  const frontIdx  = allPareto.findIndex(s => s.id === sol.id);
-  const n = allPareto.length;
-  const posPenalty = frontIdx >= 0 ? Math.abs((frontIdx / (n - 1)) - 0.5) * 0.14 : 0.14;
-  return Math.max(0.80, constraintConf * (1 - posPenalty));
 }
 
 // ── Engineering slider components ─────────────────────────────────────────────
@@ -142,10 +109,6 @@ function EngrRangeSlider({ label, min, max, step, value, onChange, format }: {
 
 // ── Solution analytical summary ───────────────────────────────────────────────
 function SolutionPanel({ sol, onViewPlan, inFilter }: { sol: ParetoSolution; onViewPlan: () => void; inFilter: boolean }) {
-  const conf = solutionConfidence(sol);
-  const confPct = Math.round(conf * 100);
-  const confColor = confPct >= 92 ? T.teal : confPct >= 85 ? T.amber : T.red;
-
   return (
     <div style={{
       background: T.surface,
@@ -181,9 +144,9 @@ function SolutionPanel({ sol, onViewPlan, inFilter }: { sol: ParetoSolution; onV
       <div style={{ borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}`, padding: "10px 0", marginBottom: 10 }}>
         {[
           { label: "Operating Cost",  val: `$${sol.cost}M`,                          mono: true  },
-          { label: "Lifecycle GHG",   val: `${(sol.ghg / 1000).toFixed(1)}k tCO₂e`, mono: true  },
-          { label: "Fuel Consump.",   val: `${sol.fuel.toLocaleString()} t`,          mono: true  },
-          { label: "Cargo Fulfil.",   val: `${sol.cargoFulfillment}%`,               mono: true  },
+          { label: "Lifecycle GHG",   val: `${(sol.ghg / 1000).toFixed(1)}k kgCO₂`, mono: true  },
+          { label: "Fuel Consump.",   val: `${sol.fuel.toLocaleString()} model units`, mono: true  },
+          { label: "Cargo Fulfil.",   val: sol.cargoFulfillment == null ? "Unavailable" : `${sol.cargoFulfillment}%`, mono: true  },
         ].map(m => (
           <div key={m.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
             <span style={{ fontSize: 10, color: T.textSec, fontFamily: "'Instrument Sans', sans-serif" }}>{m.label}</span>
@@ -206,21 +169,20 @@ function SolutionPanel({ sol, onViewPlan, inFilter }: { sol: ParetoSolution; onV
         ))}
       </div>
 
-      {/* Model confidence */}
+      {/* Source algorithm + constraint satisfaction (real data) */}
       <div style={{ marginBottom: 12 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 5 }}>
           <span style={{ fontSize: 9, color: T.textTer, textTransform: "uppercase", letterSpacing: "0.07em", fontFamily: "'Instrument Sans', sans-serif" }}>
-            Model Confidence · MO-QIGA
+            Source Algorithm
           </span>
-          <span style={{ fontSize: 11, fontWeight: 700, color: confColor, fontFamily: "'JetBrains Mono', monospace" }}>
-            {confPct}%
+          <span style={{ fontSize: 11, fontWeight: 700, color: T.teal, fontFamily: "'JetBrains Mono', monospace" }}>
+            {sol.algorithm ?? "unavailable"}
           </span>
-        </div>
-        <div style={{ height: 3, background: T.border }}>
-          <div style={{ width: `${confPct}%`, height: "100%", background: confColor, transition: "width 0.3s" }} />
         </div>
         <div style={{ fontSize: 9, color: T.textTer, marginTop: 4, fontFamily: "'Instrument Sans', sans-serif" }}>
-          {confPct >= 92 ? "High confidence — central front region" : confPct >= 85 ? "Moderate confidence — approaching front extremity" : "Lower confidence — edge of solution space"}
+          {sol.totalConstraints > 0
+            ? `${sol.constraintsSatisfied}/${sol.totalConstraints} evaluated feasibility constraints satisfied`
+            : "No constraint evaluation data available for this solution"}
         </div>
       </div>
 
@@ -294,48 +256,70 @@ function RadioOpt({ val, current, label, onChange }: {
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
-const COMPARE_PRESETS = [["S01", "S07", "S18"], ["S04", "S07", "S12"]];
-
 export default function Optimization({ selectedId, onSelect, onViewPlan }: Props) {
   const [fixedParam,  setFixedParam]  = useState<FixedParam>(null);
-  const [vesselRange, setVesselRange] = useState<[number, number]>([20, 24]);
-  const [vesselFixed, setVesselFixed] = useState(22);
-  const [cargoRange,  setCargoRange]  = useState<[number, number]>([94, 99]);
-  const [cargoFixed,  setCargoFixed]  = useState(97);
-  const [routeRange,  setRouteRange]  = useState<[number, number]>([14, 18]);
-  const [routeFixed,  setRouteFixed]  = useState(16);
+  const [vesselRangeOverride, setVesselRangeOverride] = useState<[number, number] | null>(null);
+  const [vesselFixed, setVesselFixed] = useState<number | null>(null);
+  const [cargoRangeOverride,  setCargoRangeOverride]  = useState<[number, number] | null>(null);
+  const [cargoFixed,  setCargoFixed]  = useState<number | null>(null);
+  const [routeRangeOverride,  setRouteRangeOverride]  = useState<[number, number] | null>(null);
+  const [routeFixed,  setRouteFixed]  = useState<number | null>(null);
   const [axisIdx,     setAxisIdx]     = useState(0);
-  const [showConf,    setShowConf]    = useState(true);
-  const [confLevel,   setConfLevel]   = useState(0.95);
-  const [activeScenarios, setActiveScenarios] = useState<Set<string>>(new Set());
-  const [compareIds,  setCompareIds]  = useState<string[]>(["S01", "S07", "S18"]);
+  const [compareIds,  setCompareIds]  = useState<string[] | null>(null);
   const [nlqText,     setNlqText]     = useState("");
 
   // Live data hooks
-  const { data: liveResult, loading: liveLoading } = useLatestOptimization();
+  const { data: liveResult, loading: liveLoading, error: liveError } = useLatestOptimization();
   const { running: optRunning, jobStatus, triggerRun } = useOptimizationRun();
   const { result: nlpResult, loading: nlpLoading, query: runNLQ } = useNLPQuery();
 
-  // Use live Pareto solutions if available, otherwise fall back to mock
-  const allSolutions: ParetoSolution[] = (liveResult?.pareto_solutions as ParetoSolution[] | undefined) ?? PARETO_SOLUTIONS;
+  // Live Pareto solutions from the real optimization result. Empty when no result yet.
+  const allSolutions: ParetoSolution[] = liveResult?.pareto_solutions ?? [];
+
+  const vesselBounds = useMemo(() => {
+    const vals = allSolutions.map(s => s.vessels);
+    return vals.length ? [Math.min(...vals), Math.max(...vals)] as [number, number] : [0, 0] as [number, number];
+  }, [allSolutions]);
+  const routeBounds = useMemo(() => {
+    const vals = allSolutions.map(s => s.routes);
+    return vals.length ? [Math.min(...vals), Math.max(...vals)] as [number, number] : [0, 0] as [number, number];
+  }, [allSolutions]);
+  const cargoAvailable = allSolutions.some(s => s.cargoFulfillment != null);
+  const cargoBounds = useMemo(() => {
+    const vals = allSolutions.map(s => s.cargoFulfillment).filter((v): v is number => v != null);
+    return vals.length ? [Math.min(...vals), Math.max(...vals)] as [number, number] : [0, 100] as [number, number];
+  }, [allSolutions]);
+
+  const vesselRange = vesselRangeOverride ?? vesselBounds;
+  const cargoRange   = cargoRangeOverride ?? cargoBounds;
+  const routeRange   = routeRangeOverride ?? routeBounds;
+  const vesselFixedVal = vesselFixed ?? vesselBounds[0];
+  const cargoFixedVal  = cargoFixed ?? cargoBounds[0];
+  const routeFixedVal  = routeFixed ?? routeBounds[0];
+  const effectiveCompareIds = compareIds ?? allSolutions.slice(0, 3).map(s => s.id);
+
   const runMeta = {
-    method: liveResult?.method ?? "MO-QIGA",
-    feasible: liveResult?.feasible_solutions ?? 42,
-    pareto: liveResult?.pareto_count ?? 18,
-    runtime: liveResult ? `${Math.floor((liveResult.runtime_seconds ?? 252) / 60)}m ${(liveResult.runtime_seconds ?? 252) % 60}s` : "4m 12s",
-    satisfaction: liveResult?.constraint_satisfaction ?? "100%",
+    method: liveResult?.method ?? "unavailable",
+    feasible: liveResult?.feasible_solutions ?? 0,
+    pareto: liveResult?.pareto_count ?? 0,
+    runtime: liveResult?.runtime_seconds != null
+      ? `${Math.floor(liveResult.runtime_seconds / 60)}m ${Math.round(liveResult.runtime_seconds % 60)}s`
+      : "unavailable",
+    satisfaction: liveResult?.constraint_satisfaction ?? "unavailable",
   };
 
-  const selected = allSolutions.find(s => s.id === selectedId) ?? allSolutions[6] ?? PARETO_SOLUTIONS[6];
+  const selected = allSolutions.find(s => s.id === selectedId) ?? allSolutions[0];
 
   const filteredSolutions = useMemo(() => {
     return allSolutions.filter(s => {
-      const ok1 = fixedParam === "vessels" ? s.vessels === vesselFixed : s.vessels >= vesselRange[0] && s.vessels <= vesselRange[1];
-      const ok2 = fixedParam === "cargo"   ? Math.abs(s.cargoFulfillment - cargoFixed) <= 0.6 : s.cargoFulfillment >= cargoRange[0] && s.cargoFulfillment <= cargoRange[1];
-      const ok3 = fixedParam === "routes"  ? s.routes === routeFixed : s.routes >= routeRange[0] && s.routes <= routeRange[1];
+      const ok1 = fixedParam === "vessels" ? s.vessels === vesselFixedVal : s.vessels >= vesselRange[0] && s.vessels <= vesselRange[1];
+      const ok2 = !cargoAvailable || s.cargoFulfillment == null ? true
+        : fixedParam === "cargo" ? Math.abs(s.cargoFulfillment - cargoFixedVal) <= 0.6
+        : s.cargoFulfillment >= cargoRange[0] && s.cargoFulfillment <= cargoRange[1];
+      const ok3 = fixedParam === "routes"  ? s.routes === routeFixedVal : s.routes >= routeRange[0] && s.routes <= routeRange[1];
       return ok1 && ok2 && ok3;
     });
-  }, [allSolutions, fixedParam, vesselRange, vesselFixed, cargoRange, cargoFixed, routeRange, routeFixed]);
+  }, [allSolutions, fixedParam, vesselRange, vesselFixedVal, cargoRange, cargoFixedVal, routeRange, routeFixedVal, cargoAvailable]);
 
   const filteredIds = useMemo(() => new Set(filteredSolutions.map(s => s.id)), [filteredSolutions]);
 
@@ -347,30 +331,33 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
   const filteredPareto    = filteredSolutions.filter(s => s.pareto);
   const filteredDominated = filteredSolutions.filter(s => !s.pareto);
 
-  const activeExtraFronts = useMemo(
-    () => Object.values(SCENARIO_FRONTS).filter(f => activeScenarios.has(f.id)),
-    [activeScenarios]
-  );
-
-  const isSelectedInFilter = filteredIds.has(selected.id);
+  const isSelectedInFilter = selected ? filteredIds.has(selected.id) : false;
 
   type MetricKey = "fuel" | "cost" | "ghg" | "cargoFulfillment" | "vessels" | "routes";
-  const compareMetrics: { key: MetricKey; label: string; fmt: (v: number) => string }[] = [
-    { key: "fuel",             label: "Fuel Consumption", fmt: v => `${v.toLocaleString()} t`      },
-    { key: "cost",             label: "Operating Cost",   fmt: v => `$${v}M`                        },
-    { key: "ghg",              label: "Lifecycle GHG",    fmt: v => `${v.toLocaleString()} tCO₂e`  },
-    { key: "cargoFulfillment", label: "Cargo Fulfil.",    fmt: v => `${v}%`                         },
-    { key: "vessels",          label: "Vessels",          fmt: v => `${v}`                          },
-    { key: "routes",           label: "Routes",           fmt: v => `${v}`                          },
+  const compareMetrics: { key: MetricKey; label: string; fmt: (v: number | null) => string }[] = [
+    { key: "fuel",             label: "Fuel Consumption", fmt: v => v == null ? "Unavailable" : `${v.toLocaleString()} model units` },
+    { key: "cost",             label: "Operating Cost",   fmt: v => v == null ? "Unavailable" : `$${v}M` },
+    { key: "ghg",              label: "Lifecycle GHG",    fmt: v => v == null ? "Unavailable" : `${v.toLocaleString()} kgCO₂` },
+    { key: "cargoFulfillment", label: "Cargo Fulfil.",    fmt: v => v == null ? "Unavailable" : `${v}%` },
+    { key: "vessels",          label: "Vessels",          fmt: v => v == null ? "Unavailable" : `${v}` },
+    { key: "routes",           label: "Routes",           fmt: v => v == null ? "Unavailable" : `${v}` },
   ];
-  const compareSols = compareIds.map(id => allSolutions.find(s => s.id === id)).filter(Boolean) as ParetoSolution[];
+  const compareSols = effectiveCompareIds.map(id => allSolutions.find(s => s.id === id)).filter(Boolean) as ParetoSolution[];
   function bestFor(key: MetricKey) {
-    const arr = compareSols.map(s => ({ id: s.id, v: s[key] as number }));
+    const arr = compareSols.map(s => ({ id: s.id, v: s[key] as number | null })).filter(a => a.v != null) as { id: string; v: number }[];
+    if (!arr.length) return undefined;
     return arr.reduce((a, b) => b.v < a.v ? b : a, arr[0])?.id;
   }
 
   return (
     <div style={{ overflowY: "auto", height: "100%" }}>
+
+      {liveLoading && (
+        <div style={{ padding: "8px 24px", fontSize: 11, color: T.textTer }}>Loading real optimization result…</div>
+      )}
+      {liveError && (
+        <div style={{ padding: "8px 24px", fontSize: 11, color: T.red }}>Backend data unavailable: {liveError}</div>
+      )}
 
       {/* NLP query bar */}
       <div style={{ padding: "12px 24px 0" }}>
@@ -393,7 +380,7 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
           </button>
           {nlpResult && (
             <span style={{ fontSize: 10, color: nlpResult.warnings.length > 0 ? T.amber : T.green, fontFamily: "'JetBrains Mono', monospace" }}>
-              {nlpResult.warnings.length > 0 ? `⚠ ${nlpResult.warnings[0]}` : `✓ ${nlpResult.solutions.length} results · Recommended: ${nlpResult.recommended_solution_id ?? "S07"}`}
+              {nlpResult.warnings.length > 0 ? `⚠ ${nlpResult.warnings[0]}` : `✓ ${nlpResult.solutions.length} results · Recommended: ${nlpResult.recommended_solution_id ?? "none"}`}
             </span>
           )}
           <button
@@ -418,8 +405,8 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
       <div style={{ padding: "14px 24px 0" }}>
         <div style={{ display: "flex", gap: 0, marginBottom: 0, border: `1px solid ${T.border}`, background: T.surface }}>
           {[
-            { label: "Optimization Method", val: runMeta.method,      sub: "Multi-Objective Quantum-Inspired", accent: T.teal  },
-            { label: "Initialization",      val: "CQM",               sub: "Constrained Quadratic Model",      accent: T.teal  },
+            { label: "Optimization Method", val: runMeta.method,      sub: "NSGA-II / QBHO / CQM / MILP",      accent: T.teal  },
+            { label: "Data Mode",           val: liveResult?.data_mode ?? "unavailable", sub: liveResult?.source ?? "no result loaded", accent: T.teal },
             { label: "Feasible Solutions",  val: String(runMeta.feasible), sub: "total evaluated",             accent: T.text  },
             { label: "Pareto-Optimal",      val: String(runMeta.pareto),   sub: "non-dominated plans",         accent: T.teal  },
             { label: "Runtime",             val: runMeta.runtime,     sub: "wall-clock time",                  accent: T.text  },
@@ -448,40 +435,6 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
           minHeight: "calc(100vh - 140px)",
         }}>
 
-          {/* Scenario fronts */}
-          <PanelLabel>Scenario Fronts</PanelLabel>
-          <div style={{ fontSize: 10, color: T.textTer, marginBottom: 10, lineHeight: 1.5, fontFamily: "'Instrument Sans', sans-serif" }}>
-            Overlay alternative optimization weight configurations.
-          </div>
-          {Object.values(SCENARIO_FRONTS).map(f => {
-            const isOn = activeScenarios.has(f.id);
-            return (
-              <label key={f.id} style={{
-                display: "flex", alignItems: "flex-start", gap: 7, cursor: "pointer",
-                marginBottom: 7, padding: "7px 8px",
-                background: isOn ? `${f.color}0A` : T.bg,
-                border: `1px solid ${isOn ? f.color + "50" : T.border}`,
-              }}>
-                <input
-                  type="checkbox"
-                  checked={isOn}
-                  onChange={e => {
-                    const next = new Set(activeScenarios);
-                    e.target.checked ? next.add(f.id) : next.delete(f.id);
-                    setActiveScenarios(next);
-                  }}
-                  style={{ accentColor: f.color, marginTop: 2, cursor: "pointer", flexShrink: 0 }}
-                />
-                <div>
-                  <div style={{ fontSize: 10, fontWeight: 600, color: isOn ? f.color : T.text, fontFamily: "'Instrument Sans', sans-serif" }}>{f.label}</div>
-                  <div style={{ fontSize: 8.5, color: T.textTer, marginTop: 2, fontFamily: "'JetBrains Mono', monospace" }}>
-                    {f.id === "sustainability" ? "+8.5% cost · −12% GHG" : "−8.5% cost · +16.5% GHG"}
-                  </div>
-                </div>
-              </label>
-            );
-          })}
-
           {/* Fixed parameter */}
           <PanelLabel>Fixed Parameter</PanelLabel>
           <div style={{ fontSize: 10, color: T.textTer, marginBottom: 8, lineHeight: 1.4, fontFamily: "'Instrument Sans', sans-serif" }}>
@@ -495,69 +448,38 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
           {/* Constraint window */}
           <PanelLabel>Constraint Window</PanelLabel>
           {fixedParam === "vessels" ? (
-            <EngrSlider label="Vessels (fixed)" min={20} max={24} step={1}
-              value={vesselFixed} onChange={setVesselFixed} format={v => `${v} vessels`} />
+            <EngrSlider label="Vessels (fixed)" min={vesselBounds[0]} max={vesselBounds[1]} step={1}
+              value={vesselFixedVal} onChange={setVesselFixed} format={v => `${v} vessels`} />
           ) : (
-            <EngrRangeSlider label="Vessels" min={20} max={24} step={1}
-              value={vesselRange} onChange={setVesselRange} format={v => `${v}`} />
+            <EngrRangeSlider label="Vessels" min={vesselBounds[0]} max={vesselBounds[1]} step={1}
+              value={vesselRange} onChange={setVesselRangeOverride} format={v => `${v}`} />
           )}
-          {fixedParam === "cargo" ? (
-            <EngrSlider label="Cargo Fulfillment (fixed)" min={94} max={99} step={0.5}
-              value={cargoFixed} onChange={setCargoFixed} format={v => `${v}%`} />
+          {!cargoAvailable ? (
+            <div style={{ fontSize: 9.5, color: T.textTer, marginBottom: 10, fontFamily: "'Instrument Sans', sans-serif" }}>
+              Cargo fulfillment is not computed by the optimizer for this run.
+            </div>
+          ) : fixedParam === "cargo" ? (
+            <EngrSlider label="Cargo Fulfillment (fixed)" min={cargoBounds[0]} max={cargoBounds[1]} step={0.5}
+              value={cargoFixedVal} onChange={setCargoFixed} format={v => `${v}%`} />
           ) : (
-            <EngrRangeSlider label="Cargo Fulfillment" min={94} max={99} step={0.5}
-              value={cargoRange} onChange={setCargoRange} format={v => `${v}%`} />
+            <EngrRangeSlider label="Cargo Fulfillment" min={cargoBounds[0]} max={cargoBounds[1]} step={0.5}
+              value={cargoRange} onChange={setCargoRangeOverride} format={v => `${v}%`} />
           )}
           {fixedParam === "routes" ? (
-            <EngrSlider label="Routes (fixed)" min={14} max={18} step={1}
-              value={routeFixed} onChange={setRouteFixed} format={v => `${v} routes`} />
+            <EngrSlider label="Routes (fixed)" min={routeBounds[0]} max={routeBounds[1]} step={1}
+              value={routeFixedVal} onChange={setRouteFixed} format={v => `${v} routes`} />
           ) : (
-            <EngrRangeSlider label="Routes" min={14} max={18} step={1}
-              value={routeRange} onChange={setRouteRange} format={v => `${v}`} />
+            <EngrRangeSlider label="Routes" min={routeBounds[0]} max={routeBounds[1]} step={1}
+              value={routeRange} onChange={setRouteRangeOverride} format={v => `${v}`} />
           )}
-
-          {/* Confidence bands */}
-          <PanelLabel>Confidence Interval</PanelLabel>
-          <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer", marginBottom: 8 }}>
-            <input type="checkbox" checked={showConf} onChange={e => setShowConf(e.target.checked)}
-              style={{ accentColor: T.teal, cursor: "pointer" }} />
-            <span style={{ fontSize: 10, color: T.textSec, fontFamily: "'Instrument Sans', sans-serif" }}>Show confidence bands</span>
-          </label>
-          {showConf && (
-            <div style={{ display: "flex", gap: 0, marginBottom: 8, border: `1px solid ${T.border}` }}>
-              {([0.90, 0.95, 0.99] as const).map((lv, i) => (
-                <button
-                  key={lv}
-                  onClick={() => setConfLevel(lv)}
-                  style={{
-                    flex: 1, padding: "5px 0", fontSize: 10,
-                    border: "none",
-                    borderLeft: i > 0 ? `1px solid ${T.border}` : "none",
-                    background: confLevel === lv ? T.teal : T.bg,
-                    color: confLevel === lv ? "white" : T.textSec,
-                    cursor: "pointer",
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontWeight: confLevel === lv ? 700 : 400,
-                  }}
-                >
-                  {lv * 100}%
-                </button>
-              ))}
-            </div>
-          )}
-          <div style={{ fontSize: 9, color: T.textTer, lineHeight: 1.5, fontFamily: "'Instrument Sans', sans-serif" }}>
-            {showConf
-              ? `${confLevel * 100}% CI · MO-QIGA objective uncertainty from quantum sampling noise and operational variability.`
-              : "Enable to visualize uncertainty bands around each Pareto front."}
-          </div>
 
           {/* Filter stats */}
           <PanelLabel>Filter Statistics</PanelLabel>
           <div style={{ border: `1px solid ${T.border}`, padding: "8px 10px" }}>
             {[
-              { label: "Visible solutions", val: `${filteredSolutions.length} / ${PARETO_SOLUTIONS.length}`, c: T.text },
-              { label: "Pareto-optimal",    val: `${filteredPareto.length} / 18`,                             c: T.teal },
-              { label: "Dominated",         val: `${filteredDominated.length} / 24`,                          c: T.textTer },
+              { label: "Visible solutions", val: `${filteredSolutions.length} / ${allSolutions.length}`, c: T.text },
+              { label: "Pareto-optimal",    val: `${filteredPareto.length} / ${allSolutions.filter(s => s.pareto).length}`, c: T.teal },
+              { label: "Dominated",         val: `${filteredDominated.length} / ${allSolutions.filter(s => !s.pareto).length}`, c: T.textTer },
               { label: "Live front pts",    val: `${liveFront.length}`,                                        c: T.amber },
             ].map(r => (
               <div key={r.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 5 }}>
@@ -595,33 +517,30 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
                   Pareto Front — Solution Space
                 </div>
                 <div style={{ fontSize: 10, color: T.textSec, marginTop: 2, fontFamily: "'Instrument Sans', sans-serif" }}>
-                  {activeExtraFronts.length > 0
-                    ? `Baseline + ${activeExtraFronts.length} scenario front${activeExtraFronts.length > 1 ? "s" : ""} · click a point to select`
-                    : "42 feasible solutions · click Pareto-optimal point to select"}
+                  {runMeta.feasible} feasible solutions evaluated · click a Pareto-optimal point to select
                 </div>
               </div>
               <div style={{ height: 360 }}>
                 <ParetoChart
+                  solutions={allSolutions}
                   selectedId={selectedId}
                   onSelect={onSelect}
                   filteredIds={filteredIds}
                   liveFront={liveFront}
-                  extraFronts={activeExtraFronts}
-                  showConfidence={showConf}
-                  confidenceLevel={confLevel}
                   axisIdx={axisIdx}
                   onAxisChange={setAxisIdx}
                 />
               </div>
-              {showConf && (
-                <div style={{ marginTop: 10, padding: "7px 10px", background: T.bg, border: `1px solid ${T.border}`, fontSize: 9.5, color: T.textTer, lineHeight: 1.4, fontFamily: "'Instrument Sans', sans-serif" }}>
-                  Shaded bands show the {confLevel * 100}% confidence interval around each front — the region where the true optimum likely lies given MO-QIGA quantum sampling uncertainty.
-                </div>
-              )}
             </div>
 
             {/* Selected solution analytical panel */}
-            <SolutionPanel sol={selected} onViewPlan={onViewPlan} inFilter={isSelectedInFilter} />
+            {selected ? (
+              <SolutionPanel sol={selected} onViewPlan={onViewPlan} inFilter={isSelectedInFilter} />
+            ) : (
+              <div style={{ background: T.surface, border: `1px solid ${T.border}`, padding: "14px 16px", fontSize: 11, color: T.textTer }}>
+                No optimization result loaded yet.
+              </div>
+            )}
           </div>
 
           {/* Compare solutions table */}
@@ -633,23 +552,28 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
                 </div>
                 <div style={{ fontSize: 10, color: T.textSec }}>Side-by-side trade-off analysis across Pareto-optimal plans</div>
               </div>
-              <div style={{ display: "flex", gap: 0, border: `1px solid ${T.border}` }}>
-                {COMPARE_PRESETS.map((preset, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCompareIds(preset)}
-                    style={{
-                      background: JSON.stringify(compareIds) === JSON.stringify(preset) ? T.teal : T.bg,
-                      color:      JSON.stringify(compareIds) === JSON.stringify(preset) ? "white" : T.textSec,
-                      border: "none",
-                      borderLeft: i > 0 ? `1px solid ${T.border}` : "none",
-                      padding: "5px 10px", fontSize: 10, cursor: "pointer",
-                      fontFamily: "'JetBrains Mono', monospace",
-                    }}
-                  >
-                    {preset.join(" · ")}
-                  </button>
-                ))}
+              <div style={{ display: "flex", gap: 0, border: `1px solid ${T.border}`, flexWrap: "wrap" }}>
+                {allSolutions.map((s) => {
+                  const isOn = effectiveCompareIds.includes(s.id);
+                  return (
+                    <button
+                      key={s.id}
+                      onClick={() => setCompareIds(isOn
+                        ? effectiveCompareIds.filter(id => id !== s.id)
+                        : [...effectiveCompareIds, s.id])}
+                      style={{
+                        background: isOn ? T.teal : T.bg,
+                        color:      isOn ? "white" : T.textSec,
+                        border: "none",
+                        borderLeft: `1px solid ${T.border}`,
+                        padding: "5px 10px", fontSize: 10, cursor: "pointer",
+                        fontFamily: "'JetBrains Mono', monospace",
+                      }}
+                    >
+                      {s.id}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -661,8 +585,8 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
                     <th key={s.id} style={{ textAlign: "center", padding: "8px 14px", fontSize: 11, fontWeight: 700, color: s.id === selectedId ? T.teal : T.text, borderBottom: `1px solid ${T.border}`, fontFamily: "'Instrument Sans', sans-serif" }}>
                       {s.label}
                       {s.id === selectedId && <div style={{ fontSize: 8, color: T.teal, fontWeight: 600, marginTop: 1 }}>● SELECTED</div>}
-                      {s.pareto && <div style={{ fontSize: 8, color: T.textTer, fontWeight: 400, marginTop: 1, fontFamily: "'JetBrains Mono', monospace" }}>
-                        {Math.round(solutionConfidence(s) * 100)}% conf.
+                      {s.algorithm && <div style={{ fontSize: 8, color: T.textTer, fontWeight: 400, marginTop: 1, fontFamily: "'JetBrains Mono', monospace" }}>
+                        {s.algorithm}
                       </div>}
                     </th>
                   ))}
@@ -686,7 +610,7 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
                             background: isBest ? T.tealLight : "inherit",
                           }}>
                             {isBest && <span style={{ marginRight: 3, fontSize: 9 }}>★</span>}
-                            {m.fmt(s[m.key] as number)}
+                            {m.fmt(s[m.key] as number | null)}
                           </td>
                         );
                       })}
@@ -702,13 +626,17 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
                 Trade-off Summary
               </div>
               <div style={{ fontSize: 10, color: T.textSec, lineHeight: 1.6, fontFamily: "'Instrument Sans', sans-serif" }}>
-                {compareSols.length >= 2 && (
-                  <>
-                    <strong style={{ color: T.text }}>{compareSols[0].label}</strong> achieves lower lifecycle GHG ({compareSols[0].ghg.toLocaleString()} tCO₂e) at higher operating cost (${compareSols[0].cost}M).{" "}
-                    <strong style={{ color: T.text }}>{compareSols[compareSols.length - 1].label}</strong> minimizes cost (${compareSols[compareSols.length - 1].cost}M) with higher GHG ({compareSols[compareSols.length - 1].ghg.toLocaleString()} tCO₂e).{" "}
-                    Selection depends on the operator{"'"}s ESG and financial priorities.
-                  </>
-                )}
+                {compareSols.length >= 2 && (() => {
+                  const lowestGhg  = compareSols.reduce((a, b) => b.ghg < a.ghg ? b : a);
+                  const lowestCost = compareSols.reduce((a, b) => b.cost < a.cost ? b : a);
+                  return (
+                    <>
+                      <strong style={{ color: T.text }}>{lowestGhg.label}</strong> has the lowest lifecycle GHG among these ({lowestGhg.ghg.toLocaleString()} kgCO₂) at ${lowestGhg.cost}M operating cost.{" "}
+                      <strong style={{ color: T.text }}>{lowestCost.label}</strong> has the lowest operating cost (${lowestCost.cost}M) at {lowestCost.ghg.toLocaleString()} kgCO₂.{" "}
+                      Selection depends on the operator{"'"}s ESG and financial priorities.
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </div>

@@ -77,16 +77,12 @@ def get_results(job_id: str):
 @router.get("/solution/{solution_id}")
 def get_solution(solution_id: str):
     _ensure_default()
-    sol = get_solution_by_id(solution_id)
-    if sol is None:
-        # Try from latest result
-        result = JM.get_latest_result()
-        if result:
-            for s in result.get("pareto_solutions", []):
-                if s["id"] == solution_id:
-                    return s
-        raise HTTPException(status_code=404, detail="Solution not found.")
-    return sol
+    result = JM.get_latest_result()
+    if result:
+        for solution in result.get("pareto_solutions", []):
+            if solution["id"] == solution_id:
+                return solution
+    raise HTTPException(status_code=404, detail="Solution not found in the latest real optimization result.")
 
 
 # ── WebSocket streaming ───────────────────────────────────────────────────────
@@ -141,7 +137,10 @@ def _run_optimization_task(job_id: str, seed: int, use_real: bool):
 
     try:
         progress_cb(10, "Loading data and generating candidates...")
-        result = run_optimization_async(job, progress_cb=progress_cb if use_real else None)
+        result = (
+            run_optimization_async(job, seed=seed, progress_cb=progress_cb)
+            if use_real else get_default_result()
+        )
         progress_cb(95, "Finalizing Pareto archive...")
         JM.set_latest_result(result)
         JM.update_job(job, JM.JobStatus.COMPLETED, 100, "Optimization complete.", result=result)

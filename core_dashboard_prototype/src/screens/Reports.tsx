@@ -9,7 +9,11 @@ const TYPE_CONFIG = {
   compliance:     { color: "#D97706", bg: "#FFFBEB", label: "Compliance",     icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
 };
 
-export default function Reports() {
+interface Props {
+  solutionId: string;
+}
+
+export default function Reports({ solutionId }: Props) {
   const { reports, loading } = useReports();
   const [downloading, setDownloading] = useState<string | null>(null);
 
@@ -18,9 +22,9 @@ export default function Reports() {
     setDownloading(key);
     try {
       if (format === "csv") {
-        await reportsApi.exportReport(reportId, "csv");
+        await reportsApi.exportReport(reportId, "csv", solutionId);
       } else {
-        await reportsApi.exportReport(reportId, "json");
+        await reportsApi.exportReport(reportId, "json", solutionId);
       }
     } catch (e) {
       console.error("Export failed:", e);
@@ -34,8 +38,8 @@ export default function Reports() {
     setDownloading(key);
     try {
       if (type === "pareto")       await reportsApi.exportParetoSolutions();
-      if (type === "assignments")  await reportsApi.exportFleetAssignments();
-      if (type === "pdf")          await reportsApi.exportReport("R01", "json");
+      if (type === "assignments")  await reportsApi.exportFleetAssignments(solutionId);
+      if (type === "pdf")          await reportsApi.exportReport("R01", "json", solutionId);
     } catch (e) {
       console.error("Bulk export failed:", e);
     } finally {
@@ -50,7 +54,7 @@ export default function Reports() {
       <div style={{ background: "white", border: "1px solid #E2E8F0", borderRadius: 10, padding: "16px 20px", marginBottom: 24, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
           <div style={{ fontSize: 14, fontWeight: 700, color: "#0F172A", fontFamily: "'DM Sans', sans-serif" }}>Bulk Data Export</div>
-          <div style={{ fontSize: 12, color: "#64748B", marginTop: 2 }}>Download raw optimization data, vessel assignments, and constraint logs for RUN #024.</div>
+          <div style={{ fontSize: 12, color: "#64748B", marginTop: 2 }}>Download raw optimization data, vessel assignments, and constraint logs for {solutionId || "the latest run"}.</div>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           {[
@@ -78,7 +82,7 @@ export default function Reports() {
       {loading ? (
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
           {[1,2,3,4].map(i => (
-            <div key={i} style={{ background: "white", border: "1px solid #E2E8F0", borderRadius: 12, height: 200,
+            <div key={i} style={{ border: "1px solid #E2E8F0", borderRadius: 12, height: 200,
               background: "linear-gradient(90deg, #F8FAFC 25%, #F1F5F9 50%, #F8FAFC 75%)",
               backgroundSize: "200% 100%", animation: "shimmer 1.4s infinite" }} />
           ))}

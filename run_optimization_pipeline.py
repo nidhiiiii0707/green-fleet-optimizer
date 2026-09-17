@@ -23,7 +23,8 @@ import pandas as pd
 
 import data_layer as DL
 from candidate_generator import generate_candidates
-from objective_evaluator import ObjectiveEvaluator
+from objective_evaluator import ObjectiveEvaluator, EvaluatedCandidate
+from feasibility_checker import ConstraintResult, ConstraintStatus, FeasibilityReport
 from algo_common import group_by_leg, pareto_front
 from nsga2_optimizer import NSGA2Optimizer
 from qbho import QBHOOptimizer
@@ -35,26 +36,59 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 log = logging.getLogger("pipeline")
 
 
-def generate_evaluated_legs(seed: int = 0):
+def generate_evaluated_legs(seed: int = 0, overrides: dict | None = None):
     """STEPS 1-2: candidates -> feasibility + real XGB fuel model + SCENARIO_INPUT cost/GHG -> grouped by leg.
 
     Returns (evaluated, legs, reject_reasons) so callers (e.g. the NLP adapter)
     can filter `legs` before handing them to run_all_algorithms(), without
     duplicating this evaluation logic.
+
+    `overrides` (all optional, used by the Scenario Analysis feature to reach
+    the real optimizer with modified inputs rather than a formula):
+      - port_capacity_multiplier, vessel_availability_multiplier,
+        demand_multiplier: forwarded to generate_candidates()
+      - fuel_price_multiplier: forwarded to ObjectiveEvaluator (scales cost)
+      - ghg_limit_multiplier: adds a real hard feasibility constraint capping
+        each candidate's GHG at this fraction of the unconstrained median GHG
     """
+    overrides = overrides or {}
     log.info("STEP 1/7: generating candidates from real/derived data layer")
-    candidates = generate_candidates(seed=seed)
+    candidates = generate_candidates(seed=seed, overrides=overrides)
     log.info("  generated %d candidates", len(candidates))
 
     log.info("STEP 2/7: evaluating feasibility + real XGB fuel model + SCENARIO_INPUT cost/GHG")
     fleet = DL.load_fleet_classes()
-    evaluator = ObjectiveEvaluator()
+    evaluator = ObjectiveEvaluator(fuel_price_multiplier=overrides.get("fuel_price_multiplier", 1.0))
     evaluated = []
-    reject_reasons: dict[str, int] = {}
     for c in candidates:
         ctx = DL.build_feasibility_context(c, fleet)
         ec = evaluator.evaluate(c, ctx)
         evaluated.append(ec)
+
+    ghg_limit_mult = overrides.get("ghg_limit_multiplier", 1.0)
+    if ghg_limit_mult < 1.0 and evaluated:
+        median_ghg = sorted(e.ghg_kgco2 for e in evaluated)[len(evaluated) // 2]
+        limit = median_ghg * ghg_limit_mult
+        rebuilt = []
+        for e in evaluated:
+            if e.ghg_kgco2 <= limit:
+                rebuilt.append(e)
+                continue
+            extra = ConstraintResult(
+                name="scenario_ghg_limit", status=ConstraintStatus.FAILED,
+                reason=f"ghg_kgco2={e.ghg_kgco2:.1f} exceeds scenario limit={limit:.1f} ({ghg_limit_mult:.0%} of median)",
+            )
+            report = FeasibilityReport(results=e.feasibility_report.results + (extra,))
+            rebuilt.append(EvaluatedCandidate(
+                candidate=e.candidate, predicted_fuel_rate=e.predicted_fuel_rate,
+                voyage_hours=e.voyage_hours, voyage_fuel=e.voyage_fuel,
+                cost_usd=e.cost_usd, ghg_kgco2=e.ghg_kgco2,
+                feasible=report.is_usable, feasibility_report=report,
+            ))
+        evaluated = rebuilt
+
+    reject_reasons: dict[str, int] = {}
+    for ec in evaluated:
         if not ec.feasible:
             for r in ec.feasibility_report.results:
                 if r.status.value == "failed":

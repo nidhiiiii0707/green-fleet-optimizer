@@ -58,9 +58,9 @@ export default function ScenarioAnalysis({ onGoToFleetPlan }: Props) {
     run(controls);
   }
 
-  const fmtDelta = (v: number) => `${v >= 0 ? "+" : ""}${v.toFixed(1)}%`;
-  const deltaColor = (v: number, higherIsBad = true) =>
-    v === 0 ? "#64748B" : (higherIsBad ? (v > 0 ? "#DC2626" : "#059669") : (v > 0 ? "#059669" : "#DC2626"));
+  const fmtDelta = (v: number | null) => v == null ? "Unavailable" : `${v >= 0 ? "+" : ""}${v.toFixed(1)}%`;
+  const deltaColor = (v: number | null, higherIsBad = true) =>
+    v == null || v === 0 ? "#64748B" : (higherIsBad ? (v > 0 ? "#DC2626" : "#059669") : (v > 0 ? "#059669" : "#DC2626"));
 
   return (
     <div style={{ padding: "24px 28px", overflowY: "auto", height: "100%" }}>
@@ -163,10 +163,10 @@ export default function ScenarioAnalysis({ onGoToFleetPlan }: Props) {
               {/* Scenario result KPIs */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 12 }}>
                 {[
-                  { label: "Fuel Change",       val: fmtDelta(result.fuelChange), bad: result.fuelChange, base: "18,420 t" },
-                  { label: "Cost Change",       val: fmtDelta(result.costChange), bad: result.costChange, base: "$4.82M" },
-                  { label: "GHG Change",        val: fmtDelta(result.ghgChange),  bad: result.ghgChange,  base: "54,820 tCO₂e" },
-                  { label: "Cargo Fulfillment", val: `${result.cargoFulfillment.toFixed(1)}%`, bad: 97.8 - result.cargoFulfillment, base: "97.8% baseline" },
+                  { label: "Fuel Change",       val: fmtDelta(result.fuelChange), bad: result.fuelChange, base: `${result.baselineFuel.toLocaleString()} model units` },
+                  { label: "Cost Change",       val: fmtDelta(result.costChange), bad: result.costChange, base: `$${result.baselineCost}M` },
+                  { label: "GHG Change",        val: fmtDelta(result.ghgChange),  bad: result.ghgChange,  base: `${result.baselineGhg.toLocaleString()} kgCO₂` },
+                  { label: "Cargo Fulfillment", val: result.cargoFulfillment == null ? "Unavailable" : `${result.cargoFulfillment.toFixed(1)}%`, bad: null, base: "not computed by optimizer" },
                 ].map(k => {
                   const col = deltaColor(k.bad);
                   return (
@@ -181,21 +181,23 @@ export default function ScenarioAnalysis({ onGoToFleetPlan }: Props) {
 
               {/* Baseline vs Scenario table */}
               <div style={{ background: "white", border: "1px solid #E2E8F0", borderRadius: 10, padding: "18px 20px" }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "#0F172A", fontFamily: "'DM Sans', sans-serif", marginBottom: 14 }}>Baseline vs Scenario</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#0F172A", fontFamily: "'DM Sans', sans-serif", marginBottom: 14 }}>
+                  Baseline vs Scenario ({result.scenarioSolutionId})
+                </div>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
                   <thead>
                     <tr style={{ background: "#F8FAFC" }}>
-                      {["Metric", "Baseline (Solution #07)", "Scenario Estimate", "Change"].map(h => (
+                      {["Metric", "Baseline", "Scenario Result", "Change"].map(h => (
                         <th key={h} style={{ padding: "9px 12px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.05em", borderBottom: "1px solid #E2E8F0" }}>{h}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {[
-                      { metric: "Fuel Consumption", base: "18,420 t",      scenario: `${result.scenarioFuel.toLocaleString()} t`,     delta: result.fuelChange },
-                      { metric: "Operating Cost",   base: "$4.82M",         scenario: `$${result.scenarioCost}M`,                      delta: result.costChange },
-                      { metric: "Lifecycle GHG",    base: "54,820 tCO₂e",  scenario: `${result.scenarioGhg.toLocaleString()} tCO₂e`, delta: result.ghgChange },
-                      { metric: "Cargo Fulfillment",base: "97.8%",          scenario: `${result.cargoFulfillment.toFixed(1)}%`,         delta: -(97.8 - result.cargoFulfillment) },
+                      { metric: "Fuel Consumption", base: `${result.baselineFuel.toLocaleString()} model units`, scenario: `${result.scenarioFuel.toLocaleString()} model units`, delta: result.fuelChange },
+                      { metric: "Operating Cost",   base: `$${result.baselineCost}M`,   scenario: `$${result.scenarioCost}M`,                      delta: result.costChange },
+                      { metric: "Lifecycle GHG",    base: `${result.baselineGhg.toLocaleString()} kgCO₂`, scenario: `${result.scenarioGhg.toLocaleString()} kgCO₂`, delta: result.ghgChange },
+                      { metric: "Cargo Fulfillment", base: "Unavailable", scenario: result.cargoFulfillment == null ? "Unavailable" : `${result.cargoFulfillment.toFixed(1)}%`, delta: null },
                     ].map((row, i) => (
                       <tr key={row.metric} style={{ background: i % 2 === 0 ? "white" : "#FAFAFA", borderBottom: "1px solid #F1F5F9" }}>
                         <td style={{ padding: "10px 12px", color: "#475569" }}>{row.metric}</td>

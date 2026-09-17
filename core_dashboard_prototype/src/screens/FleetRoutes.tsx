@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import WorldMap from "../components/WorldMap";
 import VesselDrawer from "../components/VesselDrawer";
-import { VESSELS as VESSELS_MOCK, PARETO_SOLUTIONS, PORTS as PORTS_MOCK, ROUTES as ROUTES_MOCK } from "../data/mock";
-import type { Assignment } from "../data/mock";
+import type { Assignment } from "../api/types";
 import { useFleetData, useLatestOptimization } from "../api/hooks";
 
 const FUEL_COLORS: Record<string, string> = {
@@ -15,24 +14,17 @@ const STATUS_STYLE: Record<string, { bg: string; color: string }> = {
   critical:      { bg: "#FEF2F2", color: "#DC2626" },
 };
 
-export default function FleetRoutes() {
+export default function FleetRoutes({ solutionId }: { solutionId: string }) {
   const [selectedVesselId, setSelectedVesselId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [fuelFilter, setFuelFilter] = useState("All");
   const [availFilter, setAvailFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
 
-  // Live fleet data, fall back to mock while loading
-  const { vessels: liveVessels, ports: livePorts, routes: liveRoutes, loading: fleetLoading } = useFleetData();
-  const { data: liveResult } = useLatestOptimization();
-
-  const VESSELS = liveVessels.length > 0 ? liveVessels : VESSELS_MOCK;
-  const PORTS   = livePorts.length   > 0 ? livePorts   : PORTS_MOCK;
-  const ROUTES  = liveRoutes.length  > 0 ? liveRoutes  : ROUTES_MOCK;
-
-  const paretoSolutions = liveResult?.pareto_solutions ?? PARETO_SOLUTIONS;
-  const sol07 = paretoSolutions.find(s => s.id === "S07");
-  const assignments: Assignment[] = (sol07?.assignments as Assignment[] | undefined) ?? [];
+  const { vessels: VESSELS, ports: PORTS, routes: ROUTES, loading: fleetLoading, error: fleetError } = useFleetData();
+  const { data: liveResult, loading: optimizationLoading, error: optimizationError } = useLatestOptimization();
+  const solution = liveResult?.pareto_solutions.find((item) => item.id === solutionId);
+  const assignments: Assignment[] = solution?.assignments ?? [];
   const activeRouteIds = Array.from(new Set(assignments.map(a => a.routeId)));
 
   const displayRows = assignments.map(a => {
@@ -47,29 +39,13 @@ export default function FleetRoutes() {
     return true;
   });
 
-  const PORTS_MAP: Record<string, { x: number; y: number }> = {
-    RTM: { x: 461, y: 93 }, SGP: { x: 709, y: 217 }, SHA: { x: 755, y: 144 },
-    LAX: { x: 154, y: 137 }, HOU: { x: 210, y: 148 }, DXB: { x: 586, y: 158 },
-    YKH: { x: 800, y: 133 }, SYD: { x: 825, y: 303 }, CPT: { x: 496, y: 303 },
-    STS: { x: 332, y: 278 }, BOM: { x: 630, y: 173 }, PUS: { x: 772, y: 120 },
-  };
-
-  const vesselPositions = assignments.slice(0, 18).map((a) => {
-    const route = ROUTES.find(r => r.id === a.routeId);
-    const vessel = VESSELS.find(v => v.id === a.vesselId);
-    if (!route) return null;
-    const p0 = PORTS_MAP[route.originId] ?? { x: 450, y: 220 };
-    const p1 = PORTS_MAP[route.destinationId] ?? { x: 500, y: 220 };
-    const t = 0.45;
-    const cx = route.controlX, cy = route.controlY;
-    const x = (1-t)*(1-t)*p0.x + 2*(1-t)*t*cx + t*t*p1.x;
-    const y = (1-t)*(1-t)*p0.y + 2*(1-t)*t*cy + t*t*p1.y;
-    return { id: a.vesselId, x, y, name: vessel?.name ?? a.vesselId, status: a.status };
-  }).filter(Boolean) as { id: string; x: number; y: number; name: string; status: string }[];
-
   const selectedRoute = selectedVesselId
     ? assignments.find(a => a.vesselId === selectedVesselId)?.routeId ?? null
     : null;
+
+  if (fleetLoading || optimizationLoading) return <div style={{ padding: 24, color: "#64748B" }}>Loading real fleet plan…</div>;
+  if (fleetError || optimizationError) return <div style={{ padding: 24, color: "#B91C1C" }}>Backend data unavailable: {fleetError ?? optimizationError}</div>;
+  if (!solution) return <div style={{ padding: 24, color: "#B91C1C" }}>Solution {solutionId} is not present in the latest result.</div>;
 
   return (
     <div style={{ display: "flex", height: "100%", overflow: "hidden" }}>
@@ -78,7 +54,7 @@ export default function FleetRoutes() {
         <div style={{ fontSize: 12, fontWeight: 700, color: "#0F172A", marginBottom: 12 }}>Filters</div>
 
         {[
-          { label: "Fuel Type", options: ["All", "LNG", "Methanol", "Ammonia", "Conv"], value: fuelFilter, set: setFuelFilter },
+          { label: "Fuel Type", options: ["All", "DM", "RM380"], value: fuelFilter, set: setFuelFilter },
           { label: "Availability", options: ["All", "available", "in-transit", "maintenance"], value: availFilter, set: setAvailFilter },
           { label: "Status", options: ["All", "on-schedule", "warning", "critical"], value: statusFilter, set: setStatusFilter },
         ].map(f => (
@@ -112,10 +88,9 @@ export default function FleetRoutes() {
         {/* Map */}
         <div style={{ background: "white", borderBottom: "1px solid #E2E8F0", height: 260, flexShrink: 0 }}>
           <WorldMap
+            ports={PORTS}
+            routes={ROUTES}
             highlightRouteIds={selectedRoute ? [selectedRoute] : activeRouteIds}
-            vesselPositions={vesselPositions}
-            onVesselClick={id => { setSelectedVesselId(id); setDrawerOpen(true); }}
-            selectedVesselId={selectedVesselId}
             showAllRoutes={true}
             compact={true}
           />
@@ -182,6 +157,9 @@ export default function FleetRoutes() {
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         assignments={assignments}
+        vessels={VESSELS}
+        ports={PORTS}
+        routes={ROUTES}
       />
     </div>
   );

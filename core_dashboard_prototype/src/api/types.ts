@@ -3,11 +3,14 @@
 export interface Port {
   id: string;
   name: string;
-  country: string;
+  country: string | null;
+  latitude: number;
+  longitude: number;
   x: number;
   y: number;
-  shorepower: boolean;
-  capacity: "high" | "medium" | "low";
+  shorepower: boolean | null;
+  capacity: "high" | "medium" | "low" | null;
+  coordinateStatus?: string | null;
 }
 
 export interface Vessel {
@@ -18,10 +21,11 @@ export interface Vessel {
   capacityUnit: string;
   fuelCompatibility: string[];
   speed: number;
-  availability: "available" | "in-transit" | "maintenance";
-  maintenanceStatus: string;
-  shorepower: boolean;
-  currentPort: string;
+  availability: "available" | "in-transit" | "maintenance" | null;
+  maintenanceStatus: string | null;
+  shorepower: boolean | null;
+  currentPort: string | null;
+  dataLevel?: string;
 }
 
 export interface Route {
@@ -30,6 +34,12 @@ export interface Route {
   originId: string;
   destinationId: string;
   distanceNm: number;
+  voyageTimeHours?: number | null;
+  speedKnots?: number | null;
+  originLatitude: number;
+  originLongitude: number;
+  destinationLatitude: number;
+  destinationLongitude: number;
   controlX: number;
   controlY: number;
 }
@@ -38,6 +48,7 @@ export interface Constraint {
   label: string;
   satisfied: boolean;
   note?: string;
+  status?: "passed" | "failed" | "unavailable";
 }
 
 export interface Assignment {
@@ -48,13 +59,18 @@ export interface Assignment {
   originId: string;
   destinationId: string;
   routeId: string;
+  vesselType?: string;
+  origin?: string;
+  destination?: string;
+  cargoTons?: number;
   speed: number;
   fuelType: string;
-  shorepower: boolean;
-  eta: string;
+  shorepower: boolean | null;
+  eta: string | null;
   fuelConsumption: number;
   cost: number;
   ghg: number;
+  ghgUnit?: string;
   status: "on-schedule" | "warning" | "critical";
   constraints: Constraint[];
 }
@@ -65,13 +81,16 @@ export interface ParetoSolution {
   fuel: number;
   cost: number;
   ghg: number;
-  cargoFulfillment: number;
+  cargoFulfillment: number | null;
   vessels: number;
   routes: number;
   constraintsSatisfied: number;
   totalConstraints: number;
   pareto: boolean;
   assignments?: Assignment[];
+  algorithm?: string;
+  optimizerSolutionId?: string;
+  emptyStateReason?: string | null;
 }
 
 export interface FuelMixEntry {
@@ -101,13 +120,15 @@ export interface OptimizationResult {
   method: string;
   feasible_solutions: number;
   pareto_count: number;
-  runtime_seconds: number;
+  runtime_seconds: number | null;
   constraint_satisfaction: string;
   pareto_solutions: ParetoSolution[];
-  baseline: { fuel: number; cost: number; ghg: number; cargoFulfillment: number };
-  optimized: { fuel: number; cost: number; ghg: number; cargoFulfillment: number };
+  baseline: { fuel: number; cost: number; ghg: number; cargoFulfillment: number | null } | null;
+  optimized: { fuel: number; cost: number; ghg: number; cargoFulfillment: number | null };
   fuel_mix: FuelMixEntry[];
   selected_solution_id: string;
+  data_mode: "real_precomputed" | "real_runtime" | "mock_offline";
+  source?: string;
   algorithm_comparison?: {
     mo_qiga_vs_nsga2: string[][];
     milp_comparison: string[][];
@@ -136,13 +157,17 @@ export interface ScenarioControls {
 }
 
 export interface ScenarioResult {
-  fuelChange: number;
-  costChange: number;
-  ghgChange: number;
-  cargoFulfillment: number;
+  fuelChange: number | null;
+  costChange: number | null;
+  ghgChange: number | null;
+  cargoFulfillment: number | null;
   scenarioFuel: number;
   scenarioCost: number;
   scenarioGhg: number;
+  baselineFuel: number;
+  baselineCost: number;
+  baselineGhg: number;
+  scenarioSolutionId: string;
   constraintChanges: string[];
   note: string;
 }

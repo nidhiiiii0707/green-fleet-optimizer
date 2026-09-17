@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { ALERTS } from "./data/mock";
-import { useAlertSummary } from "./api/hooks";
+import React, { useEffect, useState } from "react";
+import { useAlertSummary, useLatestOptimization } from "./api/hooks";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import Overview from "./screens/Overview";
@@ -15,12 +14,18 @@ type Screen = "overview" | "fleet" | "optimization" | "fleetplan" | "scenarios" 
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>("overview");
-  const [selectedSolutionId, setSelectedSolutionId] = useState("S07");
+  const [selectedSolutionId, setSelectedSolutionId] = useState<string | null>(null);
+  const { data: optimizationResult } = useLatestOptimization();
+  const activeSolutionId = selectedSolutionId ?? optimizationResult?.selected_solution_id ?? "";
 
-  // Use live alert count from API, fall back to mock count
+  useEffect(() => {
+    if (!optimizationResult?.pareto_solutions.length) return;
+    const stillExists = optimizationResult.pareto_solutions.some((solution) => solution.id === selectedSolutionId);
+    if (!stillExists) setSelectedSolutionId(optimizationResult.selected_solution_id);
+  }, [optimizationResult, selectedSolutionId]);
+
   const { data: alertSummary } = useAlertSummary();
-  const activeAlerts = alertSummary?.total_active
-    ?? ALERTS.filter(a => a.status === "active" && a.severity !== "info").length;
+  const activeAlerts = alertSummary?.total_active ?? 0;
 
   function handleSelectSolution(id: string) {
     setSelectedSolutionId(id);
@@ -33,13 +38,13 @@ export default function App() {
   function renderScreen() {
     switch (screen) {
       case "overview":
-        return <Overview onGoToOptimization={() => setScreen("optimization")} />;
+        return <Overview solutionId={activeSolutionId} onGoToOptimization={() => setScreen("optimization")} />;
       case "fleet":
-        return <FleetRoutes />;
+        return <FleetRoutes solutionId={activeSolutionId} />;
       case "optimization":
         return (
           <Optimization
-            selectedId={selectedSolutionId}
+            selectedId={activeSolutionId}
             onSelect={handleSelectSolution}
             onViewPlan={handleViewPlan}
           />
@@ -47,7 +52,7 @@ export default function App() {
       case "fleetplan":
         return (
           <FleetPlan
-            solutionId={selectedSolutionId}
+            solutionId={activeSolutionId}
             onGoToScenario={() => setScreen("scenarios")}
             onGoToOptimization={() => setScreen("optimization")}
           />
@@ -57,7 +62,7 @@ export default function App() {
       case "alerts":
         return <Alerts />;
       case "reports":
-        return <Reports />;
+        return <Reports solutionId={activeSolutionId} />;
       default:
         return null;
     }

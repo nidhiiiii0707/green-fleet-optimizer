@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import WorldMap from "../components/WorldMap";
 import VesselDrawer from "../components/VesselDrawer";
-import { ROUTES, PARETO_SOLUTIONS, BASELINE, OPTIMIZED, FUEL_MIX, VESSELS } from "../data/mock";
-import { useLatestOptimization } from "../api/hooks";
+import { useFleetData, useLatestOptimization } from "../api/hooks";
 
 interface Props {
+  solutionId: string;
   onGoToOptimization: () => void;
 }
 
@@ -33,53 +33,36 @@ function LoadingSkeleton({ height = 20, width = "100%" }: { height?: number; wid
   );
 }
 
-export default function Overview({ onGoToOptimization }: Props) {
+export default function Overview({ solutionId, onGoToOptimization }: Props) {
   const [selectedVesselId, setSelectedVesselId] = useState<string | null>(null);
+  const [selectedPortId, setSelectedPortId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Live data from API, fall back to mock while loading
-  const { data: liveResult, loading } = useLatestOptimization();
+  const { data: liveResult, loading, error } = useLatestOptimization();
+  const { vessels, ports, routes, error: fleetError } = useFleetData();
 
-  const paretoSolutions = liveResult?.pareto_solutions ?? PARETO_SOLUTIONS;
-  const fuelMix         = liveResult?.fuel_mix         ?? FUEL_MIX;
-  const baseline        = liveResult?.baseline         ?? BASELINE;
-  const optimized       = liveResult?.optimized        ?? OPTIMIZED;
-  const runId           = liveResult?.run_id           ?? "run_024";
-  const method          = liveResult?.method           ?? "MO-QIGA";
-  const feasibleCount   = liveResult?.feasible_solutions ?? 42;
-  const paretoCount     = liveResult?.pareto_count     ?? 18;
+  const paretoSolutions = liveResult?.pareto_solutions ?? [];
+  const fuelMix = liveResult?.fuel_mix ?? [];
+  const baseline = liveResult?.baseline;
+  const optimized = paretoSolutions.find((solution) => solution.id === solutionId);
+  const runId = liveResult?.run_id ?? "";
+  const method = liveResult?.method ?? "";
+  const feasibleCount = liveResult?.feasible_solutions ?? 0;
+  const paretoCount = liveResult?.pareto_count ?? 0;
 
-  const sol07 = paretoSolutions.find(s => s.id === "S07");
-  const assignments = sol07?.assignments ?? [];
+  const assignments = optimized?.assignments ?? [];
   const activeRouteIds = Array.from(new Set(assignments.map(a => a.routeId)));
 
   const KPI_DATA = [
-    { label: "Total Fuel",      value: loading ? null : `${(optimized.fuel ?? 18420).toLocaleString()} t`,   delta: "↓ 8.4%",  good: true,  sub: "vs baseline" },
-    { label: "Operating Cost",  value: loading ? null : `$${optimized.cost ?? 4.82}M`,                         delta: "↓ 6.6%",  good: true,  sub: "vs baseline" },
-    { label: "Lifecycle GHG",   value: loading ? null : `${(optimized.ghg ?? 54820).toLocaleString()} tCO₂e`, delta: "↓ 11.2%", good: true,  sub: "vs baseline" },
-    { label: "Cargo Fulfil.",   value: loading ? null : `${optimized.cargoFulfillment ?? 97.8}%`,              delta: "↑ 3.6pp", good: true,  sub: "vs baseline" },
-    { label: "Active Vessels",  value: loading ? null : `${sol07?.vessels ?? 24} / 31`,                        delta: "",         good: null,  sub: "in deployment" },
-    { label: "Constraint Sat.", value: loading ? null : `${sol07?.constraintsSatisfied ?? 12} / ${sol07?.totalConstraints ?? 12}`, delta: "100%", good: true, sub: "Solution #07" },
+    { label: "Total Fuel",      value: loading || !optimized ? null : `${optimized.fuel.toLocaleString()} model units`, delta: "", good: null, sub: optimized?.label ?? "" },
+    { label: "Operating Cost",  value: loading || !optimized ? null : `$${optimized.cost.toFixed(3)}M`, delta: "", good: null, sub: optimized?.label ?? "" },
+    { label: "Lifecycle GHG",   value: loading || !optimized ? null : `${optimized.ghg.toLocaleString()} kgCO₂`, delta: "", good: null, sub: optimized?.label ?? "" },
+    { label: "Cargo Fulfil.",   value: loading || !optimized ? null : optimized.cargoFulfillment == null ? "Unavailable" : `${optimized.cargoFulfillment}%`, delta: "", good: null, sub: "not an optimizer objective" },
+    { label: "Assignments",     value: loading ? null : `${optimized?.vessels ?? 0}`,                          delta: "",         good: null,  sub: "leg-level vessel classes" },
+    { label: "Constraint Sat.", value: loading ? null : `${optimized?.constraintsSatisfied ?? 0} / ${optimized?.totalConstraints ?? 0}`, delta: "", good: null, sub: optimized?.label ?? "" },
   ];
 
-  const PORTS_MAP: Record<string, { x: number; y: number }> = {
-    RTM: { x: 461, y: 93 }, SGP: { x: 709, y: 217 }, SHA: { x: 755, y: 144 },
-    LAX: { x: 154, y: 137 }, HOU: { x: 210, y: 148 }, DXB: { x: 586, y: 158 },
-    YKH: { x: 800, y: 133 }, SYD: { x: 825, y: 303 }, CPT: { x: 496, y: 303 },
-    STS: { x: 332, y: 278 }, BOM: { x: 630, y: 173 }, PUS: { x: 772, y: 120 },
-  };
-
-  const vesselPositions = assignments.slice(0, 18).map(a => {
-    const route = ROUTES.find(r => r.id === a.routeId);
-    const vessel = VESSELS.find(v => v.id === a.vesselId);
-    if (!route) return null;
-    const p0 = PORTS_MAP[route.originId] ?? { x: 461, y: 93 };
-    const p1 = PORTS_MAP[route.destinationId] ?? { x: 461, y: 93 };
-    const t = 0.45, cx = route.controlX, cy = route.controlY;
-    const x = (1-t)*(1-t)*p0.x + 2*(1-t)*t*cx + t*t*p1.x;
-    const y = (1-t)*(1-t)*p0.y + 2*(1-t)*t*cy + t*t*p1.y;
-    return { id: a.vesselId, x, y, name: vessel?.name ?? a.vesselId, status: a.status };
-  }).filter(Boolean) as { id: string; x: number; y: number; name: string; status: string }[];
+  if (error || fleetError) return <div style={{ padding: 24, color: "#B91C1C" }}>Backend data unavailable: {error ?? fleetError}</div>;
 
   return (
     <div style={{ padding: "20px 24px", overflowY: "auto", height: "100%" }}>
@@ -105,7 +88,7 @@ export default function Overview({ onGoToOptimization }: Props) {
             ["Method", method],
             ["Feasible Solutions", String(feasibleCount)],
             ["Pareto-Optimal Plans", String(paretoCount)],
-            ["Constraint Satisfaction", "100%"],
+            ["Constraint Satisfaction", liveResult?.constraint_satisfaction ?? "unavailable"],
           ].map(([k, v]) => (
             <div key={k}>
               <div style={{ fontSize: 9, color: T.textTer, textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 2 }}>{k}</div>
@@ -164,24 +147,23 @@ export default function Overview({ onGoToOptimization }: Props) {
         }}>
           <div>
             <div style={{ fontSize: 12, fontWeight: 600, color: T.text, fontFamily: "'Instrument Sans', sans-serif" }}>
-              Fleet & Route Visualization — Solution #07
+              Fleet & Route Visualization — {optimized?.label ?? "No solution selected"}
             </div>
             <div style={{ fontSize: 11, color: T.textSec, marginTop: 1 }}>
-              Indicative vessel positions · {sol07?.routes ?? 18} active routes · click a vessel to view details
+              {optimized?.routes ?? 0} active routes from real port/route coordinates · click a port to view details
             </div>
           </div>
           <div style={{ display: "flex", gap: 14, fontSize: 10, color: T.textTer, fontFamily: "'JetBrains Mono', monospace" }}>
             <span>● Active route</span>
-            <span style={{ color: T.teal }}>● Shore power</span>
-            <span style={{ color: T.amber }}>▲ Warning</span>
           </div>
         </div>
         <div style={{ height: 340 }}>
           <WorldMap
+            ports={ports}
+            routes={routes}
             highlightRouteIds={activeRouteIds}
-            vesselPositions={vesselPositions}
-            onVesselClick={id => { setSelectedVesselId(id); setDrawerOpen(true); }}
-            selectedVesselId={selectedVesselId}
+            selectedPortId={selectedPortId}
+            onPortClick={id => setSelectedPortId(id === selectedPortId ? null : id)}
             showAllRoutes={true}
           />
         </div>
@@ -194,20 +176,27 @@ export default function Overview({ onGoToOptimization }: Props) {
         <div style={{ background: T.surface, border: `1px solid ${T.border}`, padding: "16px 20px" }}>
           <div style={{ marginBottom: 14 }}>
             <div style={{ fontSize: 12, fontWeight: 600, color: T.text, fontFamily: "'Instrument Sans', sans-serif" }}>
-              Baseline vs Optimized — Solution #07
+              Baseline vs Optimized — {optimized?.label ?? "No solution selected"}
             </div>
             <div style={{ fontSize: 11, color: T.textSec, marginTop: 2 }}>Objective improvement relative to baseline fleet plan</div>
           </div>
-          {[
-            { label: "Fuel Consumption", base: `${(baseline.fuel ?? 20100).toLocaleString()} t`,       opt: `${(optimized.fuel ?? 18420).toLocaleString()} t`,       pct: "−8.4%"  },
-            { label: "Operating Cost",   base: `$${baseline.cost ?? 5.16}M`,                             opt: `$${optimized.cost ?? 4.82}M`,                             pct: "−6.6%"  },
-            { label: "Lifecycle GHG",    base: `${(baseline.ghg ?? 61700).toLocaleString()} tCO₂e`,     opt: `${(optimized.ghg ?? 54820).toLocaleString()} tCO₂e`,     pct: "−11.2%" },
-            { label: "Cargo Fulfil.",    base: `${baseline.cargoFulfillment ?? 94.2}%`,                  opt: `${optimized.cargoFulfillment ?? 97.8}%`,                  pct: "+3.6pp" },
+          {!baseline ? (
+            <div style={{ fontSize: 12, color: T.textTer, padding: "12px 0" }}>
+              No baseline plan has been computed for this optimization run.
+            </div>
+          ) : !optimized ? (
+            <div style={{ fontSize: 12, color: T.textTer, padding: "12px 0" }}>
+              Select a solution to compare against the baseline.
+            </div>
+          ) : [
+            { label: "Fuel Consumption", base: `${baseline.fuel.toLocaleString()} model units`, opt: `${optimized.fuel.toLocaleString()} model units` },
+            { label: "Operating Cost",   base: `$${baseline.cost}M`,                             opt: `$${optimized.cost}M` },
+            { label: "Lifecycle GHG",    base: `${baseline.ghg.toLocaleString()} kgCO₂`,         opt: `${optimized.ghg.toLocaleString()} kgCO₂` },
+            { label: "Cargo Fulfil.",    base: baseline.cargoFulfillment == null ? "Unavailable" : `${baseline.cargoFulfillment}%`, opt: optimized.cargoFulfillment == null ? "Unavailable" : `${optimized.cargoFulfillment}%` },
           ].map(row => (
             <div key={row.label} style={{ marginBottom: 12 }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
                 <span style={{ fontSize: 11, color: T.textSec }}>{row.label}</span>
-                <span style={{ fontSize: 10, fontWeight: 700, color: T.green, fontFamily: "'JetBrains Mono', monospace" }}>{row.pct}</span>
               </div>
               <div style={{ display: "flex", alignItems: "stretch", gap: 8 }}>
                 <div style={{ flex: 1, background: "#F4F3EF", borderLeft: `2px solid ${T.borderMed}`, padding: "6px 10px" }}>
@@ -234,49 +223,39 @@ export default function Overview({ onGoToOptimization }: Props) {
         <div style={{ background: T.surface, border: `1px solid ${T.border}`, padding: "16px 20px" }}>
           <div style={{ marginBottom: 14 }}>
             <div style={{ fontSize: 12, fontWeight: 600, color: T.text, fontFamily: "'Instrument Sans', sans-serif" }}>
-              Fuel Mix — Solution #07
+              Fuel Mix — {optimized?.label ?? "No solution selected"}
             </div>
-            <div style={{ fontSize: 11, color: T.textSec, marginTop: 2 }}>Fuel breakdown by type across the fleet</div>
+            <div style={{ fontSize: 11, color: T.textSec, marginTop: 2 }}>Fuel breakdown by type across this solution's assignments</div>
           </div>
 
-          {/* Stacked bar */}
-          <div style={{ display: "flex", height: 8, marginBottom: 16, gap: 1 }}>
-            {fuelMix.map(f => (
-              <div key={f.fuel} style={{ width: `${f.share}%`, background: f.color, opacity: 0.85 }} title={`${f.fuel}: ${f.share}%`} />
-            ))}
-          </div>
+          {fuelMix.length === 0 ? (
+            <div style={{ fontSize: 12, color: T.textTer, padding: "12px 0" }}>No fuel mix data available for this solution.</div>
+          ) : (
+            <>
+              {/* Stacked bar */}
+              <div style={{ display: "flex", height: 8, marginBottom: 16, gap: 1 }}>
+                {fuelMix.map(f => (
+                  <div key={f.fuel} style={{ width: `${f.share}%`, background: f.color, opacity: 0.85 }} title={`${f.fuel}: ${f.share}%`} />
+                ))}
+              </div>
 
-          {fuelMix.map(f => (
-            <div key={f.fuel} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10, padding: "8px 0", borderBottom: `1px solid ${T.border}` }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 3, height: 28, background: f.color, flexShrink: 0 }} />
-                <div>
-                  <div style={{ fontSize: 12, color: T.text, fontWeight: 500, fontFamily: "'Instrument Sans', sans-serif" }}>{f.fuel}</div>
-                  <div style={{ fontSize: 10, color: T.textTer }}>{f.vessels} vessels · {f.share}%</div>
+              {fuelMix.map(f => (
+                <div key={f.fuel} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10, padding: "8px 0", borderBottom: `1px solid ${T.border}` }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 3, height: 28, background: f.color, flexShrink: 0 }} />
+                    <div>
+                      <div style={{ fontSize: 12, color: T.text, fontWeight: 500, fontFamily: "'Instrument Sans', sans-serif" }}>{f.fuel}</div>
+                      <div style={{ fontSize: 10, color: T.textTer }}>{f.vessels} vessels · {f.share}%</div>
+                    </div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: T.text, fontFamily: "'JetBrains Mono', monospace" }}>{f.consumption.toLocaleString()} model units</div>
+                    <div style={{ fontSize: 10, color: T.textTer }}>{f.ghg.toLocaleString()} kgCO₂</div>
+                  </div>
                 </div>
-              </div>
-              <div style={{ textAlign: "right" }}>
-                <div style={{ fontSize: 12, fontWeight: 600, color: T.text, fontFamily: "'JetBrains Mono', monospace" }}>{f.consumption.toLocaleString()} t</div>
-                <div style={{ fontSize: 10, color: T.textTer }}>{f.ghg.toLocaleString()} tCO₂e</div>
-              </div>
-            </div>
-          ))}
-
-          <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${T.border}` }}>
-            <div style={{ fontSize: 10, color: T.textTer, textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 }}>
-              Lifecycle Emissions Breakdown
-            </div>
-            {[
-              { label: "Well-to-Tank",  val: "12,060 tCO₂e", pct: "22%" },
-              { label: "Tank-to-Wake",  val: "37,278 tCO₂e", pct: "68%" },
-              { label: "Well-to-Wake",  val: `${(optimized.ghg ?? 54820).toLocaleString()} tCO₂e`, pct: "100%" },
-            ].map(row => (
-              <div key={row.label} style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
-                <span style={{ fontSize: 11, color: T.textSec }}>{row.label}</span>
-                <span style={{ fontSize: 11, fontWeight: 500, color: T.text, fontFamily: "'JetBrains Mono', monospace" }}>{row.val}</span>
-              </div>
-            ))}
-          </div>
+              ))}
+            </>
+          )}
         </div>
       </div>
 
@@ -285,6 +264,9 @@ export default function Overview({ onGoToOptimization }: Props) {
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         assignments={assignments}
+        vessels={vessels}
+        ports={ports}
+        routes={routes}
       />
     </div>
   );

@@ -1,5 +1,5 @@
-"""Scenario analysis router."""
-from fastapi import APIRouter, BackgroundTasks
+"""Scenario analysis router — re-runs the real optimizer with modified inputs."""
+from fastapi import APIRouter, BackgroundTasks, HTTPException
 from pydantic import BaseModel
 import backend.job_manager as JM
 from backend.pipeline_bridge import compute_scenario_result
@@ -19,9 +19,12 @@ class ScenarioControls(BaseModel):
 
 @router.post("/run")
 def run_scenario(controls: ScenarioControls):
-    """Run scenario analysis — returns result synchronously (fast computation)."""
-    result = compute_scenario_result(controls.model_dump())
-    return result
+    """Run scenario analysis by re-running the real optimizer with modified
+    inputs. This can take as long as a full optimization run."""
+    try:
+        return compute_scenario_result(controls.model_dump())
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
 
 
 @router.post("/run-async")

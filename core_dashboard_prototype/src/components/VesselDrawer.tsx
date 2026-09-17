@@ -1,12 +1,14 @@
 import React from "react";
-import { VESSELS, PORTS, ROUTES, PARETO_SOLUTIONS } from "../data/mock";
-import type { Assignment } from "../data/mock";
+import type { Assignment, Port, Route, Vessel } from "../api/types";
 
 interface Props {
   vesselId: string | null;
   open: boolean;
   onClose: () => void;
   assignments?: Assignment[];
+  vessels?: Vessel[];
+  ports?: Port[];
+  routes?: Route[];
 }
 
 const BADGE_STYLE: Record<string, { bg: string; color: string }> = {
@@ -38,12 +40,12 @@ function Row({ label, value, mono = false }: { label: string; value: React.React
   );
 }
 
-export default function VesselDrawer({ vesselId, open, onClose, assignments = [] }: Props) {
-  const vessel = VESSELS.find(v => v.id === vesselId);
+export default function VesselDrawer({ vesselId, open, onClose, assignments = [], vessels = [], ports = [], routes = [] }: Props) {
+  const vessel = vessels.find(v => v.id === vesselId);
   const assignment = assignments.find(a => a.vesselId === vesselId);
-  const origin = PORTS.find(p => p.id === assignment?.originId);
-  const dest = PORTS.find(p => p.id === assignment?.destinationId);
-  const route = ROUTES.find(r => r.id === assignment?.routeId);
+  const origin = ports.find(p => p.id === assignment?.originId);
+  const dest = ports.find(p => p.id === assignment?.destinationId);
+  const route = routes.find(r => r.id === assignment?.routeId);
 
   return (
     <>
@@ -77,7 +79,7 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
                   </h2>
                   <div style={{ display: "flex", gap: 8, marginTop: 6, alignItems: "center" }}>
                     <span style={{ fontSize: 12, color: "#64748B" }}>{vessel.type}</span>
-                    <Badge text={vessel.availability} />
+                    {vessel.availability ? <Badge text={vessel.availability} /> : null}
                     {assignment && <Badge text={assignment.status} />}
                   </div>
                 </div>
@@ -96,9 +98,9 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
                 <Row label="Vessel ID" value={vessel.id} mono />
                 <Row label="Type" value={vessel.type} />
                 <Row label="Capacity" value={`${vessel.capacity.toLocaleString()} ${vessel.capacityUnit}`} mono />
-                <Row label="Home Port" value={PORTS.find(p => p.id === vessel.currentPort)?.name ?? vessel.currentPort} />
-                <Row label="Maintenance Status" value={vessel.maintenanceStatus} />
-                <Row label="Shore Power Compatible" value={vessel.shorepower ? "Yes" : "No"} />
+                <Row label="Home Port" value={vessel.currentPort ? ports.find(p => p.id === vessel.currentPort)?.name ?? vessel.currentPort : "Unavailable"} />
+                <Row label="Maintenance Status" value={vessel.maintenanceStatus ?? "Unavailable"} />
+                <Row label="Shore Power Compatible" value={vessel.shorepower == null ? "Unavailable" : vessel.shorepower ? "Yes" : "No"} />
               </div>
 
               <div style={{ paddingTop: 12, paddingBottom: 4 }}>
@@ -120,7 +122,7 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
                     <Row label="Destination" value={`${dest?.name ?? assignment.destinationId} (${assignment.destinationId})`} />
                     <Row label="Route" value={route?.name ?? assignment.routeId} />
                     <Row label="Cruising Speed" value={`${assignment.speed} kn`} mono />
-                    <Row label="ETA" value={assignment.eta} />
+                    <Row label="ETA" value={assignment.eta ?? "Unavailable"} />
                   </div>
 
                   <div style={{ paddingTop: 14, paddingBottom: 4 }}>
@@ -128,10 +130,10 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
                     <Row label="Fuel Type" value={
                       <span style={{ background: "#EFF6FF", color: "#1D4ED8", borderRadius: 4, padding: "1px 7px", fontSize: 11, fontWeight: 600 }}>{assignment.fuelType}</span>
                     } />
-                    <Row label="Shore Power" value={assignment.shorepower ? "Used at port" : "Not available"} />
-                    <Row label="Predicted Fuel" value={`${assignment.fuelConsumption.toLocaleString()} t`} mono />
+                    <Row label="Shore Power" value={assignment.shorepower == null ? "Unavailable" : assignment.shorepower ? "Used at port" : "Not used"} />
+                    <Row label="Predicted Fuel" value={`${assignment.fuelConsumption.toLocaleString()} model units`} mono />
                     <Row label="Operating Cost" value={`$${assignment.cost}K`} mono />
-                    <Row label="Lifecycle GHG" value={`${assignment.ghg.toLocaleString()} tCO₂e`} mono />
+                    <Row label="Lifecycle GHG" value={`${assignment.ghg.toLocaleString()} kgCO₂`} mono />
                   </div>
 
                   <div style={{ paddingTop: 14, paddingBottom: 4 }}>

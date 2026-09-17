@@ -1,31 +1,22 @@
 import React, { useState } from "react";
-import { PARETO_SOLUTIONS, ParetoSolution } from "../data/mock";
+import type { ParetoSolution } from "../api/types";
 
 export type AxisKey = "cost" | "ghg" | "fuel";
 
-export interface ExtraFront {
-  id: string;
-  label: string;
-  color: string;
-  data: Array<{ cost: number; ghg: number; fuel: number }>;
-}
-
 interface Props {
+  solutions: ParetoSolution[];
   selectedId: string;
   onSelect: (id: string) => void;
   filteredIds: Set<string>;
   liveFront: ParetoSolution[];
-  extraFronts: ExtraFront[];
-  showConfidence: boolean;
-  confidenceLevel: number;
   axisIdx: number;
   onAxisChange: (i: number) => void;
 }
 
 export const AXIS_LABELS: Record<AxisKey, string> = {
   cost: "Operating Cost ($M)",
-  ghg:  "Lifecycle GHG (tCO₂e)",
-  fuel: "Fuel Consumption (t)",
+  ghg:  "Lifecycle GHG (kgCO₂)",
+  fuel: "Fuel Consumption (model units)",
 };
 
 export const AXIS_PAIRS: { x: AxisKey; y: AxisKey; label: string }[] = [
@@ -43,8 +34,6 @@ const PLOT_H = H - PAD.top - PAD.bottom;
 const TEAL = "#0A6C70";
 const AMBER = "#B45309";
 
-const CONF_FACTOR: Record<string, number> = { "0.9": 0.048, "0.95": 0.076, "0.99": 0.12 };
-
 function mapVal(val: number, min: number, max: number, out0: number, out1: number) {
   if (max === min) return out0;
   return out0 + ((val - min) / (max - min)) * (out1 - out0);
@@ -52,27 +41,27 @@ function mapVal(val: number, min: number, max: number, out0: number, out1: numbe
 
 function fmtVal(v: number, key: AxisKey) {
   if (key === "cost") return `$${v.toFixed(2)}M`;
-  return `${(v / 1000).toFixed(0)}k`;
+  return `${(v / 1000).toFixed(1)}k`;
 }
 
 export default function ParetoChart({
-  selectedId, onSelect, filteredIds, liveFront, extraFronts,
-  showConfidence, confidenceLevel, axisIdx, onAxisChange,
+  solutions, selectedId, onSelect, filteredIds, liveFront, axisIdx, onAxisChange,
 }: Props) {
   const [hovered, setHovered] = useState<string | null>(null);
 
   const pair = AXIS_PAIRS[axisIdx];
   const xKey = pair.x, yKey = pair.y;
 
-  // Axis extents include extra front data
-  const allX = [
-    ...PARETO_SOLUTIONS.map(s => s[xKey] as number),
-    ...extraFronts.flatMap(f => f.data.map(d => d[xKey] as number)),
-  ];
-  const allY = [
-    ...PARETO_SOLUTIONS.map(s => s[yKey] as number),
-    ...extraFronts.flatMap(f => f.data.map(d => d[yKey] as number)),
-  ];
+  if (solutions.length === 0) {
+    return (
+      <div style={{ height: "100%", display: "grid", placeItems: "center", color: "#9A9793", fontSize: 11 }}>
+        No solutions available from the latest optimization result.
+      </div>
+    );
+  }
+
+  const allX = solutions.map(s => s[xKey] as number);
+  const allY = solutions.map(s => s[yKey] as number);
   const xMin = Math.min(...allX) * 0.96;
   const xMax = Math.max(...allX) * 1.04;
   const yMin = Math.min(...allY) * 0.95;
@@ -88,40 +77,14 @@ export default function ParetoChart({
     return svgPt(s[xKey] as number, s[yKey] as number);
   }
 
-  const baseSols = PARETO_SOLUTIONS.filter(s => s.pareto).sort((a, b) => (a[xKey] as number) - (b[xKey] as number));
+  const baseSols = solutions.filter(s => s.pareto).sort((a, b) => (a[xKey] as number) - (b[xKey] as number));
   const basePts  = baseSols.map(s => solPt(s));
-  const basePath = basePts.length ? "M " + basePts.map(p => `${p.sx},${p.sy}`).join(" L ") : "";
+  const basePath = basePts.length > 1 ? "M " + basePts.map(p => `${p.sx},${p.sy}`).join(" L ") : "";
 
   const liveSorted = [...liveFront].sort((a, b) => (a[xKey] as number) - (b[xKey] as number));
   const livePts    = liveSorted.map(s => solPt(s));
-  const livePath   = livePts.length ? "M " + livePts.map(p => `${p.sx},${p.sy}`).join(" L ") : "";
-  const liveActive = filteredIds.size < PARETO_SOLUTIONS.length && livePts.length > 0;
-
-  const extraPaths = extraFronts.map(f => {
-    const sorted = [...f.data].sort((a, b) => (a[xKey] as number) - (b[xKey] as number));
-    const pts = sorted.map(d => {
-      const { sx, sy } = svgPt(d[xKey] as number, d[yKey] as number);
-      return { sx, sy };
-    });
-    const path = pts.length ? "M " + pts.map(p => `${p.sx},${p.sy}`).join(" L ") : "";
-    return { ...f, pts, path };
-  });
-
-  const confOff = PLOT_H * (CONF_FACTOR[String(confidenceLevel)] ?? 0.076);
-
-  function confBand(pts: { sx: number; sy: number }[], color: string, opacity = 0.07, scale = 1.0) {
-    if (pts.length < 2) return null;
-    const off = confOff * scale;
-    const upper = pts.map(p => `${p.sx},${p.sy - off}`);
-    const lower = [...pts].reverse().map(p => `${p.sx},${p.sy + off}`);
-    return (
-      <polygon
-        points={[...upper, ...lower].join(" ")}
-        fill={color} opacity={opacity}
-        style={{ pointerEvents: "none" }}
-      />
-    );
-  }
+  const livePath   = livePts.length > 1 ? "M " + livePts.map(p => `${p.sx},${p.sy}`).join(" L ") : "";
+  const liveActive = filteredIds.size < solutions.length && livePts.length > 0;
 
   const xTicks = 5, yTicks = 4;
 
@@ -147,14 +110,14 @@ export default function ParetoChart({
             {ap.label}
           </button>
         ))}
-        {filteredIds.size < PARETO_SOLUTIONS.length && (
+        {filteredIds.size < solutions.length && (
           <span style={{
             marginLeft: "auto", fontSize: 9, color: AMBER,
             fontFamily: "'JetBrains Mono', monospace", fontWeight: 600,
             background: "#FFFBEB", padding: "3px 8px",
             border: "1px solid #FDE68A", alignSelf: "center",
           }}>
-            {filteredIds.size}/{PARETO_SOLUTIONS.length} visible · live front active
+            {filteredIds.size}/{solutions.length} visible · live front active
           </span>
         )}
       </div>
@@ -208,29 +171,6 @@ export default function ParetoChart({
             {AXIS_LABELS[yKey]}
           </text>
 
-          {/* ── Confidence bands ── */}
-          {showConfidence && confBand(basePts, TEAL, 0.07)}
-          {showConfidence && extraPaths.map(ef => (
-            <g key={`band-${ef.id}`}>{confBand(ef.pts, ef.color, 0.05)}</g>
-          ))}
-          {showConfidence && liveActive && confBand(livePts, AMBER, 0.10, 0.80)}
-
-          {/* ── Extra scenario front lines ── */}
-          {extraPaths.map(ef => ef.path && (
-            <g key={ef.id}>
-              <path d={ef.path} fill="none" stroke={ef.color} strokeWidth="1"
-                strokeDasharray="6 4" opacity="0.6" />
-              {ef.pts.length > 0 && (
-                <text x={ef.pts[ef.pts.length - 1].sx + 5}
-                  y={ef.pts[ef.pts.length - 1].sy + 3}
-                  fontSize="7.5" fill={ef.color}
-                  fontFamily="'Instrument Sans', sans-serif" fontWeight="600">
-                  {ef.label}
-                </text>
-              )}
-            </g>
-          ))}
-
           {/* ── Baseline Pareto front — solid teal ── */}
           {basePath && (
             <path d={basePath} fill="none" stroke={TEAL} strokeWidth="1.25"
@@ -244,7 +184,7 @@ export default function ParetoChart({
           )}
 
           {/* ── Dominated solutions ── */}
-          {PARETO_SOLUTIONS.filter(s => !s.pareto).map(s => {
+          {solutions.filter(s => !s.pareto).map(s => {
             const { sx, sy } = solPt(s);
             const inFilter = filteredIds.has(s.id);
             return (
@@ -261,7 +201,7 @@ export default function ParetoChart({
           })}
 
           {/* ── Pareto-optimal solutions ── */}
-          {PARETO_SOLUTIONS.filter(s => s.pareto).map(s => {
+          {solutions.filter(s => s.pareto).map(s => {
             const { sx, sy } = solPt(s);
             const isSelected = s.id === selectedId;
             const isHovered  = s.id === hovered;
@@ -352,7 +292,7 @@ export default function ParetoChart({
           {/* Legend */}
           <text x={PAD.left + 6} y={PAD.top + 12} fontSize="8" fill={TEAL}
             fontFamily="'Instrument Sans', sans-serif" fontWeight="600" opacity="0.75">
-            — Baseline Pareto front
+            — Pareto front
           </text>
           {liveActive && (
             <text x={PAD.left + 6} y={PAD.top + 24} fontSize="8" fill={AMBER}

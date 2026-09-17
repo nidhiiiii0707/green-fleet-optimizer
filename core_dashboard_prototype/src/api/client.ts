@@ -76,8 +76,10 @@ export const alertsApi = {
 export const reportsApi = {
   list: () => apiFetch<{ reports: Report[] }>("/api/reports"),
 
-  exportReport: async (reportId: string, format: "csv" | "json") => {
-    const res = await fetch(`${API_BASE}/api/reports/${reportId}/export?format=${format}`);
+  exportReport: async (reportId: string, format: "csv" | "json", solutionId?: string) => {
+    const params = new URLSearchParams({ format });
+    if (solutionId) params.set("solution_id", solutionId);
+    const res = await fetch(`${API_BASE}/api/reports/${reportId}/export?${params}`);
     if (!res.ok) throw new Error(`Export failed: ${res.status}`);
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
@@ -101,8 +103,9 @@ export const reportsApi = {
     URL.revokeObjectURL(url);
   },
 
-  exportFleetAssignments: async () => {
-    const res = await fetch(`${API_BASE}/api/reports/export/fleet-assignments`);
+  exportFleetAssignments: async (solutionId?: string) => {
+    const params = solutionId ? `?solution_id=${encodeURIComponent(solutionId)}` : "";
+    const res = await fetch(`${API_BASE}/api/reports/export/fleet-assignments${params}`);
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");

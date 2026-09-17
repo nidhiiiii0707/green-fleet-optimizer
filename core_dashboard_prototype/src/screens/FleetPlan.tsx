@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import WorldMap from "../components/WorldMap";
 import VesselDrawer from "../components/VesselDrawer";
-import { PARETO_SOLUTIONS, VESSELS, PORTS, ROUTES, PLAN_CONSTRAINTS } from "../data/mock";
-import type { Assignment } from "../data/mock";
-import { useLatestOptimization } from "../api/hooks";
+import type { Assignment } from "../api/types";
+import { useFleetData, useLatestOptimization } from "../api/hooks";
 
 interface Props {
   solutionId: string;
@@ -20,22 +19,20 @@ export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimizati
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [sortCol, setSortCol] = useState<keyof Assignment | null>(null);
 
-  // Live solution from API, fall back to mock
-  const { data: liveResult } = useLatestOptimization();
-  const liveSolutions = liveResult?.pareto_solutions ?? PARETO_SOLUTIONS;
-  const sol = (liveSolutions as any[]).find((s) => s.id === solutionId)
-    ?? PARETO_SOLUTIONS.find(s => s.id === solutionId)
-    ?? PARETO_SOLUTIONS.find(s => s.id === "S07")!;
-  const referenceAssignments = (PARETO_SOLUTIONS.find(s => s.id === "S07")?.assignments ?? []) as Assignment[];
-  const solutionAssignments = ((sol as any)?.assignments as Assignment[] | undefined) ?? [];
-  const usingReferenceAssignments = solutionAssignments.length === 0 && !liveResult;
-  const assignments: Assignment[] = usingReferenceAssignments ? referenceAssignments : solutionAssignments;
+  const { data: liveResult, loading, error } = useLatestOptimization();
+  const { vessels, ports, routes, error: fleetError } = useFleetData();
+  const sol = liveResult?.pareto_solutions.find((solution) => solution.id === solutionId);
+  const assignments: Assignment[] = sol?.assignments ?? [];
   const activeRouteIds = Array.from(new Set(assignments.map(a => a.routeId)));
 
+  if (loading) return <div style={{ padding: 28, color: "#64748B" }}>Loading real optimization result…</div>;
+  if (error || fleetError) return <div style={{ padding: 28, color: "#B91C1C" }}>Backend data unavailable: {error ?? fleetError}</div>;
+  if (!sol) return <div style={{ padding: 28, color: "#B91C1C" }}>Solution {solutionId} is not present in the latest real optimization result.</div>;
+
   const displayRows = assignments.map(a => {
-    const vessel = VESSELS.find(v => v.id === a.vesselId);
-    const origin = PORTS.find(p => p.id === a.originId);
-    const dest = PORTS.find(p => p.id === a.destinationId);
+    const vessel = vessels.find(v => v.id === a.vesselId);
+    const origin = ports.find(p => p.id === a.originId);
+    const dest = ports.find(p => p.id === a.destinationId);
     return { ...a, vesselName: vessel?.name ?? a.vesselId, originName: origin?.name ?? a.originId, destName: dest?.name ?? a.destinationId };
   });
 
@@ -45,7 +42,8 @@ export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimizati
     critical:      { bg: "#FEF2F2", color: "#DC2626" },
   };
 
-  const ghgWarning = PLAN_CONSTRAINTS.find(c => c.note);
+  const planConstraints = assignments.flatMap((assignment) => assignment.constraints);
+  const ghgWarning = planConstraints.find((constraint) => constraint.label.toLowerCase().includes("ghg") && constraint.note);
 
   return (
     <div style={{ padding: "24px 28px", overflowY: "auto", height: "100%" }}>
@@ -69,9 +67,9 @@ export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimizati
         </button>
       </div>
 
-      {usingReferenceAssignments && (
+      {assignments.length === 0 && (
         <div style={{ marginBottom: 16, background: "#EFF6FF", border: "1px solid #BFDBFE", borderRadius: 8, padding: "10px 14px", fontSize: 12, color: "#1E40AF" }}>
-          Detailed assignment data is bundled only for the reference plan, Solution #07. Start the real optimizer to load per-leg assignments for {sol.label}.
+          {sol.emptyStateReason ?? "This real optimizer solution has no assignments."}
         </div>
       )}
 
@@ -80,8 +78,8 @@ export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimizati
         {[
           { label: "Total Fuel",          val: `${sol.fuel.toLocaleString()} t`,      color: "#1D4ED8", bg: "#EFF6FF" },
           { label: "Total Cost",          val: `$${sol.cost}M`,                         color: "#059669", bg: "#F0FDF4" },
-          { label: "Lifecycle GHG",       val: `${sol.ghg.toLocaleString()} tCO₂e`,   color: "#0F172A", bg: "#F8FAFC" },
-          { label: "Cargo Fulfillment",   val: `${sol.cargoFulfillment}%`,              color: "#059669", bg: "#F0FDF4" },
+          { label: "Lifecycle GHG",       val: `${sol.ghg.toLocaleString()} kgCO₂`,    color: "#0F172A", bg: "#F8FAFC" },
+          { label: "Cargo Fulfillment",   val: sol.cargoFulfillment == null ? "Unavailable" : `${sol.cargoFulfillment}%`, color: "#059669", bg: "#F0FDF4" },
           { label: "Vessels Deployed",    val: `${sol.vessels}`,                        color: "#0F172A", bg: "#F8FAFC" },
           { label: "Routes",              val: `${sol.routes}`,                         color: "#0F172A", bg: "#F8FAFC" },
         ].map(k => (
@@ -95,11 +93,13 @@ export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimizati
       {/* Map */}
       <div style={{ background: "white", border: "1px solid #E2E8F0", borderRadius: 10, marginBottom: 20, overflow: "hidden" }}>
         <div style={{ padding: "14px 18px", borderBottom: "1px solid #F1F5F9" }}>
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#0F172A", fontFamily: "'DM Sans', sans-serif" }}>Optimized Route Map — Solution #07</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: "#0F172A", fontFamily: "'DM Sans', sans-serif" }}>Optimized Route Map — {sol.label}</div>
           <div style={{ fontSize: 12, color: "#64748B" }}>All {sol.routes} active deployment routes for this fleet plan.</div>
         </div>
         <div style={{ height: 280 }}>
           <WorldMap
+            ports={ports}
+            routes={routes}
             highlightRouteIds={activeRouteIds}
             showAllRoutes={false}
             onPortClick={id => {}}
@@ -189,7 +189,7 @@ export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimizati
           {/* Constraint status */}
           <div style={{ background: "white", border: "1px solid #E2E8F0", borderRadius: 10, padding: "16px" }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: "#0F172A", fontFamily: "'DM Sans', sans-serif", marginBottom: 12 }}>Constraint Status</div>
-            {PLAN_CONSTRAINTS.map((c, i) => (
+            {planConstraints.map((c, i) => (
               <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 8 }}>
                 <div style={{ width: 18, height: 18, borderRadius: "50%", background: c.satisfied ? "#F0FDF4" : "#FEF2F2", border: `1.5px solid ${c.satisfied ? "#86EFAC" : "#FCA5A5"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
                   <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
@@ -240,6 +240,9 @@ export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimizati
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         assignments={assignments}
+        vessels={vessels}
+        ports={ports}
+        routes={routes}
       />
     </div>
   );

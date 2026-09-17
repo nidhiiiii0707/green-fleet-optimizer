@@ -22,9 +22,29 @@ N_ROUTES = 6
 N_TELEMETRY_ROWS = 300  # matches data/cps_poseidon_sample.csv
 
 
-def generate_candidates(seed: int = 0) -> list[Candidate]:
-    routes = DL.load_routes().drop_duplicates(subset=["origin_port", "dest_port"]).head(N_ROUTES)
+def generate_candidates(seed: int = 0, overrides: dict | None = None) -> list[Candidate]:
+    """`overrides` (all optional, integration-level scenario knobs — see
+    backend/pipeline_bridge.compute_scenario_result):
+      - port_capacity_multiplier: fraction of N_ROUTES routes made available
+      - vessel_availability_multiplier: fraction of vessel classes made available
+      - demand_multiplier: scales candidate cargo_tons (feasibility's real
+        cargo-capacity check then genuinely rejects over-capacity candidates)
+    """
+    overrides = overrides or {}
+    port_cap_mult = overrides.get("port_capacity_multiplier", 1.0)
+    vessel_avail_mult = overrides.get("vessel_availability_multiplier", 1.0)
+    demand_mult = overrides.get("demand_multiplier", 1.0)
+
+    n_routes = max(1, round(N_ROUTES * port_cap_mult))
+    routes = DL.load_routes().drop_duplicates(subset=["origin_port", "dest_port"]).head(n_routes)
+
     fleet = DL.load_fleet_classes()
+    if vessel_avail_mult < 1.0:
+        # Deterministically drop the lowest-capacity classes first to simulate
+        # reduced vessel availability (real capacity data, not a fabricated cut).
+        ordered = sorted(fleet.items(), key=lambda kv: (kv[1].capacity_tons or 0))
+        n_keep = max(1, round(len(ordered) * vessel_avail_mult))
+        fleet = dict(ordered[len(ordered) - n_keep:])
 
     candidates: list[Candidate] = []
     cid = 0
@@ -40,7 +60,7 @@ def generate_candidates(seed: int = 0) -> list[Candidate]:
                 if vc.capacity_tons is None:
                     continue
                 for load_frac in (0.5, 0.9):
-                    cargo = vc.capacity_tons * load_frac
+                    cargo = vc.capacity_tons * load_frac * demand_mult
                     telemetry_row_id = rng_cursor % N_TELEMETRY_ROWS
                     rng_cursor += 1
                     candidates.append(

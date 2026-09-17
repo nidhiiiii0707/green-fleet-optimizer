@@ -63,9 +63,10 @@ def build_scenario_row(candidate: Candidate) -> pd.DataFrame:
 
 
 class ObjectiveEvaluator:
-    def __init__(self, model: FuelModelAdapter | None = None) -> None:
+    def __init__(self, model: FuelModelAdapter | None = None, fuel_price_multiplier: float = 1.0) -> None:
         self.model = model or FuelModelAdapter()
         self.checker = FeasibilityChecker()
+        self.fuel_price_multiplier = fuel_price_multiplier
 
     def evaluate(self, candidate: Candidate, ctx: FeasibilityContext) -> EvaluatedCandidate:
         scenario = build_scenario_row(candidate)
@@ -74,6 +75,8 @@ class ObjectiveEvaluator:
         voyage_fuel = rate_to_voyage_fuel(FuelRate(rate), HoursQuantity(voyage_hours))
 
         price = DL.SCENARIO_FUEL_PRICE_USD_PER_TONNE.get(candidate.fuel_type)
+        if price is not None:
+            price = price * self.fuel_price_multiplier
         ef = DL.SCENARIO_EMISSION_FACTOR_KGCO2_PER_TONNE_FUEL.get(candidate.fuel_type)
         cost = fuel_to_cost_usd(voyage_fuel, price)
         ghg = fuel_to_ghg_kgco2(voyage_fuel, ef)
