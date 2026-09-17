@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import ParetoChart, { AXIS_PAIRS, AxisKey } from "../components/ParetoChart";
-import type { ParetoSolution } from "../api/types";
+import type { ParetoSolution, StructuredRequest, Objective } from "../api/types";
 import { useLatestOptimization, useOptimizationRun, useNLPQuery } from "../api/hooks";
 
 interface Props {
@@ -255,6 +255,108 @@ function RadioOpt({ val, current, label, onChange }: {
   );
 }
 
+// ── Structured request form (shared by Manual Input and the NLP review step) ──
+const EMPTY_REQUEST: StructuredRequest = {
+  origin: null, destination: null, vessel_type: null, fuel_type: null,
+  speed: null, cargo: null, objectives: [],
+};
+
+const OBJECTIVE_LABELS: Record<Objective, string> = { ghg: "Minimize GHG", fuel: "Minimize Fuel", cost: "Minimize Cost" };
+
+interface RequestFormProps {
+  value: StructuredRequest;
+  onChange: (value: StructuredRequest) => void;
+  originFlag?: { valid?: boolean; suggestion?: string | null } | null;
+  destinationFlag?: { valid?: boolean; suggestion?: string | null } | null;
+}
+
+function RequestField({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <div style={{ fontSize: 10, color: T.textTer, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4, fontFamily: "'Instrument Sans', sans-serif" }}>{label}</div>
+      {children}
+    </div>
+  );
+}
+
+const fieldInputStyle: React.CSSProperties = {
+  width: "100%", padding: "7px 10px", fontSize: 12, border: `1px solid ${T.border}`,
+  borderRadius: 4, fontFamily: "'Instrument Sans', sans-serif", color: T.text, boxSizing: "border-box",
+};
+
+function RequestForm({ value, onChange, originFlag, destinationFlag }: RequestFormProps) {
+  function set<K extends keyof StructuredRequest>(key: K, v: StructuredRequest[K]) {
+    onChange({ ...value, [key]: v });
+  }
+  function toggleObjective(o: Objective) {
+    const has = value.objectives.includes(o);
+    set("objectives", has ? value.objectives.filter(x => x !== o) : [...value.objectives, o]);
+  }
+  return (
+    <div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <RequestField label="Origin">
+          <input style={fieldInputStyle} placeholder="Any" value={value.origin ?? ""}
+            onChange={e => set("origin", e.target.value || null)} />
+          {originFlag?.valid === false && (
+            <div style={{ fontSize: 10, color: T.amber, marginTop: 3 }}>
+              ⚠ Not a recognized port{originFlag.suggestion ? ` — did you mean "${originFlag.suggestion}"?` : ""}
+            </div>
+          )}
+        </RequestField>
+        <RequestField label="Destination">
+          <input style={fieldInputStyle} placeholder="Any" value={value.destination ?? ""}
+            onChange={e => set("destination", e.target.value || null)} />
+          {destinationFlag?.valid === false && (
+            <div style={{ fontSize: 10, color: T.amber, marginTop: 3 }}>
+              ⚠ Not a recognized port{destinationFlag.suggestion ? ` — did you mean "${destinationFlag.suggestion}"?` : ""}
+            </div>
+          )}
+        </RequestField>
+        <RequestField label="Cargo (tonnes)">
+          <input style={fieldInputStyle} type="number" min={0} placeholder="Unrestricted" value={value.cargo ?? ""}
+            onChange={e => set("cargo", e.target.value === "" ? null : Number(e.target.value))} />
+        </RequestField>
+        <RequestField label="Speed (knots)">
+          <input style={fieldInputStyle} type="number" min={0} placeholder="Unrestricted" value={value.speed ?? ""}
+            onChange={e => set("speed", e.target.value === "" ? null : Number(e.target.value))} />
+        </RequestField>
+        <RequestField label="Vessel Type">
+          <input style={fieldInputStyle} placeholder="Any" value={value.vessel_type ?? ""}
+            onChange={e => set("vessel_type", e.target.value || null)} />
+        </RequestField>
+        <RequestField label="Fuel Type">
+          <input style={fieldInputStyle} placeholder="Any" value={value.fuel_type ?? ""}
+            onChange={e => set("fuel_type", e.target.value || null)} />
+        </RequestField>
+      </div>
+      <RequestField label="Objectives">
+        <div style={{ display: "flex", gap: 14 }}>
+          {(Object.keys(OBJECTIVE_LABELS) as Objective[]).map(o => (
+            <label key={o} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: T.text, cursor: "pointer" }}>
+              <input type="checkbox" checked={value.objectives.includes(o)} onChange={() => toggleObjective(o)} />
+              {OBJECTIVE_LABELS[o]}
+            </label>
+          ))}
+        </div>
+        {value.objectives.length === 0 && (
+          <div style={{ fontSize: 10, color: T.textTer, marginTop: 4 }}>No objective specified — the Pareto front across all objectives will be returned.</div>
+        )}
+      </RequestField>
+    </div>
+  );
+}
+
+function requestValidationError(value: StructuredRequest): string | null {
+  if (value.cargo != null && (!Number.isFinite(value.cargo) || value.cargo <= 0)) {
+    return "Cargo must be a positive number.";
+  }
+  if (value.speed != null && (!Number.isFinite(value.speed) || value.speed <= 0)) {
+    return "Speed must be a positive number.";
+  }
+  return null;
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 export default function Optimization({ selectedId, onSelect, onViewPlan }: Props) {
   const [fixedParam,  setFixedParam]  = useState<FixedParam>(null);
@@ -266,12 +368,43 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
   const [routeFixed,  setRouteFixed]  = useState<number | null>(null);
   const [axisIdx,     setAxisIdx]     = useState(0);
   const [compareIds,  setCompareIds]  = useState<string[] | null>(null);
-  const [nlqText,     setNlqText]     = useState("");
+
+  const [requestMode, setRequestMode] = useState<"manual" | "nlp">("manual");
+  const [nlqText,      setNlqText]      = useState("");
+  const [pendingRequest, setPendingRequest] = useState<StructuredRequest>(EMPTY_REQUEST);
+  const [requestReviewReady, setRequestReviewReady] = useState(false);
 
   // Live data hooks
   const { data: liveResult, loading: liveLoading, error: liveError } = useLatestOptimization();
   const { running: optRunning, jobStatus, triggerRun } = useOptimizationRun();
-  const { result: nlpResult, loading: nlpLoading, query: runNLQ } = useNLPQuery();
+  const { result: nlpResult, loading: nlpLoading, error: nlpError, query: runNLQ, reset: resetNLQ } = useNLPQuery();
+
+  const requestErr = requestValidationError(pendingRequest);
+  const hasAnyConstraint = Object.entries(pendingRequest).some(([key, v]) =>
+    key === "objectives" ? (v as Objective[]).length > 0 : v != null);
+
+  function handleGenerateRequest() {
+    setRequestReviewReady(false);
+    runNLQ(nlqText);
+  }
+
+  function handleOptimize() {
+    if (requestErr) return;
+    triggerRun(true, pendingRequest);
+  }
+
+  function handleEditInManualForm() {
+    setRequestMode("manual");
+  }
+
+  // When a new NLP parse result arrives, load it into the shared editable
+  // request and show the review step (never auto-optimizes).
+  useEffect(() => {
+    if (nlpResult) {
+      setPendingRequest(nlpResult.request);
+      setRequestReviewReady(true);
+    }
+  }, [nlpResult]);
 
   // Live Pareto solutions from the real optimization result. Empty when no result yet.
   const allSolutions: ParetoSolution[] = liveResult?.pareto_solutions ?? [];
@@ -359,46 +492,146 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
         <div style={{ padding: "8px 24px", fontSize: 11, color: T.red }}>Backend data unavailable: {liveError}</div>
       )}
 
-      {/* NLP query bar */}
+      {/* Request builder: Manual Input vs AI / Natural Language */}
       <div style={{ padding: "12px 24px 0" }}>
-        <div style={{ display: "flex", gap: 8, background: T.surface, border: `1px solid ${T.border}`, padding: "10px 14px", alignItems: "center" }}>
-          <span style={{ fontSize: 10, color: T.textTer, textTransform: "uppercase", letterSpacing: "0.07em", fontFamily: "'Instrument Sans', sans-serif", whiteSpace: "nowrap" }}>NLP Query</span>
-          <input
-            type="text"
-            placeholder='e.g. "Find low emission route from Mumbai to Singapore at 18 knots"'
-            value={nlqText}
-            onChange={e => setNlqText(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && nlqText.trim() && runNLQ(nlqText)}
-            style={{ flex: 1, border: "none", outline: "none", fontSize: 11, fontFamily: "'Instrument Sans', sans-serif", color: T.text, background: "transparent" }}
-          />
-          <button
-            onClick={() => nlqText.trim() && runNLQ(nlqText)}
-            disabled={nlpLoading}
-            style={{ background: nlpLoading ? "#9CA3AF" : T.teal, color: "white", border: "none", padding: "5px 12px", fontSize: 10, fontWeight: 600, cursor: nlpLoading ? "not-allowed" : "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
-          >
-            {nlpLoading ? "Querying..." : "Search"}
-          </button>
-          {nlpResult && (
-            <span style={{ fontSize: 10, color: nlpResult.warnings.length > 0 ? T.amber : T.green, fontFamily: "'JetBrains Mono', monospace" }}>
-              {nlpResult.warnings.length > 0 ? `⚠ ${nlpResult.warnings[0]}` : `✓ ${nlpResult.solutions.length} results · Recommended: ${nlpResult.recommended_solution_id ?? "none"}`}
-            </span>
-          )}
-          <button
-            onClick={() => triggerRun(false)}
-            disabled={optRunning}
-            style={{ background: optRunning ? "#9CA3AF" : "#15803D", color: "white", border: "none", padding: "5px 12px", fontSize: 10, fontWeight: 600, cursor: optRunning ? "not-allowed" : "pointer", fontFamily: "'Instrument Sans', sans-serif", marginLeft: 8 }}
-          >
-            {optRunning ? `Running... ${jobStatus?.progress ?? 0}%` : "↻ Re-run Optimization"}
-          </button>
-        </div>
-        {optRunning && jobStatus && (
-          <div style={{ background: T.tealLight, border: `1px solid ${T.teal}30`, padding: "6px 14px", display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ flex: 1, height: 4, background: T.border, borderRadius: 2 }}>
-              <div style={{ width: `${jobStatus.progress}%`, height: "100%", background: T.teal, borderRadius: 2, transition: "width 0.3s" }} />
-            </div>
-            <span style={{ fontSize: 10, color: T.teal, fontFamily: "'JetBrains Mono', monospace", whiteSpace: "nowrap" }}>{jobStatus.message}</span>
+        <div style={{ background: T.surface, border: `1px solid ${T.border}` }}>
+          <div style={{ display: "flex", borderBottom: `1px solid ${T.border}` }}>
+            {([["manual", "Manual Input"], ["nlp", "AI / Natural Language"]] as const).map(([m, label]) => (
+              <button
+                key={m}
+                onClick={() => setRequestMode(m)}
+                style={{
+                  padding: "9px 18px", fontSize: 11, fontWeight: 600, border: "none", cursor: "pointer",
+                  background: requestMode === m ? T.tealLight : "white",
+                  color: requestMode === m ? T.teal : T.textSec,
+                  borderBottom: requestMode === m ? `2px solid ${T.teal}` : "2px solid transparent",
+                  fontFamily: "'Instrument Sans', sans-serif",
+                }}
+              >
+                {label}
+              </button>
+            ))}
           </div>
-        )}
+
+          <div style={{ padding: "14px 18px" }}>
+            {requestMode === "manual" ? (
+              <>
+                <RequestForm value={pendingRequest} onChange={setPendingRequest} />
+                {requestErr && (
+                  <div style={{ fontSize: 11, color: T.red, marginBottom: 8 }}>⚠ {requestErr}</div>
+                )}
+                {!hasAnyConstraint && (
+                  <div style={{ fontSize: 10, color: T.textTer, marginBottom: 8 }}>
+                    No fields set — optimizing across all available routes/vessels/fuels.
+                  </div>
+                )}
+                <button
+                  onClick={handleOptimize}
+                  disabled={optRunning || !!requestErr}
+                  style={{
+                    background: optRunning ? "#9CA3AF" : T.teal, color: "white", border: "none",
+                    padding: "8px 16px", fontSize: 11, fontWeight: 700,
+                    cursor: optRunning || requestErr ? "not-allowed" : "pointer",
+                    fontFamily: "'Instrument Sans', sans-serif",
+                  }}
+                >
+                  {optRunning ? `Optimizing... ${jobStatus?.progress ?? 0}%` : "Optimize"}
+                </button>
+              </>
+            ) : !requestReviewReady ? (
+              <>
+                <div style={{ fontSize: 11, color: T.textSec, marginBottom: 8, fontFamily: "'Instrument Sans', sans-serif" }}>
+                  Describe your fleet optimization requirement
+                </div>
+                <textarea
+                  placeholder='e.g. "Find a low-emission route from Yokohama to Singapore carrying 5000 tonnes at 18 knots"'
+                  value={nlqText}
+                  onChange={e => setNlqText(e.target.value)}
+                  rows={3}
+                  style={{ width: "100%", padding: "9px 12px", fontSize: 12, border: `1px solid ${T.border}`, borderRadius: 4, fontFamily: "'Instrument Sans', sans-serif", color: T.text, boxSizing: "border-box", resize: "vertical", marginBottom: 10 }}
+                />
+                {nlpError && (
+                  <div style={{ fontSize: 11, color: T.red, marginBottom: 8 }}>⚠ {nlpError}</div>
+                )}
+                <button
+                  onClick={handleGenerateRequest}
+                  disabled={nlpLoading}
+                  style={{ background: nlpLoading ? "#9CA3AF" : T.teal, color: "white", border: "none", padding: "8px 16px", fontSize: 11, fontWeight: 700, cursor: nlpLoading ? "not-allowed" : "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
+                >
+                  {nlpLoading ? "Parsing..." : "Generate Request"}
+                </button>
+              </>
+            ) : (
+              <>
+                <div style={{ fontSize: 11, fontWeight: 700, color: T.text, marginBottom: 2, fontFamily: "'Instrument Sans', sans-serif" }}>Detected request</div>
+                <div style={{ fontSize: 10, color: T.textTer, marginBottom: 10 }}>
+                  {nlpResult?.gemini_used
+                    ? "Normalized with Gemini, then parsed deterministically. Review and edit before optimizing."
+                    : "Parsed deterministically (Gemini normalization unavailable). Review and edit before optimizing."}
+                </div>
+                <RequestForm
+                  value={pendingRequest}
+                  onChange={setPendingRequest}
+                  originFlag={nlpResult ? { valid: nlpResult.parsed.origin_valid, suggestion: nlpResult.parsed.origin_suggestion } : null}
+                  destinationFlag={nlpResult ? { valid: nlpResult.parsed.destination_valid, suggestion: nlpResult.parsed.destination_suggestion } : null}
+                />
+                {requestErr && (
+                  <div style={{ fontSize: 11, color: T.red, marginBottom: 8 }}>⚠ {requestErr}</div>
+                )}
+                {!hasAnyConstraint && (
+                  <div style={{ fontSize: 10, color: T.textTer, marginBottom: 8 }}>
+                    No fields were detected in your request — optimizing across all available routes/vessels/fuels.
+                  </div>
+                )}
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button
+                    onClick={() => { setRequestReviewReady(false); resetNLQ(); setNlqText(""); }}
+                    style={{ background: "white", color: T.textSec, border: `1px solid ${T.border}`, padding: "8px 14px", fontSize: 11, cursor: "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
+                  >
+                    New Query
+                  </button>
+                  <button
+                    onClick={handleEditInManualForm}
+                    style={{ background: "white", color: T.textSec, border: `1px solid ${T.border}`, padding: "8px 14px", fontSize: 11, cursor: "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
+                  >
+                    Edit in Manual Form
+                  </button>
+                  <button
+                    onClick={handleOptimize}
+                    disabled={optRunning || !!requestErr}
+                    style={{
+                      background: optRunning ? "#9CA3AF" : T.teal, color: "white", border: "none",
+                      padding: "8px 16px", fontSize: 11, fontWeight: 700,
+                      cursor: optRunning || requestErr ? "not-allowed" : "pointer",
+                      fontFamily: "'Instrument Sans', sans-serif",
+                    }}
+                  >
+                    {optRunning ? `Optimizing... ${jobStatus?.progress ?? 0}%` : "Optimize"}
+                  </button>
+                </div>
+              </>
+            )}
+
+            {optRunning && jobStatus && (
+              <div style={{ background: T.tealLight, border: `1px solid ${T.teal}30`, padding: "6px 14px", display: "flex", alignItems: "center", gap: 10, marginTop: 10 }}>
+                <div style={{ flex: 1, height: 4, background: T.border, borderRadius: 2 }}>
+                  <div style={{ width: `${jobStatus.progress}%`, height: "100%", background: T.teal, borderRadius: 2, transition: "width 0.3s" }} />
+                </div>
+                <span style={{ fontSize: 10, color: T.teal, fontFamily: "'JetBrains Mono', monospace", whiteSpace: "nowrap" }}>{jobStatus.message}</span>
+              </div>
+            )}
+            {!optRunning && jobStatus?.status === "failed" && (
+              <div style={{ background: T.redL, border: `1px solid ${T.red}40`, padding: "8px 14px", fontSize: 11, color: T.red, marginTop: 10 }}>
+                ⚠ Optimization failed: {jobStatus.error ?? jobStatus.message}
+              </div>
+            )}
+            {!optRunning && jobStatus?.status === "completed" && liveResult?.request_warnings && liveResult.request_warnings.length > 0 && (
+              <div style={{ background: "#FFFBEB", border: "1px solid #FDE68A", padding: "8px 14px", fontSize: 11, color: "#78350F", marginTop: 10 }}>
+                {liveResult.request_warnings.map((w, i) => <div key={i}>⚠ {w}</div>)}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Run summary strip */}

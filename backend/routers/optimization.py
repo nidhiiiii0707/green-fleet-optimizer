@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import json
-from typing import Optional
+from typing import Literal, Optional
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
@@ -14,9 +14,25 @@ from backend.pipeline_bridge import get_default_result, get_solution_by_id, run_
 router = APIRouter(prefix="/api/optimization", tags=["optimization"])
 
 
+class StructuredRequest(BaseModel):
+    """The same structured request shape produced by the manual form and by
+    NLP parsing (see nlp/optimization_adapter.py build_optimization_request).
+    Every field is optional; unspecified fields stay unrestricted — never
+    invented."""
+
+    origin: Optional[str] = None
+    destination: Optional[str] = None
+    vessel_type: Optional[str] = None
+    fuel_type: Optional[str] = None
+    speed: Optional[float] = None
+    cargo: Optional[float] = None
+    objectives: list[Literal["fuel", "cost", "ghg"]] = []
+
+
 class RunRequest(BaseModel):
     seed: int = 42
     use_real_pipeline: bool = False
+    request: Optional[StructuredRequest] = None
 
 
 # ── Initialize default result on first import ────────────────────────────────
@@ -44,7 +60,10 @@ def get_latest():
 @router.post("/run")
 def trigger_run(req: RunRequest, background_tasks: BackgroundTasks):
     job = JM.create_job()
-    background_tasks.add_task(_run_optimization_task, job.id, req.seed, req.use_real_pipeline)
+    structured_request = req.request.model_dump() if req.request else None
+    background_tasks.add_task(
+        _run_optimization_task, job.id, req.seed, req.use_real_pipeline, structured_request
+    )
     return {"job_id": job.id, "status": job.status}
 
 
@@ -125,7 +144,7 @@ async def ws_optimization(websocket: WebSocket, job_id: str):
 
 # ── Background task ───────────────────────────────────────────────────────────
 
-def _run_optimization_task(job_id: str, seed: int, use_real: bool):
+def _run_optimization_task(job_id: str, seed: int, use_real: bool, structured_request: dict | None = None):
     job = JM.get_job(job_id)
     if job is None:
         return
@@ -137,10 +156,15 @@ def _run_optimization_task(job_id: str, seed: int, use_real: bool):
 
     try:
         progress_cb(10, "Loading data and generating candidates...")
-        result = (
-            run_optimization_async(job, seed=seed, progress_cb=progress_cb)
-            if use_real else get_default_result()
-        )
+        if structured_request is not None:
+            # A structured request (from the manual form or from NLP parsing)
+            # always runs the real pipeline filtered to that request.
+            result = run_optimization_async(job, seed=seed, progress_cb=progress_cb, request=structured_request)
+        else:
+            result = (
+                run_optimization_async(job, seed=seed, progress_cb=progress_cb)
+                if use_real else get_default_result()
+            )
         progress_cb(95, "Finalizing Pareto archive...")
         JM.set_latest_result(result)
         JM.update_job(job, JM.JobStatus.COMPLETED, 100, "Optimization complete.", result=result)

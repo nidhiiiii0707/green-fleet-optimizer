@@ -6,7 +6,7 @@ import {
 } from "./client";
 import type {
   OptimizationResult, JobStatus, Alert, Report,
-  Vessel, Port, Route, ScenarioControls, ScenarioResult, NLPResult,
+  Vessel, Port, Route, ScenarioControls, ScenarioResult, NLPParseResult, StructuredRequest,
 } from "./types";
 
 // ── Generic fetch hook ────────────────────────────────────────────────────────
@@ -45,11 +45,11 @@ export function useOptimizationRun() {
   const [running,  setRunning]  = useState(false);
   const wsRef = useRef<WebSocket | null>(null);
 
-  const triggerRun = useCallback(async (useReal = false) => {
+  const triggerRun = useCallback(async (useReal = false, request?: StructuredRequest) => {
     setRunning(true);
     setResult(null);
     try {
-      const { job_id } = await optimizationApi.triggerRun(42, useReal);
+      const { job_id } = await optimizationApi.triggerRun(42, useReal, request);
       setJobId(job_id);
 
       // Poll status until complete
@@ -168,18 +168,24 @@ export function useScenario() {
 }
 
 // ── NLP hook ─────────────────────────────────────────────────────────────────
+// Parses natural language into a structured request. Never triggers
+// optimization itself — call optimizationApi.triggerRun with the (possibly
+// user-edited) request afterward, exactly like the manual form does.
 export function useNLPQuery() {
-  const [result,  setResult]  = useState<NLPResult | null>(null);
+  const [result,  setResult]  = useState<NLPParseResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error,   setError]   = useState<string | null>(null);
 
   const query = useCallback(async (text: string) => {
-    if (!text.trim()) return;
+    if (!text.trim()) {
+      setError("Please describe your fleet optimization request first.");
+      return;
+    }
     setLoading(true);
     setError(null);
     setResult(null);
     try {
-      const res = await (await import("./client")).nlpApi.query(text);
+      const res = await (await import("./client")).nlpApi.parse(text);
       setResult(res);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : String(e));
@@ -188,5 +194,10 @@ export function useNLPQuery() {
     }
   }, []);
 
-  return { result, loading, error, query };
+  const reset = useCallback(() => {
+    setResult(null);
+    setError(null);
+  }, []);
+
+  return { result, loading, error, query, reset };
 }

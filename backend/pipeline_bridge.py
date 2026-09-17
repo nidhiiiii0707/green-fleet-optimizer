@@ -32,9 +32,19 @@ def get_solution_by_id(solution_id: str) -> dict | None:
     return None
 
 
-def run_optimization_async(job, seed: int = 42, progress_cb=None):
+def run_optimization_async(job, seed: int = 42, progress_cb=None, request: dict | None = None):
     """Run the real optimization pipeline. Raises on failure (no silent
-    fallback to static/mock data — the caller decides how to surface it)."""
+    fallback to static/mock data — the caller decides how to surface it).
+
+    `request` (optional) is a structured request — the SAME shape produced by
+    the manual form and by NLP parsing (see nlp/optimization_adapter.py's
+    build_optimization_request) — {origin, destination, vessel_type,
+    fuel_type, speed, cargo, objectives}. When present, it is used to filter
+    the optimizer's real candidate legs via the existing
+    nlp.optimization_adapter.filter_legs() (no second optimization pipeline:
+    the same NSGA-II/QBHO/CQM/MILP run and the same result builder are used
+    either way). Unspecified fields stay unrestricted.
+    """
     import importlib
     try:
         run_pipeline = importlib.import_module("run_optimization_pipeline")
@@ -45,6 +55,20 @@ def run_optimization_async(job, seed: int = 42, progress_cb=None):
             progress_cb(10, "Generating candidates from real data...")
         evaluated, legs, reject_reasons = generate_evaluated_legs(seed=seed)
 
+        request_warnings: list[str] = []
+        if request and any(request.get(key) for key in
+                            ("origin", "destination", "vessel_type", "fuel_type", "speed", "cargo")):
+            from nlp.optimization_adapter import filter_legs
+
+            if progress_cb:
+                progress_cb(20, "Applying structured request constraints...")
+            legs, request_warnings = filter_legs(legs, request)
+            if not legs or any(len(leg) == 0 for leg in legs):
+                raise ValueError(
+                    "No candidates satisfy the given request constraints "
+                    "(every leg was rejected). Relax one of the fields and try again."
+                )
+
         if progress_cb:
             progress_cb(30, "Running NSGA-II optimizer...")
         final_front, final_sources, per_algo = run_all_algorithms(legs)
@@ -52,8 +76,14 @@ def run_optimization_async(job, seed: int = 42, progress_cb=None):
         if progress_cb:
             progress_cb(90, "Building Pareto archive...")
 
-        return build_runtime_result(final_front, final_sources, legs)
+        result = build_runtime_result(final_front, final_sources, legs)
+        if request is not None:
+            result["structured_request"] = request
+            result["request_warnings"] = request_warnings
+        return result
 
+    except ValueError:
+        raise
     except Exception:
         log.exception("Real optimization pipeline failed")
         raise

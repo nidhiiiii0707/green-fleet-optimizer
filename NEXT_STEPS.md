@@ -1,5 +1,22 @@
 # NEXT STEPS / Handoff Notes
 
+> **HISTORICAL / SUPERSEDED.** This document predates the QUBO-SA/MO-QIGA → QBHO/CQM
+> migration (see `README.md` and `mathematical_formulation.md`). Every mention of QUBO
+> (simulated annealing) and MO-QIGA below describes the algorithm set as it existed
+> *before* that migration and is **not part of the current active pipeline**. The
+> current active algorithm set is:
+>
+> 1. NSGA-II
+> 2. QBHO
+> 3. CQM
+> 4. MILP
+>
+> The legacy `qubo_model.py`, `qubo_builder.py`, `qubo_validation.py`, `run_qubo.py`,
+> `mo_qiga.py`, `run_mo_qiga.py`, and `tests/test_qubo.py` have been deleted from the
+> repository. The stage numbers, validation notes, and prototype-scale caveats below
+> are kept as-is for historical reference; only the "Main entry points" and "rerun"
+> sections have been updated to reflect commands that still work.
+
 ## What is COMPLETE
 - Full REAL/DERIVED/SCENARIO_INPUT-tagged data layer (pre-existing, Stages 1-3).
 - Stage 4: formal problem definition (`mathematical_formulation.md`, `decision_variables.csv`,
@@ -49,9 +66,10 @@
 - Scaling candidate generation and re-tuning NSGA-II/QUBO/MO-QIGA population/generation counts
   for a production-size fleet and route network.
 
-## Main entry points
+## Main entry points (current — post QBHO/CQM migration)
 - `run_optimization_pipeline.py` — the full end-to-end pipeline (recommended starting point).
-- `run_nsga2.py`, `run_qubo.py`, `run_mo_qiga.py`, `run_milp.py` — individual algorithms.
+- `run_nsga2.py`, `run_qbho.py`, `run_cqm.py`, `run_milp.py` — individual algorithms
+  (replaces the now-deleted `run_qubo.py`/`run_mo_qiga.py`).
 - `algorithm_comparison.py` — cross-algorithm metrics + plots (run the four above first, or
   it recomputes internally via `run_all()`).
 - `robustness_analysis.py` — SCENARIO_INPUT sensitivity sweep.

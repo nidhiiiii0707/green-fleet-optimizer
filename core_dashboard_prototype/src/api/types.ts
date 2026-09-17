@@ -129,6 +129,8 @@ export interface OptimizationResult {
   selected_solution_id: string;
   data_mode: "real_precomputed" | "real_runtime" | "mock_offline";
   source?: string;
+  structured_request?: StructuredRequest;
+  request_warnings?: string[];
   algorithm_comparison?: {
     mo_qiga_vs_nsga2: string[][];
     milp_comparison: string[][];
@@ -172,13 +174,34 @@ export interface ScenarioResult {
   note: string;
 }
 
-export interface NLPResult {
+export type Objective = "fuel" | "cost" | "ghg";
+
+/** The structured request shape shared by the manual form, NLP parsing, and
+ * POST /api/optimization/run. Unspecified fields are null/empty — never invented. */
+export interface StructuredRequest {
+  origin: string | null;
+  destination: string | null;
+  vessel_type: string | null;
+  fuel_type: string | null;
+  speed: number | null;
+  cargo: number | null;
+  objectives: Objective[];
+}
+
+export interface ParsedQuery extends StructuredRequest {
+  origin_valid?: boolean;
+  origin_suggestion?: string | null;
+  destination_valid?: boolean;
+  destination_suggestion?: string | null;
+}
+
+export interface NLPParseResult {
   query: string;
-  parsed: Record<string, unknown>;
-  warnings: string[];
-  recommended_solution_id: string | null;
-  solutions: ParetoSolution[];
-  nlp_used: boolean;
+  normalized_query: string | null;
+  gemini_used: boolean;
+  gemini_error: string | null;
+  parsed: ParsedQuery;
+  request: StructuredRequest;
 }
 
 export interface Report {

@@ -1,16 +1,33 @@
 # Checkpoint 5 — Full Optimization Package
 
+> **HISTORICAL / SUPERSEDED.** This checkpoint snapshot predates the QUBO-SA/MO-QIGA →
+> QBHO/CQM migration (see `README.md` and `mathematical_formulation.md`). The QUBO
+> (simulated annealing) and MO-QIGA references below describe the algorithm set as it
+> existed *at this checkpoint*, before that migration, and are **not part of the
+> current active pipeline**. The current active algorithm set is:
+>
+> 1. NSGA-II
+> 2. QBHO
+> 3. CQM
+> 4. MILP
+>
+> The legacy `qubo_model.py`, `qubo_builder.py`, `qubo_validation.py`, `run_qubo.py`,
+> `mo_qiga.py`, `run_mo_qiga.py`, and `tests/test_qubo.py` have since been deleted from
+> the repository. The "Reproduce everything" commands below have been updated to use
+> the current entry points; everything else in this file describes the checkpoint as
+> it was and is kept for historical reference.
+
 Everything from Checkpoint 4, plus Stages 8-15: NSGA-II, QUBO (simulated annealing,
 classical), MO-QIGA (classical simulation of a quantum-inspired heuristic), exact MILP
 reference, algorithm comparison (metrics + plots), robustness/sensitivity sweep, the
 end-to-end driver, and final outputs.
 
-## Reproduce everything
+## Reproduce everything (current entry points)
 ```
 ./.venv2/Scripts/python.exe run_optimization_pipeline.py   # end-to-end (fast path)
 ./.venv2/Scripts/python.exe run_nsga2.py
-./.venv2/Scripts/python.exe run_qubo.py
-./.venv2/Scripts/python.exe run_mo_qiga.py
+./.venv2/Scripts/python.exe run_qbho.py
+./.venv2/Scripts/python.exe run_cqm.py
 ./.venv2/Scripts/python.exe run_milp.py
 ./.venv2/Scripts/python.exe algorithm_comparison.py
 ./.venv2/Scripts/python.exe robustness_analysis.py

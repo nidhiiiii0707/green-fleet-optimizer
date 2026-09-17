@@ -27,6 +27,23 @@ ROUTE_BARE_PATTERN = re.compile(
     r"(?=\s+(?:at|with|carrying|using|via|for)\b|[.,!?]|$)"
 )
 
+# Leading imperative verbs that ROUTE_BARE_PATTERN (which has no "from" anchor
+# to delimit where the origin starts) can otherwise sweep into the origin
+# capture, e.g. "Optimize Yokohama to Singapore" -> origin "Optimize Yokohama".
+# Stripped only when the captured origin has more than one word, so a
+# genuine single-word port name is never touched.
+_LEADING_COMMAND_WORDS = frozenset({
+    "optimize", "find", "get", "show", "plan", "compute", "calculate",
+    "determine", "give", "suggest", "recommend", "search", "generate",
+})
+
+
+def _strip_leading_command_word(origin: str) -> str:
+    words = origin.split(" ")
+    if len(words) > 1 and words[0].casefold() in _LEADING_COMMAND_WORDS:
+        return " ".join(words[1:])
+    return origin
+
 SPEED_PATTERNS = (
     re.compile(rf"\b(?:at|speed(?:\s+of)?)\s+(?P<value>{NUMBER})\s*(?:knots?|kts?)\b", re.I),
     re.compile(rf"\bwith\s+(?:a\s+)?speed(?:\s+of)?\s+(?P<value>{NUMBER})\s*(?:knots?|kts?)\b", re.I),
@@ -35,6 +52,7 @@ SPEED_PATTERNS = (
 CARGO_PATTERNS = (
     re.compile(rf"\bcarrying\s+(?P<value>{NUMBER})\s*(?:metric\s+)?(?:tonnes?|tons?)\b", re.I),
     re.compile(rf"\bwith\s+(?P<value>{NUMBER})\s*(?:metric\s+)?(?:tonnes?|tons?)(?:\s+of\s+cargo)?\b", re.I),
+    re.compile(rf"\bfor\s+(?P<value>{NUMBER})\s*(?:metric\s+)?(?:tonnes?|tons?)\b", re.I),
 )
 
 VESSEL_TYPES = (
@@ -73,10 +91,15 @@ def _get_nlp() -> Language:
 
 
 def _extract_route(text: str) -> tuple[str | None, str | None]:
-    match = ROUTE_FROM_PATTERN.search(text) or ROUTE_BARE_PATTERN.search(text)
-    if not match:
+    from_match = ROUTE_FROM_PATTERN.search(text)
+    if from_match:
+        return from_match.group("origin").strip(), from_match.group("destination").strip()
+
+    bare_match = ROUTE_BARE_PATTERN.search(text)
+    if not bare_match:
         return None, None
-    return match.group("origin").strip(), match.group("destination").strip()
+    origin = _strip_leading_command_word(bare_match.group("origin").strip())
+    return origin, bare_match.group("destination").strip()
 
 
 def _extract_number(text: str, patterns: tuple[re.Pattern, ...]) -> int | float | None:

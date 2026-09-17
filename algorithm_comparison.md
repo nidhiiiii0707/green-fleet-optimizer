@@ -1,5 +1,20 @@
 # Algorithm Comparison (Stage 12)
 
+> **HISTORICAL / SUPERSEDED.** This comparison was generated *before* the QUBO-SA/MO-QIGA
+> → QBHO/CQM migration (see `README.md` and `mathematical_formulation.md`). The table
+> below compares the pre-migration algorithm set (NSGA-II, MO-QIGA, QUBO-SA, MILP) and is
+> **not part of the current active pipeline** — it is kept as-is (not recomputed) for
+> historical reference. The current active algorithm set is:
+>
+> 1. NSGA-II
+> 2. QBHO
+> 3. CQM
+> 4. MILP
+>
+> `qubo_model.py`, `qubo_builder.py`, `mo_qiga.py`, and their runner scripts have since
+> been deleted from the repository. To get a current comparison, re-run
+> `algorithm_comparison.py` against today's active set.
+
 Same 252-candidate / 6-leg prototype scenario, same seed (0), same real XGB fuel model, same SCENARIO_INPUT cost/GHG parameters for all four algorithms.
 
 **IGD** is computed against the union of all four fronts (the best available approximation), NOT a verified true Pareto front -- none is known for this problem.

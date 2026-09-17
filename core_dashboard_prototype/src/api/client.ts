@@ -2,7 +2,7 @@
 import { API_BASE, WS_BASE } from "./config";
 import type {
   OptimizationResult, JobStatus, ScenarioControls, ScenarioResult,
-  NLPResult, Alert, Report, Vessel, Port, Route,
+  NLPParseResult, StructuredRequest, Alert, Report, Vessel, Port, Route,
 } from "./types";
 
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
@@ -30,10 +30,10 @@ export const optimizationApi = {
   getLatest: () =>
     apiFetch<OptimizationResult>("/api/optimization/latest"),
 
-  triggerRun: (seed = 42, useRealPipeline = false) =>
+  triggerRun: (seed = 42, useRealPipeline = false, request?: StructuredRequest) =>
     apiFetch<{ job_id: string; status: string }>("/api/optimization/run", {
       method: "POST",
-      body: JSON.stringify({ seed, use_real_pipeline: useRealPipeline }),
+      body: JSON.stringify({ seed, use_real_pipeline: useRealPipeline, request: request ?? null }),
     }),
 
   getStatus: (jobId: string) =>
@@ -47,9 +47,11 @@ export const optimizationApi = {
 };
 
 // ── NLP ───────────────────────────────────────────────────────────────────────
+// Parses natural language into the same structured request the manual form
+// uses. Never runs optimization itself — see optimizationApi.triggerRun.
 export const nlpApi = {
-  query: (text: string) =>
-    apiFetch<NLPResult>("/api/nlp/query", {
+  parse: (text: string) =>
+    apiFetch<NLPParseResult>("/api/nlp/parse", {
       method: "POST",
       body: JSON.stringify({ query: text }),
     }),
