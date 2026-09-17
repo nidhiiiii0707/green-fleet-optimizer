@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+@import 'tailwindcss';
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0;
+  background: #F4F3EF;
+  color: #1A1918;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Instrument Sans', 'Inter', system-ui, sans-serif;
+}
+
+.font-mono, .mono {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+/* Engineering-grade range inputs */
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 2px;
+  background: #E4E2DE;
+  border-radius: 0;
+  outline: none;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1.5px solid #0A6C70;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px rgba(10,108,112,0.10);
+}
+input[type=range]::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1.5px solid #0A6C70;
+  cursor: pointer;
+  box-shadow: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  height: 2px;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #C8C6C1; border-radius: 1px; }
+::-webkit-scrollbar-thumb:hover { background: #9A9793; }
