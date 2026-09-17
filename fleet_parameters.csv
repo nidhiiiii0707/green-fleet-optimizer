@@ -1,0 +1,65 @@
+segment_type,segment_key,parameter,value,status
+individual_vessel,Poseidon (single named vessel),Ship_SpeedOverGround_mean_kn,4.901,DERIVED (mean of REAL per-timestep observations)
+individual_vessel,Poseidon (single named vessel),Ship_SpeedOverGround_median_kn,6.605,DERIVED (median of REAL per-timestep observations)
+individual_vessel,Poseidon (single named vessel),Ship_SpeedOverGround_std_kn,4.266,DERIVED (std of REAL per-timestep observations)
+individual_vessel,Poseidon (single named vessel),Ship_SpeedOverGround_min_kn,0.0,REAL (observed minimum)
+individual_vessel,Poseidon (single named vessel),Ship_SpeedOverGround_max_kn,12.1,REAL (observed maximum)
+individual_vessel,Poseidon (single named vessel),Ship_SpeedThroughWater_mean_kn,5.048,DERIVED (mean of REAL per-timestep observations)
+individual_vessel,Poseidon (single named vessel),Ship_SpeedThroughWater_median_kn,6.729,DERIVED (median of REAL per-timestep observations)
+individual_vessel,Poseidon (single named vessel),Ship_SpeedThroughWater_std_kn,4.37,DERIVED (std of REAL per-timestep observations)
+individual_vessel,Poseidon (single named vessel),Ship_SpeedThroughWater_min_kn,0.0,REAL (observed minimum)
+individual_vessel,Poseidon (single named vessel),Ship_SpeedThroughWater_max_kn,12.398,REAL (observed maximum)
+individual_vessel,Poseidon (single named vessel),deadweight_tonnage_DWT,SCENARIO_INPUT,SCENARIO_INPUT (not present in CPS_Poseidon_model_ready.csv)
+fleet_segment_ship_type,Bulk Carrier,speed_mean_kn,17.722,DERIVED (mean of REAL Speed_Over_Ground_knots observations)
+fleet_segment_ship_type,Bulk Carrier,speed_median_kn,17.933,DERIVED (median of REAL observations)
+fleet_segment_ship_type,Bulk Carrier,speed_std_kn,4.245,DERIVED (std of REAL observations)
+fleet_segment_ship_type,Bulk Carrier,speed_min_kn,10.01,REAL (observed minimum)
+fleet_segment_ship_type,Bulk Carrier,speed_max_kn,24.992,REAL (observed maximum)
+fleet_segment_ship_type,Bulk Carrier,n_records,669,REAL (row count)
+fleet_segment_ship_type,Container Ship,speed_mean_kn,17.542,DERIVED (mean of REAL Speed_Over_Ground_knots observations)
+fleet_segment_ship_type,Container Ship,speed_median_kn,17.566,DERIVED (median of REAL observations)
+fleet_segment_ship_type,Container Ship,speed_std_kn,4.283,DERIVED (std of REAL observations)
+fleet_segment_ship_type,Container Ship,speed_min_kn,10.059,REAL (observed minimum)
+fleet_segment_ship_type,Container Ship,speed_max_kn,24.917,REAL (observed maximum)
+fleet_segment_ship_type,Container Ship,n_records,635,REAL (row count)
+fleet_segment_ship_type,Fish Carrier,speed_mean_kn,17.407,DERIVED (mean of REAL Speed_Over_Ground_knots observations)
+fleet_segment_ship_type,Fish Carrier,speed_median_kn,17.318,DERIVED (median of REAL observations)
+fleet_segment_ship_type,Fish Carrier,speed_std_kn,4.349,DERIVED (std of REAL observations)
+fleet_segment_ship_type,Fish Carrier,speed_min_kn,10.025,REAL (observed minimum)
+fleet_segment_ship_type,Fish Carrier,speed_max_kn,24.997,REAL (observed maximum)
+fleet_segment_ship_type,Fish Carrier,n_records,653,REAL (row count)
+fleet_segment_ship_type,Tanker,speed_mean_kn,17.827,DERIVED (mean of REAL Speed_Over_Ground_knots observations)
+fleet_segment_ship_type,Tanker,speed_median_kn,18.082,DERIVED (median of REAL observations)
+fleet_segment_ship_type,Tanker,speed_std_kn,4.407,DERIVED (std of REAL observations)
+fleet_segment_ship_type,Tanker,speed_min_kn,10.094,REAL (observed minimum)
+fleet_segment_ship_type,Tanker,speed_max_kn,24.978,REAL (observed maximum)
+fleet_segment_ship_type,Tanker,n_records,643,REAL (row count)
+fleet_segment_ship_type,Bulk Carrier,cargo_weight_tons_mean,1013.5,DERIVED (mean of REAL Cargo_Weight_tons observations)
+fleet_segment_ship_type,Bulk Carrier,load_ratio_pct_mean,75.03,"DERIVED (mean of REAL Average_Load_Percentage, which source already computed as cargo/capacity ratio; DWT itself not present so ratio is taken as-is, not re-derived from DWT)"
+fleet_segment_ship_type,Bulk Carrier,draft_meters_mean,9.97,DERIVED (mean of REAL Draft_meters observations)
+fleet_segment_ship_type,Bulk Carrier,deadweight_tonnage_DWT,SCENARIO_INPUT,SCENARIO_INPUT (no DWT column in ship_performance.csv)
+fleet_segment_ship_type,Container Ship,cargo_weight_tons_mean,1024.33,DERIVED (mean of REAL Cargo_Weight_tons observations)
+fleet_segment_ship_type,Container Ship,load_ratio_pct_mean,74.59,"DERIVED (mean of REAL Average_Load_Percentage, which source already computed as cargo/capacity ratio; DWT itself not present so ratio is taken as-is, not re-derived from DWT)"
+fleet_segment_ship_type,Container Ship,draft_meters_mean,10.0,DERIVED (mean of REAL Draft_meters observations)
+fleet_segment_ship_type,Container Ship,deadweight_tonnage_DWT,SCENARIO_INPUT,SCENARIO_INPUT (no DWT column in ship_performance.csv)
+fleet_segment_ship_type,Fish Carrier,cargo_weight_tons_mean,1046.46,DERIVED (mean of REAL Cargo_Weight_tons observations)
+fleet_segment_ship_type,Fish Carrier,load_ratio_pct_mean,74.96,"DERIVED (mean of REAL Average_Load_Percentage, which source already computed as cargo/capacity ratio; DWT itself not present so ratio is taken as-is, not re-derived from DWT)"
+fleet_segment_ship_type,Fish Carrier,draft_meters_mean,9.93,DERIVED (mean of REAL Draft_meters observations)
+fleet_segment_ship_type,Fish Carrier,deadweight_tonnage_DWT,SCENARIO_INPUT,SCENARIO_INPUT (no DWT column in ship_performance.csv)
+fleet_segment_ship_type,Tanker,cargo_weight_tons_mean,1037.97,DERIVED (mean of REAL Cargo_Weight_tons observations)
+fleet_segment_ship_type,Tanker,load_ratio_pct_mean,75.8,"DERIVED (mean of REAL Average_Load_Percentage, which source already computed as cargo/capacity ratio; DWT itself not present so ratio is taken as-is, not re-derived from DWT)"
+fleet_segment_ship_type,Tanker,draft_meters_mean,9.87,DERIVED (mean of REAL Draft_meters observations)
+fleet_segment_ship_type,Tanker,deadweight_tonnage_DWT,SCENARIO_INPUT,SCENARIO_INPUT (no DWT column in ship_performance.csv)
+AGGREGATE_FLEET_STOCK (NOT individual vessels),Dry Cargo Bulk Carrier,DWT_sum_across_years_thousand_tons,10460.0,"REAL (aggregate fleet stock statistic from fleet_combined.csv, summed across all years present; do not interpret as a single vessel's DWT)"
+AGGREGATE_FLEET_STOCK (NOT individual vessels),Dry Cargo Bulk Carrier#,DWT_sum_across_years_thousand_tons,148420.0,"REAL (aggregate fleet stock statistic from fleet_combined.csv, summed across all years present; do not interpret as a single vessel's DWT)"
+AGGREGATE_FLEET_STOCK (NOT individual vessels),Dry Cargo Liner,DWT_sum_across_years_thousand_tons,11951.0,"REAL (aggregate fleet stock statistic from fleet_combined.csv, summed across all years present; do not interpret as a single vessel's DWT)"
+AGGREGATE_FLEET_STOCK (NOT individual vessels),Dry Cargo* Liner,DWT_sum_across_years_thousand_tons,56426.0,"REAL (aggregate fleet stock statistic from fleet_combined.csv, summed across all years present; do not interpret as a single vessel's DWT)"
+AGGREGATE_FLEET_STOCK (NOT individual vessels),Off-Shore Supply,DWT_sum_across_years_thousand_tons,3331.0,"REAL (aggregate fleet stock statistic from fleet_combined.csv, summed across all years present; do not interpret as a single vessel's DWT)"
+AGGREGATE_FLEET_STOCK (NOT individual vessels),Oil Tanker,DWT_sum_across_years_thousand_tons,8510.0,"REAL (aggregate fleet stock statistic from fleet_combined.csv, summed across all years present; do not interpret as a single vessel's DWT)"
+AGGREGATE_FLEET_STOCK (NOT individual vessels),Oil Tanker@,DWT_sum_across_years_thousand_tons,287471.0,"REAL (aggregate fleet stock statistic from fleet_combined.csv, summed across all years present; do not interpret as a single vessel's DWT)"
+AGGREGATE_FLEET_STOCK (NOT individual vessels),Ore/oil Bulk Carrier $,DWT_sum_across_years_thousand_tons,16154.0,"REAL (aggregate fleet stock statistic from fleet_combined.csv, summed across all years present; do not interpret as a single vessel's DWT)"
+AGGREGATE_FLEET_STOCK (NOT individual vessels),Passenger-cum-Cargo,DWT_sum_across_years_thousand_tons,862.0,"REAL (aggregate fleet stock statistic from fleet_combined.csv, summed across all years present; do not interpret as a single vessel's DWT)"
+AGGREGATE_FLEET_STOCK (NOT individual vessels),Passenger-cum-Cargo**,DWT_sum_across_years_thousand_tons,381.0,"REAL (aggregate fleet stock statistic from fleet_combined.csv, summed across all years present; do not interpret as a single vessel's DWT)"
+AGGREGATE_FLEET_STOCK (NOT individual vessels),Specialised Off-shore Services,DWT_sum_across_years_thousand_tons,1741.0,"REAL (aggregate fleet stock statistic from fleet_combined.csv, summed across all years present; do not interpret as a single vessel's DWT)"
+AGGREGATE_FLEET_STOCK (NOT individual vessels),Timber Carrier,DWT_sum_across_years_thousand_tons,353.0,"REAL (aggregate fleet stock statistic from fleet_combined.csv, summed across all years present; do not interpret as a single vessel's DWT)"
+AGGREGATE_FLEET_STOCK (NOT individual vessels),Total,DWT_sum_across_years_thousand_tons,546057.0,"REAL (aggregate fleet stock statistic from fleet_combined.csv, summed across all years present; do not interpret as a single vessel's DWT)"

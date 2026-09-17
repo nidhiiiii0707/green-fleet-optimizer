@@ -1,0 +1,26 @@
+{
+  "algorithm": "NSGA-II",
+  "runtime_seconds": 0.9341738224029541,
+  "generations": 60,
+  "population_size": 40,
+  "pareto_front_size": 2,
+  "feasible_ratio": 1.0,
+  "diversity_spacing_std": 0.0,
+  "objective_ranges": {
+    "fuel": [
+      183.54995321720975,
+      190.84885396176026
+    ],
+    "cost": [
+      104966.86967896814,
+      119894.33518997561
+    ],
+    "ghg": [
+      577383.3916673476,
+      594303.3312369215
+    ]
+  },
+  "hypervolume": null,
+  "igd": null,
+  "note": "Hypervolume/IGD are computed jointly across NSGA-II/MO-QIGA/MILP in algorithm_comparison.csv (Stage 12) so they share one reference point/front; left null here to avoid a misleading single-algorithm reference."
+}

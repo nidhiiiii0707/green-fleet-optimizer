@@ -1,0 +1,207 @@
+parameter_group,fuel,parameter,value,status
+GHG_by_fuel_chart_mean,HFO,GHG_reference_value_mean,0.048715,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,MDO,GHG_reference_value_mean,0.171669,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,Biodiesel,GHG_reference_value_mean,0.016709,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,Coal-Methanol,GHG_reference_value_mean,0.347643,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,NG-Methanol,GHG_reference_value_mean,0.056895,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,E-Methanol,GHG_reference_value_mean,0.28025,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,Bio-Methanol,GHG_reference_value_mean,0.018431,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,Conv-LNG,GHG_reference_value_mean,0.110016,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,E-LNG,GHG_reference_value_mean,0.279385,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,Bio-LNG,GHG_reference_value_mean,0.016802,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,Conv-LH2,GHG_reference_value_mean,0.087595,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,E-LH2,GHG_reference_value_mean,0.179073,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,Bio-LH2,GHG_reference_value_mean,0.078269,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,Conv-LNH3,GHG_reference_value_mean,0.37988,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+GHG_by_fuel_chart_mean,E-LNH3,GHG_reference_value_mean,0.098695,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,HFO,CII_reference_value_mean,0.034115,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,MDO,CII_reference_value_mean,0.02473,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,Biodiesel,CII_reference_value_mean,0.027504,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,Coal-Methanol,CII_reference_value_mean,0.022331,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,NG-Methanol,CII_reference_value_mean,0.025443,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,E-Methanol,CII_reference_value_mean,0.018211,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,Bio-Methanol,CII_reference_value_mean,0.019757,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,Conv-LNG,CII_reference_value_mean,0.026518,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,E-LNG,CII_reference_value_mean,0.01832,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,Bio-LNG,CII_reference_value_mean,0.021872,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,Conv-LH2,CII_reference_value_mean,0.010234,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,E-LH2,CII_reference_value_mean,0.00998,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,Bio-LH2,CII_reference_value_mean,0.010376,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,Conv-LNH3,CII_reference_value_mean,0.00697,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+CII_by_fuel_chart_mean,E-LNH3,CII_reference_value_mean,0.005142,DERIVED (mean of REAL fig1_ghg_cii_by_fuel.csv rows)
+scenario::Current::GHG_like,HFO,value,0.00335,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,MDO,value,0.00353,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Biodiesel,value,0.00249,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Coal-Methanol,value,0.00668,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,NG-Methanol,value,0.00626,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,E-Methanol,value,0.00539,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Bio-Methanol,value,0.001946986,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Conv-LNG,value,0.0037,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,E-LNG,value,0.00308,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Bio-LNG,value,0.001302362,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Conv-LH2,value,0.00264,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,E-LH2,value,0.0024,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Bio-LH2,value,0.00235,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Conv-LNH3,value,0.00672,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,E-LNH3,value,0.00423,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,HFO,value,0.01811,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,MDO,value,0.02118,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Biodiesel,value,0.02118,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Coal-Methanol,value,0.01697,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,NG-Methanol,value,0.01697,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,E-Methanol,value,0.01697,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Bio-Methanol,value,0.01697,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Conv-LNG,value,0.01663,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,E-LNG,value,0.01663,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Bio-LNG,value,0.01663,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Conv-LH2,value,0.01483,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,E-LH2,value,0.01483,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Bio-LH2,value,0.01483,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Conv-LNH3,value,0.00331,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,E-LNH3,value,0.00331,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,HFO,value,0.00335,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,MDO,value,0.00353,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Biodiesel,value,0.001395188,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Coal-Methanol,value,0.005888901,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,NG-Methanol,value,0.005135571,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,E-Methanol,value,0.003656685,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Bio-Methanol,value,0.001310841,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Conv-LNG,value,0.002052108,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,E-LNG,value,0.00058294,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Bio-LNG,value,0.00039332,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Conv-LH2,value,0.001270346,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,E-LH2,value,0.001027998,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Bio-LH2,value,0.001064721,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Conv-LNH3,value,0.002476334,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,E-LNH3,value,0.00101083,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,HFO,value,0.0177478,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,MDO,value,0.0207564,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Biodiesel,value,0.0208,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Coal-Methanol,value,0.0166,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,NG-Methanol,value,0.0166306,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,E-Methanol,value,0.0166,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Bio-Methanol,value,0.0166,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Conv-LNG,value,0.0162974,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,E-LNG,value,0.0162974,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Bio-LNG,value,0.0163,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Conv-LH2,value,0.0145,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,E-LH2,value,0.0145,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Bio-LH2,value,0.0145,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Conv-LNH3,value,0.00324,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,E-LNH3,value,0.00324,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,HFO,value,0.125345614,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,MDO,value,0.449964912,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Biodiesel,value,0.041660819,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Coal-Methanol,value,0.889076608,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,NG-Methanol,value,0.141145614,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,E-Methanol,value,0.7169,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Bio-Methanol,value,0.046450292,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Conv-LNG,value,0.285550292,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,E-LNG,value,0.73132807,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Bio-LNG,value,0.04294386,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Conv-LH2,value,0.339863743,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,E-LH2,value,0.42144386,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Bio-LH2,value,0.331860819,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,Conv-LNH3,value,0.862224561,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::GHG_like,E-LNH3,value,0.253003509,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,HFO,value,0.02711,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,MDO,value,0.00977,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Biodiesel,value,0.01657,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Coal-Methanol,value,0.01337,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,NG-Methanol,value,0.0213,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,E-Methanol,value,0.00302,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Bio-Methanol,value,0.00688,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Conv-LNG,value,0.02732,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,E-LNG,value,0.0049,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Bio-LNG,value,0.0142,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Conv-LH2,value,0.0092,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,E-LH2,value,0.00874,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Bio-LH2,value,0.00943,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,Conv-LNH3,value,0.01431,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::Current::CII_like,E-LNH3,value,0.00966,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,HFO,value,0.125345614,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,MDO,value,0.449964912,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,Biodiesel,value,0.0246,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,Coal-Methanol,value,0.536,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,NG-Methanol,value,0.0958,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,E-Methanol,value,0.592,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,Bio-Methanol,value,0.0381,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,Conv-LNG,value,0.171,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,E-LNG,value,0.435,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,Bio-LNG,value,0.0277,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,Conv-LH2,value,0.179,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,E-LH2,value,0.228,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,Bio-LH2,value,0.175,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,Conv-LNH3,value,0.538,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::GHG_like,E-LNH3,value,0.178,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,HFO,value,0.000171225,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,MDO,value,0.000158139,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,Biodiesel,value,0.000499285,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,Coal-Methanol,value,0.000264505,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,NG-Methanol,value,0.000217113,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,E-Methanol,value,0.000959537,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,Bio-Methanol,value,0.00042019,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,Conv-LNG,value,0.000566063,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,E-LNG,value,0.027044438,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,Bio-LNG,value,0.007820397,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,Conv-LH2,value,0.000863888,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,E-LH2,value,0.025228962,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,Bio-LH2,value,0.005361504,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,Conv-LNH3,value,0.001514425,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-IMO NZF::CII_like,E-LNH3,value,0.019173275,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,HFO,value,0.125345614,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,MDO,value,0.449964912,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Biodiesel,value,0.0246373,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Coal-Methanol,value,0.53645188,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,NG-Methanol,value,0.095826577,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,E-Methanol,value,0.592255745,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Bio-Methanol,value,0.0381,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Conv-LNG,value,0.17113268,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,E-LNG,value,0.434759604,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Bio-LNG,value,0.02765903,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Conv-LH2,value,0.179306936,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,E-LH2,value,0.227551584,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Bio-LH2,value,0.174574651,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,Conv-LNH3,value,0.537986802,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::GHG_like,E-LNH3,value,0.177703677,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,HFO,value,0.000613,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,MDO,value,0.000566,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Biodiesel,value,0.000619,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Coal-Methanol,value,0.00161,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,NG-Methanol,value,0.000865,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,E-Methanol,value,0.000387,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Bio-Methanol,value,0.00162,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Conv-LNG,value,0.00162,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,E-LNG,value,0.0292,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Bio-LNG,value,0.172,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Conv-LH2,value,0.00181,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,E-LH2,value,0.0334,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Bio-LH2,value,0.197,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,Conv-LNH3,value,0.00187,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+scenario::2050-FuelEU::CII_like,E-LNH3,value,0.0358,"REAL (reference/literature, fig1_scenario_comparison.csv)"
+GHG_pathway_kgCO2eq_per_MJ_mean_across_years_panels,Bio-LH2,kgCO2eq_per_MJ_mean,0.011392,DERIVED (mean of REAL fig5_ghg_pathway_scenarios.csv rows)
+GHG_pathway_kgCO2eq_per_MJ_mean_across_years_panels,Bio-LNG,kgCO2eq_per_MJ_mean,0.030131,DERIVED (mean of REAL fig5_ghg_pathway_scenarios.csv rows)
+GHG_pathway_kgCO2eq_per_MJ_mean_across_years_panels,Bio-LNH3,kgCO2eq_per_MJ_mean,0.015482,DERIVED (mean of REAL fig5_ghg_pathway_scenarios.csv rows)
+GHG_pathway_kgCO2eq_per_MJ_mean_across_years_panels,Bio-MeOH,kgCO2eq_per_MJ_mean,0.010231,DERIVED (mean of REAL fig5_ghg_pathway_scenarios.csv rows)
+GHG_pathway_kgCO2eq_per_MJ_mean_across_years_panels,Biodiesel,kgCO2eq_per_MJ_mean,0.035943,DERIVED (mean of REAL fig5_ghg_pathway_scenarios.csv rows)
+GHG_pathway_kgCO2eq_per_MJ_mean_across_years_panels,Coal-MeOH,kgCO2eq_per_MJ_mean,0.029616,DERIVED (mean of REAL fig5_ghg_pathway_scenarios.csv rows)
+GHG_pathway_kgCO2eq_per_MJ_mean_across_years_panels,Conv-LH2,kgCO2eq_per_MJ_mean,0.005681,DERIVED (mean of REAL fig5_ghg_pathway_scenarios.csv rows)
+GHG_pathway_kgCO2eq_per_MJ_mean_across_years_panels,Conv-LNG,kgCO2eq_per_MJ_mean,0.026001,DERIVED (mean of REAL fig5_ghg_pathway_scenarios.csv rows)
+GHG_pathway_kgCO2eq_per_MJ_mean_across_years_panels,E-LNG,kgCO2eq_per_MJ_mean,0.050569,DERIVED (mean of REAL fig5_ghg_pathway_scenarios.csv rows)
+GHG_pathway_kgCO2eq_per_MJ_mean_across_years_panels,MDO,kgCO2eq_per_MJ_mean,0.039649,DERIVED (mean of REAL fig5_ghg_pathway_scenarios.csv rows)
+GHG_pathway_kgCO2eq_per_MJ_mean_across_years_panels,NG-MeOH,kgCO2eq_per_MJ_mean,0.029633,DERIVED (mean of REAL fig5_ghg_pathway_scenarios.csv rows)
+GWP_tCO2_distribution_mean,MDO,GWP_tCO2_mean,18016455.39,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,Coal-MeOH,GWP_tCO2_mean,43712715.56,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,NG-MeOH,GWP_tCO2_mean,27914844.13,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,e-MeOH,GWP_tCO2_mean,14568643.9,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,bio-MeOH,GWP_tCO2_mean,1908557.43,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,Conv-LNG,GWP_tCO2_mean,31414048.89,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,e-LNG,GWP_tCO2_mean,9118552.04,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,bio-LNG,GWP_tCO2_mean,1022252.02,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,Conv-LH2,GWP_tCO2_mean,12645982.24,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,e-LH2,GWP_tCO2_mean,12627693.26,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,bio-LH2,GWP_tCO2_mean,12633725.51,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,Conv-LNH3,GWP_tCO2_mean,5754290.5,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,e-LNH3,GWP_tCO2_mean,5595785.5,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,HFO,GWP_tCO2_mean,2037958.19,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)
+GWP_tCO2_distribution_mean,Biodiesel,GWP_tCO2_mean,1482679.44,DERIVED (mean of REAL fig9_fuel_probability_distributions.csv Monte-Carlo draws)

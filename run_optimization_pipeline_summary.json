@@ -1,0 +1,30 @@
+{
+  "candidates_generated": 252,
+  "feasible_count": 168,
+  "rejected_count": 84,
+  "rejected_reasons": {
+    "speed_bounds": 84
+  },
+  "objective_ranges": {
+    "fuel": [
+      3.2300863569259644,
+      431.68533302159244
+    ],
+    "cost": [
+      2215.6134807047442,
+      291482.0632740603
+    ],
+    "ghg": [
+      10355.656860304642,
+      1344268.127029239
+    ]
+  },
+  "algorithm_pareto_sizes": {
+    "NSGA-II": 2,
+    "QUBO-SA": 1,
+    "MO-QIGA": 4,
+    "MILP": 4
+  },
+  "final_pareto_archive_size": 4,
+  "total_runtime_seconds": 4.279799699783325
+}

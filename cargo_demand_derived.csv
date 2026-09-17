@@ -1,0 +1,1154 @@
+granularity,port_or_state,period,cargo_type,value,unit,value_status,source_file
+annual,Chennai,1950-51,All (Overseas+Coastal),2174.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1951-52,All (Overseas+Coastal),2155.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1952-53,All (Overseas+Coastal),2205.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1953-54,All (Overseas+Coastal),2136.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1954-55,All (Overseas+Coastal),2201.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1955-56,All (Overseas+Coastal),2462.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1956-57,All (Overseas+Coastal),2666.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1957-58,All (Overseas+Coastal),2676.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1958-59,All (Overseas+Coastal),2582.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1959-60,All (Overseas+Coastal),2763.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1960-61,All (Overseas+Coastal),3039.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1961-62,All (Overseas+Coastal),3468.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1962-63,All (Overseas+Coastal),3785.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1963-64,All (Overseas+Coastal),4166.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1964-65,All (Overseas+Coastal),4398.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1965-66,All (Overseas+Coastal),4872.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1966-67,All (Overseas+Coastal),6004.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1967-68,All (Overseas+Coastal),6442.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1968-69,All (Overseas+Coastal),6025.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1969-70,All (Overseas+Coastal),6632.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1970-71,All (Overseas+Coastal),6925.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1971-72,All (Overseas+Coastal),6821.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1972-73,All (Overseas+Coastal),6816.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1973-74,All (Overseas+Coastal),7750.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1974-75,All (Overseas+Coastal),7916.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1975-76,All (Overseas+Coastal),8205.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1976-77,All (Overseas+Coastal),7835.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1977-78,All (Overseas+Coastal),8068.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1978-79,All (Overseas+Coastal),9696.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1979-80,All (Overseas+Coastal),10169.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1980-81,All (Overseas+Coastal),10447.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1981-82,All (Overseas+Coastal),11471.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1982-83,All (Overseas+Coastal),12474.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1983-84,All (Overseas+Coastal),13316.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1984-85,All (Overseas+Coastal),15005.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1985-86,All (Overseas+Coastal),18148.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1986-87,All (Overseas+Coastal),19775.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1987-88,All (Overseas+Coastal),22819.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1988-89,All (Overseas+Coastal),23863.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1989-90,All (Overseas+Coastal),23940.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1990-91,All (Overseas+Coastal),24518.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1991-92,All (Overseas+Coastal),25046.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1992-93,All (Overseas+Coastal),25331.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1993-94,All (Overseas+Coastal),26541.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1994-95,All (Overseas+Coastal),29464.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1995-96,All (Overseas+Coastal),30721.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1996-97,All (Overseas+Coastal),31848.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1997-98,All (Overseas+Coastal),35531.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1998-99,All (Overseas+Coastal),35202.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,1999-00,All (Overseas+Coastal),37443.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2000-01,All (Overseas+Coastal),41220.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2001-02,All (Overseas+Coastal),36115.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2002-03,All (Overseas+Coastal),33687.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2003-04,All (Overseas+Coastal),36710.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2004-05,All (Overseas+Coastal),43806.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2005-06,All (Overseas+Coastal),47248.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2006-07,All (Overseas+Coastal),53414.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2007-08,All (Overseas+Coastal),57154.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2008-09,All (Overseas+Coastal),57491.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2009-10,All (Overseas+Coastal),61057.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2010-11,All (Overseas+Coastal),61460.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2011-12,All (Overseas+Coastal),55707.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2012-13,All (Overseas+Coastal),53404.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2013-14,All (Overseas+Coastal),51105.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2014-15,All (Overseas+Coastal),52541.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2015-16,All (Overseas+Coastal),50058.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2016-17,All (Overseas+Coastal),50214.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2017-18,All (Overseas+Coastal),51882.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2018-19,All (Overseas+Coastal),53012.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Chennai,2019-20,All (Overseas+Coastal),46758.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1950-51,All (Overseas+Coastal),1369.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1951-52,All (Overseas+Coastal),1606.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1952-53,All (Overseas+Coastal),1576.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1953-54,All (Overseas+Coastal),1583.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1954-55,All (Overseas+Coastal),1577.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1955-56,All (Overseas+Coastal),1635.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1956-57,All (Overseas+Coastal),1755.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1957-58,All (Overseas+Coastal),1828.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1958-59,All (Overseas+Coastal),1808.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1959-60,All (Overseas+Coastal),1977.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1960-61,All (Overseas+Coastal),2010.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1961-62,All (Overseas+Coastal),2285.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1962-63,All (Overseas+Coastal),2362.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1963-64,All (Overseas+Coastal),2455.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1964-65,All (Overseas+Coastal),2712.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1965-66,All (Overseas+Coastal),2872.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1966-67,All (Overseas+Coastal),3670.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1967-68,All (Overseas+Coastal),5425.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1968-69,All (Overseas+Coastal),5189.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1969-70,All (Overseas+Coastal),4795.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1970-71,All (Overseas+Coastal),4812.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1971-72,All (Overseas+Coastal),4694.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1972-73,All (Overseas+Coastal),4202.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1973-74,All (Overseas+Coastal),3721.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1974-75,All (Overseas+Coastal),4809.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1975-76,All (Overseas+Coastal),4258.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1976-77,All (Overseas+Coastal),4755.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1977-78,All (Overseas+Coastal),5174.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1978-79,All (Overseas+Coastal),5470.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1979-80,All (Overseas+Coastal),5459.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1980-81,All (Overseas+Coastal),5233.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1981-82,All (Overseas+Coastal),5501.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1982-83,All (Overseas+Coastal),5710.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1983-84,All (Overseas+Coastal),5004.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1984-85,All (Overseas+Coastal),4075.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1985-86,All (Overseas+Coastal),5277.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1986-87,All (Overseas+Coastal),6883.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1987-88,All (Overseas+Coastal),6802.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1988-89,All (Overseas+Coastal),7824.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1989-90,All (Overseas+Coastal),7125.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1990-91,All (Overseas+Coastal),7275.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1991-92,All (Overseas+Coastal),7481.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1992-93,All (Overseas+Coastal),7978.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1993-94,All (Overseas+Coastal),7620.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1994-95,All (Overseas+Coastal),8631.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1995-96,All (Overseas+Coastal),11503.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1996-97,All (Overseas+Coastal),11742.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1997-98,All (Overseas+Coastal),12324.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1998-99,All (Overseas+Coastal),12681.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,1999-00,All (Overseas+Coastal),12841.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2000-01,All (Overseas+Coastal),13144.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2001-02,All (Overseas+Coastal),12059.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2002-03,All (Overseas+Coastal),13024.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2003-04,All (Overseas+Coastal),13572.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2004-05,All (Overseas+Coastal),14103.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2005-06,All (Overseas+Coastal),13888.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2006-07,All (Overseas+Coastal),15257.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2007-08,All (Overseas+Coastal),15755.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2008-09,All (Overseas+Coastal),15494.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2009-10,All (Overseas+Coastal),17429.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2010-11,All (Overseas+Coastal),17873.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2011-12,All (Overseas+Coastal),20091.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2012-13,All (Overseas+Coastal),19845.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2013-14,All (Overseas+Coastal),20886.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2014-15,All (Overseas+Coastal),21595.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2015-16,All (Overseas+Coastal),22095.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2016-17,All (Overseas+Coastal),25007.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2017-18,All (Overseas+Coastal),29143.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2018-19,All (Overseas+Coastal),32021.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2019-20,All (Overseas+Coastal),34038.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2020-21,All (Overseas+Coastal),31503.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2021-22,All (Overseas+Coastal),34551.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2022-23,All (Overseas+Coastal),35256.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2023-24,All (Overseas+Coastal),36316.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Cochin,2024-25,All (Overseas+Coastal),37746.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2001-02,All (Overseas+Coastal),3401.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2002-03,All (Overseas+Coastal),8485.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2003-04,All (Overseas+Coastal),9277.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2004-05,All (Overseas+Coastal),9480.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2005-06,All (Overseas+Coastal),9168.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2006-07,All (Overseas+Coastal),10714.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2007-08,All (Overseas+Coastal),11563.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2008-09,All (Overseas+Coastal),11500.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2009-10,All (Overseas+Coastal),10703.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2010-11,All (Overseas+Coastal),11009.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2011-12,All (Overseas+Coastal),14956.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2012-13,All (Overseas+Coastal),17885.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2013-14,All (Overseas+Coastal),27337.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2014-15,All (Overseas+Coastal),30251.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2015-16,All (Overseas+Coastal),32206.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2016-17,All (Overseas+Coastal),30020.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2017-18,All (Overseas+Coastal),30446.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2018-19,All (Overseas+Coastal),34498.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kamarajar,2019-20,All (Overseas+Coastal),31746.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1954-55,All (Overseas+Coastal),3.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1955-56,All (Overseas+Coastal),150.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1956-57,All (Overseas+Coastal),249.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1957-58,All (Overseas+Coastal),858.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1958-59,All (Overseas+Coastal),1087.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1959-60,All (Overseas+Coastal),1141.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1960-61,All (Overseas+Coastal),1573.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1961-62,All (Overseas+Coastal),1387.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1962-63,All (Overseas+Coastal),1742.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1963-64,All (Overseas+Coastal),1779.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1964-65,All (Overseas+Coastal),2312.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1965-66,All (Overseas+Coastal),2505.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1966-67,All (Overseas+Coastal),2661.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1967-68,All (Overseas+Coastal),2465.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1968-69,All (Overseas+Coastal),2035.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1969-70,All (Overseas+Coastal),2110.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1970-71,All (Overseas+Coastal),1612.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1971-72,All (Overseas+Coastal),2032.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1972-73,All (Overseas+Coastal),2427.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1973-74,All (Overseas+Coastal),3122.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1974-75,All (Overseas+Coastal),3543.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1975-76,All (Overseas+Coastal),3203.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1976-77,All (Overseas+Coastal),3314.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1977-78,All (Overseas+Coastal),3770.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1978-79,All (Overseas+Coastal),5870.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1979-80,All (Overseas+Coastal),7292.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1980-81,All (Overseas+Coastal),8761.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1981-82,All (Overseas+Coastal),9690.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1982-83,All (Overseas+Coastal),12358.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1983-84,All (Overseas+Coastal),14158.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1984-85,All (Overseas+Coastal),15745.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1985-86,All (Overseas+Coastal),16486.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1986-87,All (Overseas+Coastal),16194.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1987-88,All (Overseas+Coastal),18083.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1988-89,All (Overseas+Coastal),17807.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1989-90,All (Overseas+Coastal),18925.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1990-91,All (Overseas+Coastal),19685.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1991-92,All (Overseas+Coastal),21002.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1992-93,All (Overseas+Coastal),22910.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1993-94,All (Overseas+Coastal),24500.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1994-95,All (Overseas+Coastal),26502.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1995-96,All (Overseas+Coastal),30339.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1996-97,All (Overseas+Coastal),33730.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1997-98,All (Overseas+Coastal),38901.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1998-99,All (Overseas+Coastal),40637.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,1999-00,All (Overseas+Coastal),46303.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2000-01,All (Overseas+Coastal),36741.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2001-02,All (Overseas+Coastal),37728.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2002-03,All (Overseas+Coastal),40633.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2003-04,All (Overseas+Coastal),41523.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2004-05,All (Overseas+Coastal),41551.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2005-06,All (Overseas+Coastal),45907.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2006-07,All (Overseas+Coastal),52982.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2007-08,All (Overseas+Coastal),64920.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2008-09,All (Overseas+Coastal),72224.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2009-10,All (Overseas+Coastal),79500.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2010-11,All (Overseas+Coastal),81880.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2011-12,All (Overseas+Coastal),82501.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2012-13,All (Overseas+Coastal),93619.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2013-14,All (Overseas+Coastal),87005.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2014-15,All (Overseas+Coastal),92497.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2015-16,All (Overseas+Coastal),99458.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2016-17,All (Overseas+Coastal),105442.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2017-18,All (Overseas+Coastal),110099.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2018-19,All (Overseas+Coastal),115401.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kandla,2019-20,All (Overseas+Coastal),122606.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1950-51,All (Overseas+Coastal),7532.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1951-52,All (Overseas+Coastal),9448.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1952-53,All (Overseas+Coastal),9560.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1953-54,All (Overseas+Coastal),8003.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1954-55,All (Overseas+Coastal),7771.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1955-56,All (Overseas+Coastal),8011.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1956-57,All (Overseas+Coastal),8735.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1957-58,All (Overseas+Coastal),10132.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1958-59,All (Overseas+Coastal),9218.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1959-60,All (Overseas+Coastal),9675.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1960-61,All (Overseas+Coastal),9391.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1961-62,All (Overseas+Coastal),9199.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1962-63,All (Overseas+Coastal),10091.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1963-64,All (Overseas+Coastal),10800.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1964-65,All (Overseas+Coastal),10928.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1965-66,All (Overseas+Coastal),9729.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1966-67,All (Overseas+Coastal),9974.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1967-68,All (Overseas+Coastal),8878.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1968-69,All (Overseas+Coastal),7863.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1969-70,All (Overseas+Coastal),6819.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1970-71,All (Overseas+Coastal),5965.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1971-72,All (Overseas+Coastal),7294.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1972-73,All (Overseas+Coastal),6617.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1973-74,All (Overseas+Coastal),6285.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1974-75,All (Overseas+Coastal),7502.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1975-76,All (Overseas+Coastal),7663.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1976-77,All (Overseas+Coastal),7995.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1977-78,All (Overseas+Coastal),7546.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1978-79,All (Overseas+Coastal),7979.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1979-80,All (Overseas+Coastal),8521.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1980-81,All (Overseas+Coastal),9272.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1981-82,All (Overseas+Coastal),9474.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1982-83,All (Overseas+Coastal),10244.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1983-84,All (Overseas+Coastal),10014.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1984-85,All (Overseas+Coastal),10268.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1985-86,All (Overseas+Coastal),12128.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1986-87,All (Overseas+Coastal),12072.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1987-88,All (Overseas+Coastal),13071.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1988-89,All (Overseas+Coastal),14223.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1989-90,All (Overseas+Coastal),14689.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1990-91,All (Overseas+Coastal),14953.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1991-92,All (Overseas+Coastal),16000.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1992-93,All (Overseas+Coastal),18337.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1993-94,All (Overseas+Coastal),18496.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1994-95,All (Overseas+Coastal),20535.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1995-96,All (Overseas+Coastal),21515.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1996-97,All (Overseas+Coastal),23124.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1997-98,All (Overseas+Coastal),28157.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1998-99,All (Overseas+Coastal),29387.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,1999-00,All (Overseas+Coastal),31026.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2000-01,All (Overseas+Coastal),30000.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2001-02,All (Overseas+Coastal),30403.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2002-03,All (Overseas+Coastal),35804.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2003-04,All (Overseas+Coastal),41260.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2004-05,All (Overseas+Coastal),46207.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2005-06,All (Overseas+Coastal),53143.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2006-07,All (Overseas+Coastal),55050.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2007-08,All (Overseas+Coastal),57329.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2008-09,All (Overseas+Coastal),54220.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2009-10,All (Overseas+Coastal),46423.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2010-11,All (Overseas+Coastal),47545.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2011-12,All (Overseas+Coastal),43248.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2012-13,All (Overseas+Coastal),39928.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2013-14,All (Overseas+Coastal),41386.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2014-15,All (Overseas+Coastal),46293.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2015-16,All (Overseas+Coastal),50289.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2016-17,All (Overseas+Coastal),50951.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2017-18,All (Overseas+Coastal),57891.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2018-19,All (Overseas+Coastal),63763.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Kolkata Haldia,2019-20,All (Overseas+Coastal),63983.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1950-51,All (Overseas+Coastal),7436.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1951-52,All (Overseas+Coastal),7497.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1952-53,All (Overseas+Coastal),6478.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1953-54,All (Overseas+Coastal),6941.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1954-55,All (Overseas+Coastal),7089.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1955-56,All (Overseas+Coastal),9680.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1956-57,All (Overseas+Coastal),12439.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1957-58,All (Overseas+Coastal),13465.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1958-59,All (Overseas+Coastal),11997.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1959-60,All (Overseas+Coastal),13553.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1960-61,All (Overseas+Coastal),14349.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1961-62,All (Overseas+Coastal),13911.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1962-63,All (Overseas+Coastal),15966.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1963-64,All (Overseas+Coastal),17354.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1964-65,All (Overseas+Coastal),18879.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1965-66,All (Overseas+Coastal),17910.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1966-67,All (Overseas+Coastal),17007.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1967-68,All (Overseas+Coastal),16923.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1968-69,All (Overseas+Coastal),19022.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1969-70,All (Overseas+Coastal),15972.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1970-71,All (Overseas+Coastal),14370.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1971-72,All (Overseas+Coastal),16138.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1972-73,All (Overseas+Coastal),15925.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1973-74,All (Overseas+Coastal),18208.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1974-75,All (Overseas+Coastal),17855.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1975-76,All (Overseas+Coastal),16650.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1976-77,All (Overseas+Coastal),17323.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1977-78,All (Overseas+Coastal),16047.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1978-79,All (Overseas+Coastal),16495.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1979-80,All (Overseas+Coastal),15978.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1980-81,All (Overseas+Coastal),16978.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1981-82,All (Overseas+Coastal),19396.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1982-83,All (Overseas+Coastal),23209.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1983-84,All (Overseas+Coastal),23889.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1984-85,All (Overseas+Coastal),26936.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1985-86,All (Overseas+Coastal),24310.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1986-87,All (Overseas+Coastal),25074.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1987-88,All (Overseas+Coastal),29568.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1988-89,All (Overseas+Coastal),29342.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1989-90,All (Overseas+Coastal),27746.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1990-91,All (Overseas+Coastal),28899.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1991-92,All (Overseas+Coastal),26261.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1992-93,All (Overseas+Coastal),28946.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1993-94,All (Overseas+Coastal),30506.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1994-95,All (Overseas+Coastal),30673.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1995-96,All (Overseas+Coastal),33916.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1996-97,All (Overseas+Coastal),33727.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1997-98,All (Overseas+Coastal),32097.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1998-99,All (Overseas+Coastal),30970.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,1999-00,All (Overseas+Coastal),30412.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2000-01,All (Overseas+Coastal),27063.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2001-02,All (Overseas+Coastal),26433.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2002-03,All (Overseas+Coastal),26796.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2003-04,All (Overseas+Coastal),29995.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2004-05,All (Overseas+Coastal),35187.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2005-06,All (Overseas+Coastal),44190.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2006-07,All (Overseas+Coastal),52364.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2007-08,All (Overseas+Coastal),57038.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2008-09,All (Overseas+Coastal),51876.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2009-10,All (Overseas+Coastal),54541.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2010-11,All (Overseas+Coastal),54586.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2011-12,All (Overseas+Coastal),56186.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2012-13,All (Overseas+Coastal),58038.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2013-14,All (Overseas+Coastal),59184.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2014-15,All (Overseas+Coastal),61660.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2015-16,All (Overseas+Coastal),61119.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2016-17,All (Overseas+Coastal),63129.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2017-18,All (Overseas+Coastal),62902.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2018-19,All (Overseas+Coastal),60634.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Mumbai,2019-20,All (Overseas+Coastal),60696.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1974-75,All (Overseas+Coastal),92.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1975-76,All (Overseas+Coastal),339.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1976-77,All (Overseas+Coastal),429.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1977-78,All (Overseas+Coastal),377.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1978-79,All (Overseas+Coastal),874.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1979-80,All (Overseas+Coastal),901.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1980-81,All (Overseas+Coastal),963.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1981-82,All (Overseas+Coastal),1642.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1982-83,All (Overseas+Coastal),2272.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1983-84,All (Overseas+Coastal),2837.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1984-85,All (Overseas+Coastal),3382.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1985-86,All (Overseas+Coastal),3686.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1986-87,All (Overseas+Coastal),5431.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1987-88,All (Overseas+Coastal),6108.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1988-89,All (Overseas+Coastal),7084.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1989-90,All (Overseas+Coastal),7661.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1990-91,All (Overseas+Coastal),8022.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1991-92,All (Overseas+Coastal),8274.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1992-93,All (Overseas+Coastal),7088.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1993-94,All (Overseas+Coastal),8630.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1994-95,All (Overseas+Coastal),8005.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1995-96,All (Overseas+Coastal),8884.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1996-97,All (Overseas+Coastal),12453.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1997-98,All (Overseas+Coastal),15282.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1998-99,All (Overseas+Coastal),14206.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,1999-00,All (Overseas+Coastal),17601.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2000-01,All (Overseas+Coastal),17891.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2001-02,All (Overseas+Coastal),17501.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2002-03,All (Overseas+Coastal),21430.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2003-04,All (Overseas+Coastal),26673.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2004-05,All (Overseas+Coastal),33891.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2005-06,All (Overseas+Coastal),34451.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2006-07,All (Overseas+Coastal),32042.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2007-08,All (Overseas+Coastal),36019.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2008-09,All (Overseas+Coastal),36691.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2009-10,All (Overseas+Coastal),35528.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2010-11,All (Overseas+Coastal),31550.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2011-12,All (Overseas+Coastal),32941.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2012-13,All (Overseas+Coastal),37036.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2013-14,All (Overseas+Coastal),39365.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2014-15,All (Overseas+Coastal),36566.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2015-16,All (Overseas+Coastal),35582.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2016-17,All (Overseas+Coastal),39936.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2017-18,All (Overseas+Coastal),42059.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2018-19,All (Overseas+Coastal),42508.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,New Mangalore,2019-20,All (Overseas+Coastal),39145.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1966-67,All (Overseas+Coastal),67.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1967-68,All (Overseas+Coastal),896.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1968-69,All (Overseas+Coastal),1238.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1969-70,All (Overseas+Coastal),1748.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1970-71,All (Overseas+Coastal),2157.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1971-72,All (Overseas+Coastal),1906.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1972-73,All (Overseas+Coastal),2023.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1973-74,All (Overseas+Coastal),2288.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1974-75,All (Overseas+Coastal),2606.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1975-76,All (Overseas+Coastal),3316.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1976-77,All (Overseas+Coastal),3319.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1977-78,All (Overseas+Coastal),2740.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1978-79,All (Overseas+Coastal),2171.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1979-80,All (Overseas+Coastal),2306.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1980-81,All (Overseas+Coastal),2294.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1981-82,All (Overseas+Coastal),2168.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1982-83,All (Overseas+Coastal),1572.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1983-84,All (Overseas+Coastal),1368.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1984-85,All (Overseas+Coastal),2137.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1985-86,All (Overseas+Coastal),3331.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1986-87,All (Overseas+Coastal),4853.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1987-88,All (Overseas+Coastal),5187.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1988-89,All (Overseas+Coastal),6032.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1989-90,All (Overseas+Coastal),6184.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1990-91,All (Overseas+Coastal),6884.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1991-92,All (Overseas+Coastal),7297.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1992-93,All (Overseas+Coastal),7607.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1993-94,All (Overseas+Coastal),8327.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1994-95,All (Overseas+Coastal),10121.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1995-96,All (Overseas+Coastal),11259.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1996-97,All (Overseas+Coastal),11580.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1997-98,All (Overseas+Coastal),13302.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1998-99,All (Overseas+Coastal),13108.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,1999-00,All (Overseas+Coastal),13636.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2000-01,All (Overseas+Coastal),19900.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2001-02,All (Overseas+Coastal),21131.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2002-03,All (Overseas+Coastal),23901.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2003-04,All (Overseas+Coastal),25311.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2004-05,All (Overseas+Coastal),30104.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2005-06,All (Overseas+Coastal),33109.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2006-07,All (Overseas+Coastal),38517.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2007-08,All (Overseas+Coastal),42437.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2008-09,All (Overseas+Coastal),46412.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2009-10,All (Overseas+Coastal),57011.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2010-11,All (Overseas+Coastal),55530.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2011-12,All (Overseas+Coastal),54254.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2012-13,All (Overseas+Coastal),56552.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2013-14,All (Overseas+Coastal),68003.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2014-15,All (Overseas+Coastal),71011.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2015-16,All (Overseas+Coastal),76397.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2016-17,All (Overseas+Coastal),88959.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2017-18,All (Overseas+Coastal),102028.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2018-19,All (Overseas+Coastal),109303.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Paradip,2019-20,All (Overseas+Coastal),112689.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1974-75,All (Overseas+Coastal),1035.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1975-76,All (Overseas+Coastal),1365.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1976-77,All (Overseas+Coastal),1550.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1977-78,All (Overseas+Coastal),1488.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1978-79,All (Overseas+Coastal),1703.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1979-80,All (Overseas+Coastal),2411.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1980-81,All (Overseas+Coastal),2631.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1981-82,All (Overseas+Coastal),2706.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1982-83,All (Overseas+Coastal),3229.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1983-84,All (Overseas+Coastal),3548.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1984-85,All (Overseas+Coastal),3774.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1985-86,All (Overseas+Coastal),4225.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1986-87,All (Overseas+Coastal),4146.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1987-88,All (Overseas+Coastal),4260.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1988-89,All (Overseas+Coastal),5140.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1989-90,All (Overseas+Coastal),5324.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1990-91,All (Overseas+Coastal),5073.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1991-92,All (Overseas+Coastal),5868.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1992-93,All (Overseas+Coastal),6215.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1993-94,All (Overseas+Coastal),6700.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1994-95,All (Overseas+Coastal),8040.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1995-96,All (Overseas+Coastal),9286.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1996-97,All (Overseas+Coastal),9174.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1997-98,All (Overseas+Coastal),9974.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1998-99,All (Overseas+Coastal),10150.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,1999-00,All (Overseas+Coastal),9993.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2000-01,All (Overseas+Coastal),12284.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2001-02,All (Overseas+Coastal),13017.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2002-03,All (Overseas+Coastal),13294.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2003-04,All (Overseas+Coastal),13678.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2004-05,All (Overseas+Coastal),15811.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2005-06,All (Overseas+Coastal),17139.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2006-07,All (Overseas+Coastal),18001.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2007-08,All (Overseas+Coastal),21480.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2008-09,All (Overseas+Coastal),22011.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2009-10,All (Overseas+Coastal),23787.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2010-11,All (Overseas+Coastal),25727.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2011-12,All (Overseas+Coastal),28105.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2012-13,All (Overseas+Coastal),28260.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2013-14,All (Overseas+Coastal),28642.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2014-15,All (Overseas+Coastal),32414.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2015-16,All (Overseas+Coastal),36849.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2016-17,All (Overseas+Coastal),38463.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2017-18,All (Overseas+Coastal),36583.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2018-19,All (Overseas+Coastal),34342.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,VO Chidambaranar,2019-20,All (Overseas+Coastal),36076.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1950-51,All (Overseas+Coastal),842.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1951-52,All (Overseas+Coastal),1143.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1952-53,All (Overseas+Coastal),1106.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1953-54,All (Overseas+Coastal),1319.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1954-55,All (Overseas+Coastal),981.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1955-56,All (Overseas+Coastal),1294.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1956-57,All (Overseas+Coastal),1464.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1957-58,All (Overseas+Coastal),2476.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1958-59,All (Overseas+Coastal),2485.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1959-60,All (Overseas+Coastal),2393.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1960-61,All (Overseas+Coastal),2763.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1961-62,All (Overseas+Coastal),2756.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1962-63,All (Overseas+Coastal),3121.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1963-64,All (Overseas+Coastal),3396.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1964-65,All (Overseas+Coastal),3742.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1965-66,All (Overseas+Coastal),4460.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1966-67,All (Overseas+Coastal),5878.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1967-68,All (Overseas+Coastal),6445.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1968-69,All (Overseas+Coastal),8050.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1969-70,All (Overseas+Coastal),8312.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1970-71,All (Overseas+Coastal),8733.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1971-72,All (Overseas+Coastal),8638.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1972-73,All (Overseas+Coastal),7409.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1973-74,All (Overseas+Coastal),7955.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1974-75,All (Overseas+Coastal),7149.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1975-76,All (Overseas+Coastal),8548.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1976-77,All (Overseas+Coastal),8698.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1977-78,All (Overseas+Coastal),9692.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1978-79,All (Overseas+Coastal),10047.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1979-80,All (Overseas+Coastal),10229.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1980-81,All (Overseas+Coastal),10123.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1981-82,All (Overseas+Coastal),10995.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1982-83,All (Overseas+Coastal),10216.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1983-84,All (Overseas+Coastal),9882.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1984-85,All (Overseas+Coastal),11082.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1985-86,All (Overseas+Coastal),15911.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1986-87,All (Overseas+Coastal),15035.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1987-88,All (Overseas+Coastal),15371.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1988-89,All (Overseas+Coastal),20372.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1989-90,All (Overseas+Coastal),21117.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1990-91,All (Overseas+Coastal),19421.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1991-92,All (Overseas+Coastal),21522.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1992-93,All (Overseas+Coastal),22765.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1993-94,All (Overseas+Coastal),25595.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1994-95,All (Overseas+Coastal),30029.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1995-96,All (Overseas+Coastal),32817.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1996-97,All (Overseas+Coastal),34498.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1997-98,All (Overseas+Coastal),36014.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1998-99,All (Overseas+Coastal),35654.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,1999-00,All (Overseas+Coastal),39510.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2000-01,All (Overseas+Coastal),44685.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2001-02,All (Overseas+Coastal),44344.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2002-03,All (Overseas+Coastal),46006.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2003-04,All (Overseas+Coastal),47736.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2004-05,All (Overseas+Coastal),50148.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2005-06,All (Overseas+Coastal),55801.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2006-07,All (Overseas+Coastal),56385.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2007-08,All (Overseas+Coastal),64597.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2008-09,All (Overseas+Coastal),63908.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2009-10,All (Overseas+Coastal),65501.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2010-11,All (Overseas+Coastal),68041.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2011-12,All (Overseas+Coastal),67420.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2012-13,All (Overseas+Coastal),59038.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2013-14,All (Overseas+Coastal),58504.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2014-15,All (Overseas+Coastal),58004.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2015-16,All (Overseas+Coastal),57035.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2016-17,All (Overseas+Coastal),61020.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2017-18,All (Overseas+Coastal),63537.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2018-19,All (Overseas+Coastal),65301.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+annual,Vishakhapatnam,2019-20,All (Overseas+Coastal),72722.0,"thousand tonnes (source unit, unconverted)",REAL,india_port_traffic_combined.csv
+monthly,All Major Ports,2026-January,Coastal,20457632.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-January,Overseas,62383625.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-January,Total,82841257.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-January,Coastal,486875.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-January,Overseas,4538651.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-January,Total,5025526.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-January,Coastal,1041618.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-January,Overseas,2137763.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-January,Total,3179381.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-January,Coastal,2204989.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-January,Overseas,12797805.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-January,Total,15002794.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-January,Coastal,795400.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-January,Overseas,8269500.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-January,Total,9064900.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-January,Coastal,1617573.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-January,Overseas,2282296.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-January,Total,3899869.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-January,Coastal,339734.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-January,Overseas,1795316.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-January,Total,2135050.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-January,Coastal,1900111.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-January,Overseas,4551306.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-January,Total,6451417.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-January,Coastal,1245734.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-January,Overseas,3474136.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-January,Total,4719870.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-January,Coastal,6117678.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-January,Overseas,8328726.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-January,Total,14446404.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-January,Coastal,362179.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-January,Overseas,6494547.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-January,Total,6856726.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-January,Coastal,330622.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-January,Overseas,4576768.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-January,Total,4907390.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-January,Coastal,31557.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-January,Overseas,1917779.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-January,Total,1949336.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-January,Coastal,996570.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-January,Overseas,3004794.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-January,Total,4001364.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-January,Coastal,3349171.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-January,Overseas,4708785.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-January,Total,8057956.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-February,Coastal,18090129.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-February,Overseas,56791530.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-February,Total,74881659.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-February,Coastal,293906.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-February,Overseas,4283662.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-February,Total,4577568.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-February,Coastal,979134.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-February,Overseas,1977516.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-February,Total,2956650.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-February,Coastal,1788661.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-February,Overseas,11054636.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-February,Total,12843297.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-February,Coastal,657600.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-February,Overseas,7694518.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-February,Total,8352118.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-February,Coastal,1720832.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-February,Overseas,2388506.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-February,Total,4109338.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-February,Coastal,315980.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-February,Overseas,1276644.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-February,Total,1592624.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-February,Coastal,1594689.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-February,Overseas,4427112.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-February,Total,6021801.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-February,Coastal,1116425.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-February,Overseas,3153859.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-February,Total,4270284.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-February,Coastal,6294264.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-February,Overseas,6307471.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-February,Total,12601735.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-February,Coastal,308354.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-February,Overseas,5883813.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-February,Total,6192167.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-February,Coastal,281650.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-February,Overseas,4158564.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-February,Total,4440214.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-February,Coastal,26704.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-February,Overseas,1725249.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-February,Total,1751953.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-February,Coastal,820589.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-February,Overseas,2879260.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-February,Total,3699849.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-February,Coastal,2199695.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-February,Overseas,5464533.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-February,Total,7664228.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-March,Coastal,22639488.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-March,Overseas,61671896.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-March,Total,84311384.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-March,Coastal,474652.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-March,Overseas,4292749.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-March,Total,4767401.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-March,Coastal,1242487.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-March,Overseas,2257239.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-March,Total,3499726.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-March,Coastal,2159107.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-March,Overseas,13861946.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-March,Total,16021053.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-March,Coastal,761312.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-March,Overseas,8400577.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-March,Total,9161889.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-March,Coastal,2014591.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-March,Overseas,2780406.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-March,Total,4794997.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-March,Coastal,590364.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-March,Overseas,1152124.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-March,Total,1742488.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-March,Coastal,2265125.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-March,Overseas,4157942.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-March,Total,6423067.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-March,Coastal,1291180.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-March,Overseas,2982451.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-March,Total,4273631.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-March,Coastal,6466238.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-March,Overseas,7677680.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-March,Total,14143918.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-March,Coastal,362516.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-March,Overseas,6321853.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-March,Total,6684369.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-March,Coastal,323677.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-March,Overseas,4538445.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-March,Total,4862122.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-March,Coastal,38839.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-March,Overseas,1783408.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-March,Total,1822247.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-March,Coastal,979083.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-March,Overseas,2658803.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-March,Total,3637886.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-March,Coastal,4032833.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-March,Overseas,5128126.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-March,Total,9160959.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-April,Coastal,19222431.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-April,Overseas,54537683.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-April,Total,73760114.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-April,Coastal,481667.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-April,Overseas,4049876.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-April,Total,4531543.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-April,Coastal,1032621.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-April,Overseas,1704804.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-April,Total,2737425.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-April,Coastal,1643993.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-April,Overseas,10105184.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-April,Total,11749177.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-April,Coastal,718752.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-April,Overseas,8898960.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-April,Total,9617712.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-April,Coastal,1990377.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-April,Overseas,2086000.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-April,Total,4076377.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-April,Coastal,315728.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-April,Overseas,1661792.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-April,Total,1977520.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-April,Coastal,1746015.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-April,Overseas,4341764.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-April,Total,6087779.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-April,Coastal,1264043.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-April,Overseas,2706963.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-April,Total,3971006.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-April,Coastal,6086515.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-April,Overseas,6521261.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-April,Total,12607776.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-April,Coastal,359790.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-April,Overseas,4849204.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-April,Total,5208994.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-April,Coastal,325989.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-April,Overseas,3255563.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-April,Total,3581552.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-April,Coastal,33801.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-April,Overseas,1593641.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-April,Total,1627442.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-April,Coastal,1213255.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-April,Overseas,2577468.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-April,Total,3790723.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-April,Coastal,2369675.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-April,Overseas,5034407.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-April,Total,7404082.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-May,Coastal,19086429.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-May,Overseas,61066827.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-May,Total,80153256.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-May,Coastal,574414.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-May,Overseas,4289112.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-May,Total,4863526.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-May,Coastal,879003.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-May,Overseas,2048261.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-May,Total,2927264.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-May,Coastal,1865671.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-May,Overseas,12410060.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-May,Total,14275731.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-May,Coastal,734189.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-May,Overseas,8820221.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-May,Total,9554410.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-May,Coastal,1871418.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-May,Overseas,2528635.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-May,Total,4400053.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-May,Coastal,266240.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-May,Overseas,1501070.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-May,Total,1767310.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-May,Coastal,1874271.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-May,Overseas,4426664.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-May,Total,6300935.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-May,Coastal,1629850.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-May,Overseas,2598185.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-May,Total,4228035.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-May,Coastal,5698898.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-May,Overseas,8407347.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-May,Total,14106245.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-May,Coastal,585165.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-May,Overseas,5158594.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-May,Total,5743759.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-May,Coastal,556155.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-May,Overseas,3737272.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-May,Total,4293427.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-May,Coastal,29010.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-May,Overseas,1421322.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-May,Total,1450332.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-May,Coastal,1125963.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-May,Overseas,2640970.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-May,Total,3766933.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-May,Coastal,1981347.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-May,Overseas,6237708.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-May,Total,8219055.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-June,Coastal,18779665.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-June,Overseas,60947825.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-June,Total,79727490.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-June,Coastal,534773.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-June,Overseas,4294926.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-June,Total,4829699.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-June,Coastal,926607.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-June,Overseas,2099937.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-June,Total,3026544.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-June,Coastal,1868269.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-June,Overseas,14862917.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-June,Total,16731186.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-June,Coastal,556346.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-June,Overseas,8111030.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-June,Total,8667376.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-June,Coastal,1860312.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-June,Overseas,2439687.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-June,Total,4299999.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-June,Coastal,133256.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-June,Overseas,1350433.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-June,Total,1483689.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-June,Coastal,2041175.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-June,Overseas,3762387.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-June,Total,5803562.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-June,Coastal,1263121.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-June,Overseas,2311283.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-June,Total,3574404.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-June,Coastal,5904607.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-June,Overseas,7046969.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-June,Total,12951576.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-June,Coastal,596778.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-June,Overseas,5693217.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-June,Total,6289995.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-June,Coastal,565147.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-June,Overseas,4112653.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-June,Total,4677800.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-June,Coastal,31631.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-June,Overseas,1580564.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-June,Total,1612195.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-June,Coastal,1044924.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-June,Overseas,2258427.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-June,Total,3303351.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-June,Coastal,2049497.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-June,Overseas,6716612.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-June,Total,8766109.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-July,Coastal,18485309.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-July,Overseas,60821895.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Major Ports,2026-July,Total,79307204.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-July,Coastal,376556.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-July,Overseas,4118740.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Chennai,2026-July,Total,4495296.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-July,Coastal,1144891.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-July,Overseas,2273785.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Cochin,2026-July,Total,3418676.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-July,Coastal,1983532.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-July,Overseas,14076924.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Deendayal,2026-July,Total,16060456.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-July,Coastal,526912.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-July,Overseas,8251081.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,JNPA,2026-July,Total,8777993.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-July,Coastal,1892134.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-July,Overseas,2587040.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kamarajar,2026-July,Total,4479174.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-July,Coastal,156901.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-July,Overseas,1262804.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mormugao,2026-July,Total,1419705.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-July,Coastal,1728082.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-July,Overseas,3906867.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Mumbai,2026-July,Total,5634949.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-July,Coastal,1247661.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-July,Overseas,2749638.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,New Mangalore,2026-July,Total,3997299.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-July,Coastal,5744370.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-July,Overseas,7246626.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Paradip,2026-July,Total,12990996.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-July,Coastal,475201.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-July,Overseas,5981099.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata,2026-July,Total,6456300.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-July,Coastal,441499.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-July,Overseas,4286460.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - HDC,2026-July,Total,4727959.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-July,Coastal,33702.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-July,Overseas,1694639.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,SMP Kolkata - KDS,2026-July,Total,1728341.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-July,Coastal,1088574.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-July,Overseas,2780450.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,V.O. Chidambaranar,2026-July,Total,3869024.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-July,Coastal,2120495.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-July,Overseas,5586841.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Visakhapatnam,2026-July,Total,7707336.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-January,Coastal,14263175.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-January,Overseas,51337861.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-January,Total,65601036.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-January,Coastal,157855.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-January,Overseas,1300.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-January,Total,159155.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-January,Coastal,3975625.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-January,Overseas,5105842.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-January,Total,9081467.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-January,Coastal,36456.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-January,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-January,Total,36456.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-January,Coastal,5768176.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-January,Overseas,38721816.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-January,Total,44489992.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-January,Coastal,50012.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-January,Overseas,36185.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-January,Total,86197.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-January,Coastal,12512.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-January,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-January,Total,12512.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-January,Coastal,17456.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-January,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-January,Total,17456.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-January,Coastal,3343331.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-January,Overseas,2096423.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-January,Total,5439754.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-January,Coastal,395670.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-January,Overseas,4029922.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-January,Total,4425592.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-January,Coastal,505280.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-January,Overseas,403573.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-January,Total,908853.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-January,Coastal,802.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-January,Overseas,942800.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-January,Total,943602.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-February,Coastal,9785022.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-February,Overseas,49987937.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-February,Total,59772959.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-February,Coastal,130288.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-February,Overseas,10530.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-February,Total,140818.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-February,Coastal,1423522.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-February,Overseas,6763606.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-February,Total,8187128.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-February,Coastal,79639.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-February,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-February,Total,79639.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-February,Coastal,4052081.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-February,Overseas,35278779.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-February,Total,39330860.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-February,Coastal,17699.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-February,Overseas,36694.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-February,Total,54393.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-February,Coastal,11234.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-February,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-February,Total,11234.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-February,Coastal,24566.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-February,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-February,Total,24566.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-February,Coastal,3208828.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-February,Overseas,2334092.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-February,Total,5542920.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-February,Coastal,435424.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-February,Overseas,4074540.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-February,Total,4509964.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-February,Coastal,357135.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-February,Overseas,576385.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-February,Total,933520.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-February,Coastal,44606.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-February,Overseas,913311.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-February,Total,957917.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-March,Coastal,13831082.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-March,Overseas,48277985.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-March,Total,62109067.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-March,Coastal,121059.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-March,Overseas,19412.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-March,Total,140471.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-March,Coastal,3310266.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-March,Overseas,6277222.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-March,Total,9587488.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-March,Coastal,122619.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-March,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-March,Total,122619.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-March,Coastal,4677633.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-March,Overseas,32941123.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-March,Total,37618756.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-March,Coastal,50131.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-March,Overseas,6212.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-March,Total,56343.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-March,Coastal,10035.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-March,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-March,Total,10035.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-March,Coastal,25433.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-March,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-March,Total,25433.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-March,Coastal,4258037.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-March,Overseas,2970512.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-March,Total,7228549.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-March,Coastal,674221.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-March,Overseas,4452815.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-March,Total,5127036.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-March,Coastal,505448.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-March,Overseas,658517.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-March,Total,1163965.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-March,Coastal,76200.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-March,Overseas,952172.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-March,Total,1028372.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-April,Coastal,12809101.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-April,Overseas,46698217.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-April,Total,59507318.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-April,Coastal,143675.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-April,Overseas,19421.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-April,Total,163096.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-April,Coastal,2999576.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-April,Overseas,6488488.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-April,Total,9488064.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-April,Coastal,97841.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-April,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-April,Total,97841.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-April,Coastal,4649271.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-April,Overseas,32616586.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-April,Total,37265857.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-April,Coastal,43868.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-April,Overseas,48992.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-April,Total,92860.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-April,Coastal,11527.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-April,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-April,Total,11527.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-April,Coastal,27801.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-April,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-April,Total,27801.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-April,Coastal,3688658.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-April,Overseas,2263279.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-April,Total,5951937.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-April,Coastal,683634.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-April,Overseas,3874678.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-April,Total,4558312.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-April,Coastal,386150.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-April,Overseas,513084.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-April,Total,899234.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-April,Coastal,77100.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-April,Overseas,873689.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-April,Total,950789.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-May,Coastal,13464458.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-May,Overseas,50796055.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-May,Total,64260513.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-May,Coastal,104472.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-May,Overseas,1100.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-May,Total,105572.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-May,Coastal,3229185.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-May,Overseas,6494272.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-May,Total,9723457.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-May,Coastal,28002.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-May,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-May,Total,28002.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-May,Coastal,4736691.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-May,Overseas,35859920.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-May,Total,40596611.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-May,Coastal,69317.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-May,Overseas,30780.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-May,Total,100097.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-May,Coastal,2789.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-May,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-May,Total,2789.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-May,Coastal,14309.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-May,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-May,Total,14309.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-May,Coastal,3969256.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-May,Overseas,2962786.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-May,Total,6932042.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-May,Coastal,617227.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-May,Overseas,4215630.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-May,Total,4832857.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-May,Coastal,617835.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-May,Overseas,385714.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-May,Total,1003549.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-May,Coastal,75375.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-May,Overseas,845853.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-May,Total,921228.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-June,Coastal,11713939.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-June,Overseas,49205868.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-June,Total,60919807.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-June,Coastal,94959.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-June,Overseas,18750.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-June,Total,113709.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-June,Coastal,3037733.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-June,Overseas,5998666.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-June,Total,9036399.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-June,Coastal,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-June,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-June,Total,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-June,Coastal,4171058.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-June,Overseas,35180935.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-June,Total,39351993.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-June,Coastal,10805.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-June,Overseas,18336.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-June,Total,29141.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-June,Coastal,1498.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-June,Overseas,1320.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-June,Total,2818.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-June,Coastal,5147.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-June,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-June,Total,5147.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-June,Coastal,3293952.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-June,Overseas,2356086.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-June,Total,5650038.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-June,Coastal,533526.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-June,Overseas,3995419.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-June,Total,4528945.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-June,Coastal,450998.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-June,Overseas,710977.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-June,Total,1161975.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-June,Coastal,114263.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-June,Overseas,925379.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-June,Total,1039642.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-July,Coastal,11745905.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-July,Overseas,50901224.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,All Non-Major Ports,2026-July,Total,62647129.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-July,Coastal,109077.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-July,Overseas,10751.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andaman & Nicobar Islands,2026-July,Total,119828.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-July,Coastal,3227118.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-July,Overseas,6751422.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Andhra Pradesh,2026-July,Total,9978540.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-July,Coastal,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-July,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Goa,2026-July,Total,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-July,Coastal,4331103.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-July,Overseas,37908172.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Gujarat (GMB),2026-July,Total,42239275.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-July,Coastal,10634.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-July,Overseas,52788.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Karnataka,2026-July,Total,63422.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-July,Coastal,4265.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-July,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Kerala (KMB),2026-July,Total,4265.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-July,Coastal,5677.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-July,Overseas,0.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Lakshadweep,2026-July,Total,5677.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-July,Coastal,2926253.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-July,Overseas,1789149.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Maharashtra (MMB),2026-July,Total,4715402.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-July,Coastal,597412.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-July,Overseas,3315199.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Odisha,2026-July,Total,3912611.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-July,Coastal,463513.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-July,Overseas,221220.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Puducherry,2026-July,Total,684733.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-July,Coastal,70853.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-July,Overseas,852523.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv
+monthly,Tamil Nadu (TNMB),2026-July,Total,923376.0,"thousand tonnes (source unit, unconverted)",REAL,india_cargo_traffic_monthly.csv

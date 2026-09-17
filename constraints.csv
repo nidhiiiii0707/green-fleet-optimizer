@@ -1,0 +1,11 @@
+name,formula,data_source,status
+cargo_demand_fulfillment,sum(cargo_tons over legs serving a port) >= demand_target[port],cargo_demand_derived.csv (real annual Indian port traffic used as an illustrative demand target),REAL/SCENARIO_INPUT
+vessel_capacity_dwt,cargo_tons <= capacity_tons[vessel_class],DERIVED capacity_tons (data_layer.py) from fleet_parameters.csv means,DERIVED
+vessel_availability_eligibility,vessel_class in AVAILABLE_CLASSES (all 4 observed classes assumed always available),fleet_parameters.csv,SCENARIO_INPUT (availability calendar not present)
+vessel_fuel_compatibility,fuel_type in SCENARIO_VESSEL_FUEL_COMPATIBILITY[vessel_class],data_layer.py SCENARIO_VESSEL_FUEL_COMPATIBILITY,SCENARIO_INPUT (no real compatibility table)
+speed_bounds,speed_min_kn[vessel_class] <= speed_knots <= speed_max_kn[vessel_class],fleet_parameters.csv (REAL observed min/max),REAL
+route_feasibility,route in route_derived.csv (real port-pair rows only),route_derived.csv,DERIVED
+voyage_deadline,distance_nm / speed_knots <= deadline_hours,route_derived.csv distance_nm (DERIVED); deadline_hours = SCENARIO_VOYAGE_DEADLINE_MULTIPLIER * nominal voyage time,DERIVED/SCENARIO_INPUT
+draft_vs_port_depth,draft_m[vessel_class] <= port_depth_m[port],port_master_derived.csv has no physical depth in metres (only lat/lon),"UNAVAILABLE (checker reports UNAVAILABLE, never fabricates pass/fail)"
+port_capacity,planned_port_flow_tons <= port_capacity_tons,no rated port throughput capacity exists in processed data,UNAVAILABLE (checker reports UNAVAILABLE)
+fuel_availability,fuel_type in available_fuel_types[port],data_layer.py SCENARIO_PORT_FUEL_AVAILABILITY (assumed both fuels available everywhere),SCENARIO_INPUT

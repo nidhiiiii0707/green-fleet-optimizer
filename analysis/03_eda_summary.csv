@@ -1,0 +1,36 @@
+group,feature,pearson_r_with_target,spearman_r_with_target
+Speed,Ship_SpeedOverGround,0.8894,0.9445
+Speed,Ship_SpeedThroughWater,0.8924,0.918
+Heading/Route,Ship_Heading,0.0825,0.0476
+Heading/Route,Ship_Bearing,0.1296,0.0998
+Heading/Route,Environment_SeaFloorDepth,0.2654,0.3607
+Wind,Weather_WindSpeed10M,0.4055,0.3933
+Wind,Weather_WindGusts10M,0.2185,0.1882
+Wind,Weather_WindDirection10M,-0.0893,-0.0556
+Waves,Weather_WaveHeight,0.3938,0.3763
+Waves,Weather_WavePeriod,0.25,0.1761
+Waves,Weather_WaveDirection,-0.1305,-0.0943
+Waves,Weather_SwellWaveHeight,0.3589,0.3362
+Waves,Weather_SwellWavePeriod,0.3193,0.2508
+Waves,Weather_SwellWavePeakPeriod,0.2092,0.1755
+Waves,Weather_SwellWaveDirection,-0.13,-0.0959
+Waves,Weather_WindWaveHeight,0.318,0.3432
+Waves,Weather_WindWavePeriod,0.3582,0.3374
+Waves,Weather_WindWavePeakPeriod,0.3656,0.3608
+Waves,Weather_WindWaveDirection,-0.1584,-0.1471
+Current,Weather_OceanCurrentVelocity,0.1308,0.2734
+Current,Weather_OceanCurrentDirection,0.094,0.0734
+Atmosphere/Other,Weather_Temperature2M,0.1253,0.1189
+Atmosphere/Other,Weather_SurfacePressure,-0.0882,-0.0928
+Atmosphere/Other,Weather_RelativeHumidity2M,0.3512,0.3623
+Atmosphere/Other,Weather_Precipitation,0.0734,0.0955
+Atmosphere/Other,Weather_WeatherCode,0.0685,0.0314
+Radiation (low physical expectation),Weather_DiffuseRadiation,-0.2507,-0.3411
+Radiation (low physical expectation),Weather_DirectNormalIrradiance,-0.0931,-0.3012
+Radiation (low physical expectation),Weather_DirectRadiation,-0.18,-0.3112
+Radiation (low physical expectation),Weather_ShortwaveRadiation,-0.221,-0.33
+Radiation (low physical expectation),Weather_SunshineDuration,-0.224,-0.2972
+(excluded) Internal engine/propulsion telemetry,Consumer_Total_ShaftPower,0.9604,0.9349
+(excluded) Internal engine/propulsion telemetry,Propeller_Total_ShaftPower,0.9272,0.9062
+(excluded) Internal engine/propulsion telemetry,Propeller_Port_ShaftPower,0.9605,0.9308
+(excluded) Internal engine/propulsion telemetry,Propeller_Starboard_ShaftPower,0.8608,0.8002

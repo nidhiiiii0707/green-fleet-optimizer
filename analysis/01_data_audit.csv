@@ -1,0 +1,79 @@
+column,dtype,n_missing,pct_missing,n_unique,min,max,mean
+Consumer_Boiler1_MomentaryFuel,float64,0,0.0,14468,0.0,0.1103871841430664,0.0065780247289712965
+Consumer_Boiler2_MomentaryFuel,float64,0,0.0,18140,0.0,0.1198755577935112,0.006059061502534301
+Consumer_GeneratorEngine1_MomentaryFuel,float64,0,0.0,47499,0.0,0.5672262505425347,0.16602920208953822
+Consumer_GeneratorEngine1_RotationSpeed,float64,0,0.0,1933,0.0,516.8,222.4273427273245
+Consumer_GeneratorEngine1_ShaftPower,float64,0,0.0,21716,0.0,9268800.0,2859684.634137087
+Consumer_GeneratorEngine2_MomentaryFuel,float64,0,0.0,47954,0.0,0.5398534986707899,0.1645207653653241
+Consumer_GeneratorEngine2_RotationSpeed,float64,0,0.0,2022,0.0,518.8,210.63366825710006
+Consumer_GeneratorEngine2_ShaftPower,float64,0,0.0,20925,0.0,9346200.0,2794235.957153156
+Consumer_GeneratorEngine3_MomentaryFuel,float64,0,0.0,32852,0.0,0.5365765719943576,0.11545451030174676
+Consumer_GeneratorEngine3_RotationSpeed,float64,0,0.0,1651,0.0,516.0,158.3471872569293
+Consumer_GeneratorEngine3_ShaftPower,float64,0,0.0,18699,0.0,9332200.0,1994023.2836441477
+Consumer_GeneratorEngine4_MomentaryFuel,float64,0,0.0,66414,0.0,0.5601899414062501,0.2034777390524025
+Consumer_GeneratorEngine4_RotationSpeed,float64,0,0.0,1714,0.0,516.4,265.59400741780655
+Consumer_GeneratorEngine4_ShaftPower,float64,0,0.0,24297,0.0,9160000.0,3434111.1447325987
+Consumer_GeneratorEngine5_MomentaryFuel,float64,0,0.0,35983,0.0,0.5220586615668402,0.12036485053218973
+Consumer_GeneratorEngine5_RotationSpeed,float64,0,0.0,1489,0.0,517.0,164.28716389052252
+Consumer_GeneratorEngine5_ShaftPower,float64,0,0.0,18770,0.0,9198400.0,2087134.4457671707
+Consumer_Total_MomentaryFuel,float64,0,0.0,105355,0.0,2.3915961574978297,0.782055215225369
+Consumer_Total_ShaftPower,float64,0,0.0,55414,0.0,41805833.33333333,12932854.179077104
+Environment_SeaFloorDepth,float64,0,0.0,75304,5.624309801545898,347.3270517757646,126.74469199307329
+Propeller_Port_RotationSpeed,float64,0,0.0,29057,0.0,136.75979919433593,56.657887507108015
+Propeller_Port_ShaftPower,float64,0,0.0,65875,0.0,17075084.0,3644915.042066489
+Propeller_Port_ShaftTorque,float64,0,0.0,62972,528.1799926757812,1197997.525,362794.18628722185
+Propeller_Starboard_RotationSpeed,float64,0,0.0,25454,0.0,200.0,48.702022999960455
+Propeller_Starboard_ShaftPower,float64,0,0.0,55884,0.0,16794771.5,3184077.4438641053
+Propeller_Starboard_ShaftTorque,float64,0,0.0,72667,0.0,1184774.53125,314194.3590825773
+Propeller_Total_ShaftPower,float64,0,0.0,63283,0.0,33863171.5,6339359.033227885
+Ship_Bearing,float64,0,0.0,90663,0.0,359.99999999972607,180.4395527433722
+Ship_Heading,float64,0,0.0,35740,0.0,359.8399963378906,184.83997209120437
+Ship_SpeedOverGround,float64,0,0.0,5844,0.0,12.09973316192627,4.900504172254389
+Ship_SpeedThroughWater,float64,0,0.0,6734,0.0,12.398111343383787,5.04849292376474
+Weather_DiffuseRadiation,float64,0,0.0,11707,0.0,492.0,81.11131618637476
+Weather_DirectNormalIrradiance,float64,0,0.0,43830,0.0,46803.0,221.98091238862224
+Weather_DirectRadiation,float64,0,0.0,16174,-0.4,878.0,140.68524849335685
+Weather_OceanCurrentDirection,float64,0,0.0,13197,0.0,357.0,182.20582792649222
+Weather_OceanCurrentVelocity,float64,0,0.0,10376,0.0,2.14,0.2644861169079193
+Weather_Precipitation,float64,0,0.0,2205,0.0,8.2,0.13949942453504327
+Weather_RelativeHumidity2M,float64,0,0.0,3185,7.0,100.0,74.43701939190429
+Weather_ShortwaveRadiation,float64,0,0.0,18422,0.0,1012.0,221.79637117173516
+Weather_SunshineDuration,float64,0,0.0,14772,0.0,3600.0,1490.977521765697
+Weather_SurfacePressure,float64,0,0.0,6209,885.7,1025.7,1013.3755638449912
+Weather_SwellWaveDirection,float64,0,0.0,7074,0.0,359.0,174.4450589061107
+Weather_SwellWaveHeight,float64,0,0.0,4702,0.02,4.46,0.5877537183889511
+Weather_SwellWavePeakPeriod,float64,0,0.0,5890,0.0,21.75,6.573321132369587
+Weather_SwellWavePeriod,float64,0,0.0,5912,1.4,16.8,5.438244369454826
+Weather_Temperature2M,float64,0,0.0,5724,11.5,43.0,25.192317345209414
+Weather_WaveDirection,float64,0,0.0,7003,0.0,359.0,172.81802817881152
+Weather_WaveHeight,float64,0,0.0,4923,0.02,4.48,0.7200057941732593
+Weather_WavePeriod,float64,0,0.0,5885,1.5,16.7,5.288481808035009
+Weather_WeatherCode,float64,0,0.0,1649,0.0,96.0,11.460741116654967
+Weather_WindDirection10M,float64,0,0.0,8053,1.0,360.0,159.67387657857623
+Weather_WindGusts10M,float64,0,0.0,5811,0.3,25.1,6.277337826386649
+Weather_WindSpeed10M,float64,0,0.0,19420,0.0,16.98,3.736341730536953
+Weather_WindWaveDirection,float64,0,0.0,7424,0.0,359.0,165.86228206636187
+Weather_WindWaveHeight,float64,0,0.0,4153,0.0,3.62,0.267083783903423
+Weather_WindWavePeakPeriod,float64,0,0.0,4378,0.7,9.3,2.2899066964201023
+Weather_WindWavePeriod,float64,0,0.0,4831,0.0,7.15,1.848327634016935
+index,int64,0,0.0,105422,0.0,105421.0,52710.5
+MISSING_FIELD_COUNT,int64,0,0.0,14,0.0,54.0,1.0608032478989204
+Consumer_Boiler1_FuelType_DM,int64,0,0.0,2,0.0,1.0,0.6967615867655708
+Consumer_Boiler1_FuelType_RM 380,int64,0,0.0,2,0.0,1.0,0.30323841323442924
+Consumer_Boiler2_FuelType_DM,int64,0,0.0,2,0.0,1.0,0.6967615867655708
+Consumer_Boiler2_FuelType_RM 380,int64,0,0.0,2,0.0,1.0,0.30323841323442924
+Consumer_GeneratorEngine1_FuelType_DM,int64,0,0.0,2,0.0,1.0,0.30063933524311814
+Consumer_GeneratorEngine1_FuelType_RM 180,int64,0,0.0,2,0.0,1.0,0.009665914135569425
+Consumer_GeneratorEngine1_FuelType_RM 380,int64,0,0.0,2,0.0,1.0,0.6896947506213125
+Consumer_GeneratorEngine2_FuelType_DM,int64,0,0.0,2,0.0,1.0,0.353626377795906
+Consumer_GeneratorEngine2_FuelType_RM 180,int64,0,0.0,2,0.0,1.0,0.006848665363965775
+Consumer_GeneratorEngine2_FuelType_RM 380,int64,0,0.0,2,0.0,1.0,0.6395249568401282
+Consumer_GeneratorEngine3_FuelType_DM,int64,0,0.0,2,0.0,1.0,0.3500502741363283
+Consumer_GeneratorEngine3_FuelType_RM 180,int64,0,0.0,2,0.0,1.0,0.012615962512568534
+Consumer_GeneratorEngine3_FuelType_RM 380,int64,0,0.0,2,0.0,1.0,0.6373337633511031
+Consumer_GeneratorEngine4_FuelType_DM,int64,0,0.0,2,0.0,1.0,0.3496139325757432
+Consumer_GeneratorEngine4_FuelType_RM 180,int64,0,0.0,2,0.0,1.0,0.011667393902600975
+Consumer_GeneratorEngine4_FuelType_RM 380,int64,0,0.0,2,0.0,1.0,0.6387186735216558
+Consumer_GeneratorEngine5_FuelType_DM,int64,0,0.0,2,0.0,1.0,0.3496898180645406
+Consumer_GeneratorEngine5_FuelType_RM 180,int64,0,0.0,2,0.0,1.0,0.01552806814516894
+Consumer_GeneratorEngine5_FuelType_RM 380,int64,0,0.0,2,0.0,1.0,0.6347821137902905

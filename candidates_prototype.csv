@@ -1,0 +1,253 @@
+candidate_id,leg_id,vessel_class,origin_port,dest_port,distance_nm,speed_knots,fuel_type,cargo_tons,telemetry_row_id
+C0000,Yohohama->Nagoya,Bulk Carrier,Yohohama,Nagoya,137.46,10.01,DM,675.3965080634413,0
+C0001,Yohohama->Nagoya,Bulk Carrier,Yohohama,Nagoya,137.46,10.01,DM,1215.7137145141944,1
+C0002,Yohohama->Nagoya,Bulk Carrier,Yohohama,Nagoya,137.46,10.01,RM380,675.3965080634413,2
+C0003,Yohohama->Nagoya,Bulk Carrier,Yohohama,Nagoya,137.46,10.01,RM380,1215.7137145141944,3
+C0004,Yohohama->Nagoya,Bulk Carrier,Yohohama,Nagoya,137.46,17.72,DM,675.3965080634413,4
+C0005,Yohohama->Nagoya,Bulk Carrier,Yohohama,Nagoya,137.46,17.72,DM,1215.7137145141944,5
+C0006,Yohohama->Nagoya,Bulk Carrier,Yohohama,Nagoya,137.46,17.72,RM380,675.3965080634413,6
+C0007,Yohohama->Nagoya,Bulk Carrier,Yohohama,Nagoya,137.46,17.72,RM380,1215.7137145141944,7
+C0008,Yohohama->Nagoya,Bulk Carrier,Yohohama,Nagoya,137.46,24.99,DM,675.3965080634413,8
+C0009,Yohohama->Nagoya,Bulk Carrier,Yohohama,Nagoya,137.46,24.99,DM,1215.7137145141944,9
+C0010,Yohohama->Nagoya,Bulk Carrier,Yohohama,Nagoya,137.46,24.99,RM380,675.3965080634413,10
+C0011,Yohohama->Nagoya,Bulk Carrier,Yohohama,Nagoya,137.46,24.99,RM380,1215.7137145141944,11
+C0012,Yohohama->Nagoya,Container Ship,Yohohama,Nagoya,137.46,10.06,DM,686.6403003083523,12
+C0013,Yohohama->Nagoya,Container Ship,Yohohama,Nagoya,137.46,10.06,DM,1235.9525405550341,13
+C0014,Yohohama->Nagoya,Container Ship,Yohohama,Nagoya,137.46,10.06,RM380,686.6403003083523,14
+C0015,Yohohama->Nagoya,Container Ship,Yohohama,Nagoya,137.46,10.06,RM380,1235.9525405550341,15
+C0016,Yohohama->Nagoya,Container Ship,Yohohama,Nagoya,137.46,17.54,DM,686.6403003083523,16
+C0017,Yohohama->Nagoya,Container Ship,Yohohama,Nagoya,137.46,17.54,DM,1235.9525405550341,17
+C0018,Yohohama->Nagoya,Container Ship,Yohohama,Nagoya,137.46,17.54,RM380,686.6403003083523,18
+C0019,Yohohama->Nagoya,Container Ship,Yohohama,Nagoya,137.46,17.54,RM380,1235.9525405550341,19
+C0020,Yohohama->Nagoya,Container Ship,Yohohama,Nagoya,137.46,24.92,DM,686.6403003083523,20
+C0021,Yohohama->Nagoya,Container Ship,Yohohama,Nagoya,137.46,24.92,DM,1235.9525405550341,21
+C0022,Yohohama->Nagoya,Container Ship,Yohohama,Nagoya,137.46,24.92,RM380,686.6403003083523,22
+C0023,Yohohama->Nagoya,Container Ship,Yohohama,Nagoya,137.46,24.92,RM380,1235.9525405550341,23
+C0024,Yohohama->Nagoya,Fish Carrier,Yohohama,Nagoya,137.46,10.03,DM,698.01227321238,24
+C0025,Yohohama->Nagoya,Fish Carrier,Yohohama,Nagoya,137.46,10.03,DM,1256.422091782284,25
+C0026,Yohohama->Nagoya,Fish Carrier,Yohohama,Nagoya,137.46,17.41,DM,698.01227321238,26
+C0027,Yohohama->Nagoya,Fish Carrier,Yohohama,Nagoya,137.46,17.41,DM,1256.422091782284,27
+C0028,Yohohama->Nagoya,Fish Carrier,Yohohama,Nagoya,137.46,25.0,DM,698.01227321238,28
+C0029,Yohohama->Nagoya,Fish Carrier,Yohohama,Nagoya,137.46,25.0,DM,1256.422091782284,29
+C0030,Yohohama->Nagoya,Tanker,Yohohama,Nagoya,137.46,10.09,DM,684.6767810026386,30
+C0031,Yohohama->Nagoya,Tanker,Yohohama,Nagoya,137.46,10.09,DM,1232.4182058047495,31
+C0032,Yohohama->Nagoya,Tanker,Yohohama,Nagoya,137.46,10.09,RM380,684.6767810026386,32
+C0033,Yohohama->Nagoya,Tanker,Yohohama,Nagoya,137.46,10.09,RM380,1232.4182058047495,33
+C0034,Yohohama->Nagoya,Tanker,Yohohama,Nagoya,137.46,17.83,DM,684.6767810026386,34
+C0035,Yohohama->Nagoya,Tanker,Yohohama,Nagoya,137.46,17.83,DM,1232.4182058047495,35
+C0036,Yohohama->Nagoya,Tanker,Yohohama,Nagoya,137.46,17.83,RM380,684.6767810026386,36
+C0037,Yohohama->Nagoya,Tanker,Yohohama,Nagoya,137.46,17.83,RM380,1232.4182058047495,37
+C0038,Yohohama->Nagoya,Tanker,Yohohama,Nagoya,137.46,24.98,DM,684.6767810026386,38
+C0039,Yohohama->Nagoya,Tanker,Yohohama,Nagoya,137.46,24.98,DM,1232.4182058047495,39
+C0040,Yohohama->Nagoya,Tanker,Yohohama,Nagoya,137.46,24.98,RM380,684.6767810026386,40
+C0041,Yohohama->Nagoya,Tanker,Yohohama,Nagoya,137.46,24.98,RM380,1232.4182058047495,41
+C0042,Yohohama->Busan,Bulk Carrier,Yohohama,Busan,828.46,10.01,DM,675.3965080634413,42
+C0043,Yohohama->Busan,Bulk Carrier,Yohohama,Busan,828.46,10.01,DM,1215.7137145141944,43
+C0044,Yohohama->Busan,Bulk Carrier,Yohohama,Busan,828.46,10.01,RM380,675.3965080634413,44
+C0045,Yohohama->Busan,Bulk Carrier,Yohohama,Busan,828.46,10.01,RM380,1215.7137145141944,45
+C0046,Yohohama->Busan,Bulk Carrier,Yohohama,Busan,828.46,17.72,DM,675.3965080634413,46
+C0047,Yohohama->Busan,Bulk Carrier,Yohohama,Busan,828.46,17.72,DM,1215.7137145141944,47
+C0048,Yohohama->Busan,Bulk Carrier,Yohohama,Busan,828.46,17.72,RM380,675.3965080634413,48
+C0049,Yohohama->Busan,Bulk Carrier,Yohohama,Busan,828.46,17.72,RM380,1215.7137145141944,49
+C0050,Yohohama->Busan,Bulk Carrier,Yohohama,Busan,828.46,24.99,DM,675.3965080634413,50
+C0051,Yohohama->Busan,Bulk Carrier,Yohohama,Busan,828.46,24.99,DM,1215.7137145141944,51
+C0052,Yohohama->Busan,Bulk Carrier,Yohohama,Busan,828.46,24.99,RM380,675.3965080634413,52
+C0053,Yohohama->Busan,Bulk Carrier,Yohohama,Busan,828.46,24.99,RM380,1215.7137145141944,53
+C0054,Yohohama->Busan,Container Ship,Yohohama,Busan,828.46,10.06,DM,686.6403003083523,54
+C0055,Yohohama->Busan,Container Ship,Yohohama,Busan,828.46,10.06,DM,1235.9525405550341,55
+C0056,Yohohama->Busan,Container Ship,Yohohama,Busan,828.46,10.06,RM380,686.6403003083523,56
+C0057,Yohohama->Busan,Container Ship,Yohohama,Busan,828.46,10.06,RM380,1235.9525405550341,57
+C0058,Yohohama->Busan,Container Ship,Yohohama,Busan,828.46,17.54,DM,686.6403003083523,58
+C0059,Yohohama->Busan,Container Ship,Yohohama,Busan,828.46,17.54,DM,1235.9525405550341,59
+C0060,Yohohama->Busan,Container Ship,Yohohama,Busan,828.46,17.54,RM380,686.6403003083523,60
+C0061,Yohohama->Busan,Container Ship,Yohohama,Busan,828.46,17.54,RM380,1235.9525405550341,61
+C0062,Yohohama->Busan,Container Ship,Yohohama,Busan,828.46,24.92,DM,686.6403003083523,62
+C0063,Yohohama->Busan,Container Ship,Yohohama,Busan,828.46,24.92,DM,1235.9525405550341,63
+C0064,Yohohama->Busan,Container Ship,Yohohama,Busan,828.46,24.92,RM380,686.6403003083523,64
+C0065,Yohohama->Busan,Container Ship,Yohohama,Busan,828.46,24.92,RM380,1235.9525405550341,65
+C0066,Yohohama->Busan,Fish Carrier,Yohohama,Busan,828.46,10.03,DM,698.01227321238,66
+C0067,Yohohama->Busan,Fish Carrier,Yohohama,Busan,828.46,10.03,DM,1256.422091782284,67
+C0068,Yohohama->Busan,Fish Carrier,Yohohama,Busan,828.46,17.41,DM,698.01227321238,68
+C0069,Yohohama->Busan,Fish Carrier,Yohohama,Busan,828.46,17.41,DM,1256.422091782284,69
+C0070,Yohohama->Busan,Fish Carrier,Yohohama,Busan,828.46,25.0,DM,698.01227321238,70
+C0071,Yohohama->Busan,Fish Carrier,Yohohama,Busan,828.46,25.0,DM,1256.422091782284,71
+C0072,Yohohama->Busan,Tanker,Yohohama,Busan,828.46,10.09,DM,684.6767810026386,72
+C0073,Yohohama->Busan,Tanker,Yohohama,Busan,828.46,10.09,DM,1232.4182058047495,73
+C0074,Yohohama->Busan,Tanker,Yohohama,Busan,828.46,10.09,RM380,684.6767810026386,74
+C0075,Yohohama->Busan,Tanker,Yohohama,Busan,828.46,10.09,RM380,1232.4182058047495,75
+C0076,Yohohama->Busan,Tanker,Yohohama,Busan,828.46,17.83,DM,684.6767810026386,76
+C0077,Yohohama->Busan,Tanker,Yohohama,Busan,828.46,17.83,DM,1232.4182058047495,77
+C0078,Yohohama->Busan,Tanker,Yohohama,Busan,828.46,17.83,RM380,684.6767810026386,78
+C0079,Yohohama->Busan,Tanker,Yohohama,Busan,828.46,17.83,RM380,1232.4182058047495,79
+C0080,Yohohama->Busan,Tanker,Yohohama,Busan,828.46,24.98,DM,684.6767810026386,80
+C0081,Yohohama->Busan,Tanker,Yohohama,Busan,828.46,24.98,DM,1232.4182058047495,81
+C0082,Yohohama->Busan,Tanker,Yohohama,Busan,828.46,24.98,RM380,684.6767810026386,82
+C0083,Yohohama->Busan,Tanker,Yohohama,Busan,828.46,24.98,RM380,1232.4182058047495,83
+C0084,Yohohama->Shanghai,Bulk Carrier,Yohohama,Shanghai,928.4,10.01,DM,675.3965080634413,84
+C0085,Yohohama->Shanghai,Bulk Carrier,Yohohama,Shanghai,928.4,10.01,DM,1215.7137145141944,85
+C0086,Yohohama->Shanghai,Bulk Carrier,Yohohama,Shanghai,928.4,10.01,RM380,675.3965080634413,86
+C0087,Yohohama->Shanghai,Bulk Carrier,Yohohama,Shanghai,928.4,10.01,RM380,1215.7137145141944,87
+C0088,Yohohama->Shanghai,Bulk Carrier,Yohohama,Shanghai,928.4,17.72,DM,675.3965080634413,88
+C0089,Yohohama->Shanghai,Bulk Carrier,Yohohama,Shanghai,928.4,17.72,DM,1215.7137145141944,89
+C0090,Yohohama->Shanghai,Bulk Carrier,Yohohama,Shanghai,928.4,17.72,RM380,675.3965080634413,90
+C0091,Yohohama->Shanghai,Bulk Carrier,Yohohama,Shanghai,928.4,17.72,RM380,1215.7137145141944,91
+C0092,Yohohama->Shanghai,Bulk Carrier,Yohohama,Shanghai,928.4,24.99,DM,675.3965080634413,92
+C0093,Yohohama->Shanghai,Bulk Carrier,Yohohama,Shanghai,928.4,24.99,DM,1215.7137145141944,93
+C0094,Yohohama->Shanghai,Bulk Carrier,Yohohama,Shanghai,928.4,24.99,RM380,675.3965080634413,94
+C0095,Yohohama->Shanghai,Bulk Carrier,Yohohama,Shanghai,928.4,24.99,RM380,1215.7137145141944,95
+C0096,Yohohama->Shanghai,Container Ship,Yohohama,Shanghai,928.4,10.06,DM,686.6403003083523,96
+C0097,Yohohama->Shanghai,Container Ship,Yohohama,Shanghai,928.4,10.06,DM,1235.9525405550341,97
+C0098,Yohohama->Shanghai,Container Ship,Yohohama,Shanghai,928.4,10.06,RM380,686.6403003083523,98
+C0099,Yohohama->Shanghai,Container Ship,Yohohama,Shanghai,928.4,10.06,RM380,1235.9525405550341,99
+C0100,Yohohama->Shanghai,Container Ship,Yohohama,Shanghai,928.4,17.54,DM,686.6403003083523,100
+C0101,Yohohama->Shanghai,Container Ship,Yohohama,Shanghai,928.4,17.54,DM,1235.9525405550341,101
+C0102,Yohohama->Shanghai,Container Ship,Yohohama,Shanghai,928.4,17.54,RM380,686.6403003083523,102
+C0103,Yohohama->Shanghai,Container Ship,Yohohama,Shanghai,928.4,17.54,RM380,1235.9525405550341,103
+C0104,Yohohama->Shanghai,Container Ship,Yohohama,Shanghai,928.4,24.92,DM,686.6403003083523,104
+C0105,Yohohama->Shanghai,Container Ship,Yohohama,Shanghai,928.4,24.92,DM,1235.9525405550341,105
+C0106,Yohohama->Shanghai,Container Ship,Yohohama,Shanghai,928.4,24.92,RM380,686.6403003083523,106
+C0107,Yohohama->Shanghai,Container Ship,Yohohama,Shanghai,928.4,24.92,RM380,1235.9525405550341,107
+C0108,Yohohama->Shanghai,Fish Carrier,Yohohama,Shanghai,928.4,10.03,DM,698.01227321238,108
+C0109,Yohohama->Shanghai,Fish Carrier,Yohohama,Shanghai,928.4,10.03,DM,1256.422091782284,109
+C0110,Yohohama->Shanghai,Fish Carrier,Yohohama,Shanghai,928.4,17.41,DM,698.01227321238,110
+C0111,Yohohama->Shanghai,Fish Carrier,Yohohama,Shanghai,928.4,17.41,DM,1256.422091782284,111
+C0112,Yohohama->Shanghai,Fish Carrier,Yohohama,Shanghai,928.4,25.0,DM,698.01227321238,112
+C0113,Yohohama->Shanghai,Fish Carrier,Yohohama,Shanghai,928.4,25.0,DM,1256.422091782284,113
+C0114,Yohohama->Shanghai,Tanker,Yohohama,Shanghai,928.4,10.09,DM,684.6767810026386,114
+C0115,Yohohama->Shanghai,Tanker,Yohohama,Shanghai,928.4,10.09,DM,1232.4182058047495,115
+C0116,Yohohama->Shanghai,Tanker,Yohohama,Shanghai,928.4,10.09,RM380,684.6767810026386,116
+C0117,Yohohama->Shanghai,Tanker,Yohohama,Shanghai,928.4,10.09,RM380,1232.4182058047495,117
+C0118,Yohohama->Shanghai,Tanker,Yohohama,Shanghai,928.4,17.83,DM,684.6767810026386,118
+C0119,Yohohama->Shanghai,Tanker,Yohohama,Shanghai,928.4,17.83,DM,1232.4182058047495,119
+C0120,Yohohama->Shanghai,Tanker,Yohohama,Shanghai,928.4,17.83,RM380,684.6767810026386,120
+C0121,Yohohama->Shanghai,Tanker,Yohohama,Shanghai,928.4,17.83,RM380,1232.4182058047495,121
+C0122,Yohohama->Shanghai,Tanker,Yohohama,Shanghai,928.4,24.98,DM,684.6767810026386,122
+C0123,Yohohama->Shanghai,Tanker,Yohohama,Shanghai,928.4,24.98,DM,1232.4182058047495,123
+C0124,Yohohama->Shanghai,Tanker,Yohohama,Shanghai,928.4,24.98,RM380,684.6767810026386,124
+C0125,Yohohama->Shanghai,Tanker,Yohohama,Shanghai,928.4,24.98,RM380,1232.4182058047495,125
+C0126,Yohohama->Hong Kong,Bulk Carrier,Yohohama,Hong Kong,1547.58,10.01,DM,675.3965080634413,126
+C0127,Yohohama->Hong Kong,Bulk Carrier,Yohohama,Hong Kong,1547.58,10.01,DM,1215.7137145141944,127
+C0128,Yohohama->Hong Kong,Bulk Carrier,Yohohama,Hong Kong,1547.58,10.01,RM380,675.3965080634413,128
+C0129,Yohohama->Hong Kong,Bulk Carrier,Yohohama,Hong Kong,1547.58,10.01,RM380,1215.7137145141944,129
+C0130,Yohohama->Hong Kong,Bulk Carrier,Yohohama,Hong Kong,1547.58,17.72,DM,675.3965080634413,130
+C0131,Yohohama->Hong Kong,Bulk Carrier,Yohohama,Hong Kong,1547.58,17.72,DM,1215.7137145141944,131
+C0132,Yohohama->Hong Kong,Bulk Carrier,Yohohama,Hong Kong,1547.58,17.72,RM380,675.3965080634413,132
+C0133,Yohohama->Hong Kong,Bulk Carrier,Yohohama,Hong Kong,1547.58,17.72,RM380,1215.7137145141944,133
+C0134,Yohohama->Hong Kong,Bulk Carrier,Yohohama,Hong Kong,1547.58,24.99,DM,675.3965080634413,134
+C0135,Yohohama->Hong Kong,Bulk Carrier,Yohohama,Hong Kong,1547.58,24.99,DM,1215.7137145141944,135
+C0136,Yohohama->Hong Kong,Bulk Carrier,Yohohama,Hong Kong,1547.58,24.99,RM380,675.3965080634413,136
+C0137,Yohohama->Hong Kong,Bulk Carrier,Yohohama,Hong Kong,1547.58,24.99,RM380,1215.7137145141944,137
+C0138,Yohohama->Hong Kong,Container Ship,Yohohama,Hong Kong,1547.58,10.06,DM,686.6403003083523,138
+C0139,Yohohama->Hong Kong,Container Ship,Yohohama,Hong Kong,1547.58,10.06,DM,1235.9525405550341,139
+C0140,Yohohama->Hong Kong,Container Ship,Yohohama,Hong Kong,1547.58,10.06,RM380,686.6403003083523,140
+C0141,Yohohama->Hong Kong,Container Ship,Yohohama,Hong Kong,1547.58,10.06,RM380,1235.9525405550341,141
+C0142,Yohohama->Hong Kong,Container Ship,Yohohama,Hong Kong,1547.58,17.54,DM,686.6403003083523,142
+C0143,Yohohama->Hong Kong,Container Ship,Yohohama,Hong Kong,1547.58,17.54,DM,1235.9525405550341,143
+C0144,Yohohama->Hong Kong,Container Ship,Yohohama,Hong Kong,1547.58,17.54,RM380,686.6403003083523,144
+C0145,Yohohama->Hong Kong,Container Ship,Yohohama,Hong Kong,1547.58,17.54,RM380,1235.9525405550341,145
+C0146,Yohohama->Hong Kong,Container Ship,Yohohama,Hong Kong,1547.58,24.92,DM,686.6403003083523,146
+C0147,Yohohama->Hong Kong,Container Ship,Yohohama,Hong Kong,1547.58,24.92,DM,1235.9525405550341,147
+C0148,Yohohama->Hong Kong,Container Ship,Yohohama,Hong Kong,1547.58,24.92,RM380,686.6403003083523,148
+C0149,Yohohama->Hong Kong,Container Ship,Yohohama,Hong Kong,1547.58,24.92,RM380,1235.9525405550341,149
+C0150,Yohohama->Hong Kong,Fish Carrier,Yohohama,Hong Kong,1547.58,10.03,DM,698.01227321238,150
+C0151,Yohohama->Hong Kong,Fish Carrier,Yohohama,Hong Kong,1547.58,10.03,DM,1256.422091782284,151
+C0152,Yohohama->Hong Kong,Fish Carrier,Yohohama,Hong Kong,1547.58,17.41,DM,698.01227321238,152
+C0153,Yohohama->Hong Kong,Fish Carrier,Yohohama,Hong Kong,1547.58,17.41,DM,1256.422091782284,153
+C0154,Yohohama->Hong Kong,Fish Carrier,Yohohama,Hong Kong,1547.58,25.0,DM,698.01227321238,154
+C0155,Yohohama->Hong Kong,Fish Carrier,Yohohama,Hong Kong,1547.58,25.0,DM,1256.422091782284,155
+C0156,Yohohama->Hong Kong,Tanker,Yohohama,Hong Kong,1547.58,10.09,DM,684.6767810026386,156
+C0157,Yohohama->Hong Kong,Tanker,Yohohama,Hong Kong,1547.58,10.09,DM,1232.4182058047495,157
+C0158,Yohohama->Hong Kong,Tanker,Yohohama,Hong Kong,1547.58,10.09,RM380,684.6767810026386,158
+C0159,Yohohama->Hong Kong,Tanker,Yohohama,Hong Kong,1547.58,10.09,RM380,1232.4182058047495,159
+C0160,Yohohama->Hong Kong,Tanker,Yohohama,Hong Kong,1547.58,17.83,DM,684.6767810026386,160
+C0161,Yohohama->Hong Kong,Tanker,Yohohama,Hong Kong,1547.58,17.83,DM,1232.4182058047495,161
+C0162,Yohohama->Hong Kong,Tanker,Yohohama,Hong Kong,1547.58,17.83,RM380,684.6767810026386,162
+C0163,Yohohama->Hong Kong,Tanker,Yohohama,Hong Kong,1547.58,17.83,RM380,1232.4182058047495,163
+C0164,Yohohama->Hong Kong,Tanker,Yohohama,Hong Kong,1547.58,24.98,DM,684.6767810026386,164
+C0165,Yohohama->Hong Kong,Tanker,Yohohama,Hong Kong,1547.58,24.98,DM,1232.4182058047495,165
+C0166,Yohohama->Hong Kong,Tanker,Yohohama,Hong Kong,1547.58,24.98,RM380,684.6767810026386,166
+C0167,Yohohama->Hong Kong,Tanker,Yohohama,Hong Kong,1547.58,24.98,RM380,1232.4182058047495,167
+C0168,Yohohama->Guangzhou,Bulk Carrier,Yohohama,Guangzhou,1550.3,10.01,DM,675.3965080634413,168
+C0169,Yohohama->Guangzhou,Bulk Carrier,Yohohama,Guangzhou,1550.3,10.01,DM,1215.7137145141944,169
+C0170,Yohohama->Guangzhou,Bulk Carrier,Yohohama,Guangzhou,1550.3,10.01,RM380,675.3965080634413,170
+C0171,Yohohama->Guangzhou,Bulk Carrier,Yohohama,Guangzhou,1550.3,10.01,RM380,1215.7137145141944,171
+C0172,Yohohama->Guangzhou,Bulk Carrier,Yohohama,Guangzhou,1550.3,17.72,DM,675.3965080634413,172
+C0173,Yohohama->Guangzhou,Bulk Carrier,Yohohama,Guangzhou,1550.3,17.72,DM,1215.7137145141944,173
+C0174,Yohohama->Guangzhou,Bulk Carrier,Yohohama,Guangzhou,1550.3,17.72,RM380,675.3965080634413,174
+C0175,Yohohama->Guangzhou,Bulk Carrier,Yohohama,Guangzhou,1550.3,17.72,RM380,1215.7137145141944,175
+C0176,Yohohama->Guangzhou,Bulk Carrier,Yohohama,Guangzhou,1550.3,24.99,DM,675.3965080634413,176
+C0177,Yohohama->Guangzhou,Bulk Carrier,Yohohama,Guangzhou,1550.3,24.99,DM,1215.7137145141944,177
+C0178,Yohohama->Guangzhou,Bulk Carrier,Yohohama,Guangzhou,1550.3,24.99,RM380,675.3965080634413,178
+C0179,Yohohama->Guangzhou,Bulk Carrier,Yohohama,Guangzhou,1550.3,24.99,RM380,1215.7137145141944,179
+C0180,Yohohama->Guangzhou,Container Ship,Yohohama,Guangzhou,1550.3,10.06,DM,686.6403003083523,180
+C0181,Yohohama->Guangzhou,Container Ship,Yohohama,Guangzhou,1550.3,10.06,DM,1235.9525405550341,181
+C0182,Yohohama->Guangzhou,Container Ship,Yohohama,Guangzhou,1550.3,10.06,RM380,686.6403003083523,182
+C0183,Yohohama->Guangzhou,Container Ship,Yohohama,Guangzhou,1550.3,10.06,RM380,1235.9525405550341,183
+C0184,Yohohama->Guangzhou,Container Ship,Yohohama,Guangzhou,1550.3,17.54,DM,686.6403003083523,184
+C0185,Yohohama->Guangzhou,Container Ship,Yohohama,Guangzhou,1550.3,17.54,DM,1235.9525405550341,185
+C0186,Yohohama->Guangzhou,Container Ship,Yohohama,Guangzhou,1550.3,17.54,RM380,686.6403003083523,186
+C0187,Yohohama->Guangzhou,Container Ship,Yohohama,Guangzhou,1550.3,17.54,RM380,1235.9525405550341,187
+C0188,Yohohama->Guangzhou,Container Ship,Yohohama,Guangzhou,1550.3,24.92,DM,686.6403003083523,188
+C0189,Yohohama->Guangzhou,Container Ship,Yohohama,Guangzhou,1550.3,24.92,DM,1235.9525405550341,189
+C0190,Yohohama->Guangzhou,Container Ship,Yohohama,Guangzhou,1550.3,24.92,RM380,686.6403003083523,190
+C0191,Yohohama->Guangzhou,Container Ship,Yohohama,Guangzhou,1550.3,24.92,RM380,1235.9525405550341,191
+C0192,Yohohama->Guangzhou,Fish Carrier,Yohohama,Guangzhou,1550.3,10.03,DM,698.01227321238,192
+C0193,Yohohama->Guangzhou,Fish Carrier,Yohohama,Guangzhou,1550.3,10.03,DM,1256.422091782284,193
+C0194,Yohohama->Guangzhou,Fish Carrier,Yohohama,Guangzhou,1550.3,17.41,DM,698.01227321238,194
+C0195,Yohohama->Guangzhou,Fish Carrier,Yohohama,Guangzhou,1550.3,17.41,DM,1256.422091782284,195
+C0196,Yohohama->Guangzhou,Fish Carrier,Yohohama,Guangzhou,1550.3,25.0,DM,698.01227321238,196
+C0197,Yohohama->Guangzhou,Fish Carrier,Yohohama,Guangzhou,1550.3,25.0,DM,1256.422091782284,197
+C0198,Yohohama->Guangzhou,Tanker,Yohohama,Guangzhou,1550.3,10.09,DM,684.6767810026386,198
+C0199,Yohohama->Guangzhou,Tanker,Yohohama,Guangzhou,1550.3,10.09,DM,1232.4182058047495,199
+C0200,Yohohama->Guangzhou,Tanker,Yohohama,Guangzhou,1550.3,10.09,RM380,684.6767810026386,200
+C0201,Yohohama->Guangzhou,Tanker,Yohohama,Guangzhou,1550.3,10.09,RM380,1232.4182058047495,201
+C0202,Yohohama->Guangzhou,Tanker,Yohohama,Guangzhou,1550.3,17.83,DM,684.6767810026386,202
+C0203,Yohohama->Guangzhou,Tanker,Yohohama,Guangzhou,1550.3,17.83,DM,1232.4182058047495,203
+C0204,Yohohama->Guangzhou,Tanker,Yohohama,Guangzhou,1550.3,17.83,RM380,684.6767810026386,204
+C0205,Yohohama->Guangzhou,Tanker,Yohohama,Guangzhou,1550.3,17.83,RM380,1232.4182058047495,205
+C0206,Yohohama->Guangzhou,Tanker,Yohohama,Guangzhou,1550.3,24.98,DM,684.6767810026386,206
+C0207,Yohohama->Guangzhou,Tanker,Yohohama,Guangzhou,1550.3,24.98,DM,1232.4182058047495,207
+C0208,Yohohama->Guangzhou,Tanker,Yohohama,Guangzhou,1550.3,24.98,RM380,684.6767810026386,208
+C0209,Yohohama->Guangzhou,Tanker,Yohohama,Guangzhou,1550.3,24.98,RM380,1232.4182058047495,209
+C0210,Yohohama->Singapore,Bulk Carrier,Yohohama,Singapore,2863.76,10.01,DM,675.3965080634413,210
+C0211,Yohohama->Singapore,Bulk Carrier,Yohohama,Singapore,2863.76,10.01,DM,1215.7137145141944,211
+C0212,Yohohama->Singapore,Bulk Carrier,Yohohama,Singapore,2863.76,10.01,RM380,675.3965080634413,212
+C0213,Yohohama->Singapore,Bulk Carrier,Yohohama,Singapore,2863.76,10.01,RM380,1215.7137145141944,213
+C0214,Yohohama->Singapore,Bulk Carrier,Yohohama,Singapore,2863.76,17.72,DM,675.3965080634413,214
+C0215,Yohohama->Singapore,Bulk Carrier,Yohohama,Singapore,2863.76,17.72,DM,1215.7137145141944,215
+C0216,Yohohama->Singapore,Bulk Carrier,Yohohama,Singapore,2863.76,17.72,RM380,675.3965080634413,216
+C0217,Yohohama->Singapore,Bulk Carrier,Yohohama,Singapore,2863.76,17.72,RM380,1215.7137145141944,217
+C0218,Yohohama->Singapore,Bulk Carrier,Yohohama,Singapore,2863.76,24.99,DM,675.3965080634413,218
+C0219,Yohohama->Singapore,Bulk Carrier,Yohohama,Singapore,2863.76,24.99,DM,1215.7137145141944,219
+C0220,Yohohama->Singapore,Bulk Carrier,Yohohama,Singapore,2863.76,24.99,RM380,675.3965080634413,220
+C0221,Yohohama->Singapore,Bulk Carrier,Yohohama,Singapore,2863.76,24.99,RM380,1215.7137145141944,221
+C0222,Yohohama->Singapore,Container Ship,Yohohama,Singapore,2863.76,10.06,DM,686.6403003083523,222
+C0223,Yohohama->Singapore,Container Ship,Yohohama,Singapore,2863.76,10.06,DM,1235.9525405550341,223
+C0224,Yohohama->Singapore,Container Ship,Yohohama,Singapore,2863.76,10.06,RM380,686.6403003083523,224
+C0225,Yohohama->Singapore,Container Ship,Yohohama,Singapore,2863.76,10.06,RM380,1235.9525405550341,225
+C0226,Yohohama->Singapore,Container Ship,Yohohama,Singapore,2863.76,17.54,DM,686.6403003083523,226
+C0227,Yohohama->Singapore,Container Ship,Yohohama,Singapore,2863.76,17.54,DM,1235.9525405550341,227
+C0228,Yohohama->Singapore,Container Ship,Yohohama,Singapore,2863.76,17.54,RM380,686.6403003083523,228
+C0229,Yohohama->Singapore,Container Ship,Yohohama,Singapore,2863.76,17.54,RM380,1235.9525405550341,229
+C0230,Yohohama->Singapore,Container Ship,Yohohama,Singapore,2863.76,24.92,DM,686.6403003083523,230
+C0231,Yohohama->Singapore,Container Ship,Yohohama,Singapore,2863.76,24.92,DM,1235.9525405550341,231
+C0232,Yohohama->Singapore,Container Ship,Yohohama,Singapore,2863.76,24.92,RM380,686.6403003083523,232
+C0233,Yohohama->Singapore,Container Ship,Yohohama,Singapore,2863.76,24.92,RM380,1235.9525405550341,233
+C0234,Yohohama->Singapore,Fish Carrier,Yohohama,Singapore,2863.76,10.03,DM,698.01227321238,234
+C0235,Yohohama->Singapore,Fish Carrier,Yohohama,Singapore,2863.76,10.03,DM,1256.422091782284,235
+C0236,Yohohama->Singapore,Fish Carrier,Yohohama,Singapore,2863.76,17.41,DM,698.01227321238,236
+C0237,Yohohama->Singapore,Fish Carrier,Yohohama,Singapore,2863.76,17.41,DM,1256.422091782284,237
+C0238,Yohohama->Singapore,Fish Carrier,Yohohama,Singapore,2863.76,25.0,DM,698.01227321238,238
+C0239,Yohohama->Singapore,Fish Carrier,Yohohama,Singapore,2863.76,25.0,DM,1256.422091782284,239
+C0240,Yohohama->Singapore,Tanker,Yohohama,Singapore,2863.76,10.09,DM,684.6767810026386,240
+C0241,Yohohama->Singapore,Tanker,Yohohama,Singapore,2863.76,10.09,DM,1232.4182058047495,241
+C0242,Yohohama->Singapore,Tanker,Yohohama,Singapore,2863.76,10.09,RM380,684.6767810026386,242
+C0243,Yohohama->Singapore,Tanker,Yohohama,Singapore,2863.76,10.09,RM380,1232.4182058047495,243
+C0244,Yohohama->Singapore,Tanker,Yohohama,Singapore,2863.76,17.83,DM,684.6767810026386,244
+C0245,Yohohama->Singapore,Tanker,Yohohama,Singapore,2863.76,17.83,DM,1232.4182058047495,245
+C0246,Yohohama->Singapore,Tanker,Yohohama,Singapore,2863.76,17.83,RM380,684.6767810026386,246
+C0247,Yohohama->Singapore,Tanker,Yohohama,Singapore,2863.76,17.83,RM380,1232.4182058047495,247
+C0248,Yohohama->Singapore,Tanker,Yohohama,Singapore,2863.76,24.98,DM,684.6767810026386,248
+C0249,Yohohama->Singapore,Tanker,Yohohama,Singapore,2863.76,24.98,DM,1232.4182058047495,249
+C0250,Yohohama->Singapore,Tanker,Yohohama,Singapore,2863.76,24.98,RM380,684.6767810026386,250
+C0251,Yohohama->Singapore,Tanker,Yohohama,Singapore,2863.76,24.98,RM380,1232.4182058047495,251

@@ -1,0 +1,24 @@
+ais_vessel_type_code,vessel_group_2019,classification,keep_for_green_fleet_prototype
+0,Not Available,Not available,False
+20,Other,Wing-In-Ground (WIG) craft,False
+30,Fishing,"Fishing, includes fish processors and fish tenders",False
+31,Tug Tow,Towing astern,False
+32,Tug Tow,Towing astern and length exceeds 200m or breadth exceeds 25m,False
+33,Other,Engaged in dredging or underwater operations,False
+34,Other,Engaged in diving operations or other operations with persons in the water,False
+35,Other,Engaged in military operations or other types of restricted operations,False
+36,Pleasure Craft/Sailing,Sailing vessels,False
+37,Pleasure Craft/Sailing,Pleasure craft,False
+40,Passenger,High-speed Craft (HSC) or passenger ferries,False
+50,Other,Pilot vessel,False
+51,Other,Search and rescue vessels,False
+52,Tug Tow,"Tugs or workboats, that do not regularly engage in towing",False
+53,Other,Port tenders,False
+54,Other,Vessels with anti-pollution facilities or equipment,False
+55,Other,Law enforcement vessels,False
+58,Other,Medical transports,False
+59,Other,Ship according to ITU Radio Regulations Resolution 18,False
+60,Passenger,"Passenger ships, but not HSC, passenger ferries, tenders, or offshore supply vessels",False
+70,Cargo,Cargo,True
+80,Tanker,Tankers,True
+90,Other,Other types of ship,False

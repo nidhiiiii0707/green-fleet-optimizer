@@ -1,0 +1,74 @@
+schema_table,key,detail,note
+ais_field_dictionary.csv,mmsi,Maritime Mobile Service Identity,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,base_date_time,Full UTC date and time,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,longitude,Longitude,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,latitude,Latitude,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,sog,Speed Over Ground,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,cog,Course Over Ground,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,heading,True Heading,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,vessel_name,Vessel name,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,imo,International Maritime Organization Vessel number,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,call_sign,Call sign,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,vessel_type,Vessel type as defined in NAIS specifications,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,status,Navigation status,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,length,Length of vessel,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,width,Width of vessel,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,draft,Draft depth of vessel,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,cargo,Cargo type,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_field_dictionary.csv,transceiver,AIS transceiver class,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,0,under way using engine,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,1,at anchor,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,2,not under command,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,3,restricted manoeuvrability,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,4,constrained by her draught,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,5,moored,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,6,aground,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,7,engaged in fishing,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,8,under way sailing,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,9,reserved for future amendment of navigation status,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,10,reserved for future amendment of navigation status,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,11,power-driven vessel towing astern (regional use),SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,12,power-driven vessel pushing ahead or towing alongside (regional use),SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,13,reserved for future use,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,14,"AIS-SART (active), MOB-AIS, EPIRB-AIS",SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_navigation_status_lookup.csv,15,"undefined = default (also used by AIS-SART, MOB-AIS and EPIRB-AIS under test)",SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,mmsi,required_for_prototype=yes; Stable tracking key,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,imo,required_for_prototype=yes; Stable vessel identity where available,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,vessel_name,required_for_prototype=yes; Readable identity,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,base_date_time,required_for_prototype=yes; Time ordering and voyage reconstruction,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,latitude,required_for_prototype=yes; Trajectory,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,longitude,required_for_prototype=yes; Trajectory,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,sog,required_for_prototype=yes; Operational speed,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,cog,required_for_prototype=yes; Course,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,heading,required_for_prototype=yes; Heading,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,vessel_type,required_for_prototype=yes; Vessel class filtering,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,length,required_for_prototype=yes; Vessel size,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,width,required_for_prototype=yes; Vessel size,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,draft,required_for_prototype=yes; Draft/port-depth feasibility,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,cargo,required_for_prototype=optional; Cargo class; not cargo quantity,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,status,required_for_prototype=yes; Filter underway vs anchored/moored/etc.,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,transceiver,required_for_prototype=optional; Data-quality/source classification,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_required_fields.csv,call_sign,required_for_prototype=optional; Identity cross-check,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,0,Not Available,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,20,Other,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,30,Fishing,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,31,Tug Tow,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,32,Tug Tow,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,33,Other,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,34,Other,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,35,Other,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,36,Pleasure Craft/Sailing,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,37,Pleasure Craft/Sailing,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,40,Passenger,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,50,Other,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,51,Other,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,52,Tug Tow,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,53,Other,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,54,Other,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,55,Other,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,58,Other,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,59,Other,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,60,Passenger,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,70,Cargo,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,80,Tanker,SCHEMA/LOOKUP ONLY - not an actual AIS position observation
+ais_vessel_type_lookup.csv,90,Other,SCHEMA/LOOKUP ONLY - not an actual AIS position observation

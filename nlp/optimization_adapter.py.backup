@@ -1,0 +1,18 @@
+"""Convert NLP parsed requests into optimizer-ready inputs."""
+
+
+def build_optimization_request(parsed: dict) -> dict:
+    """
+    Convert the output of parse_query() into a structured
+    optimization request.
+    """
+
+    return {
+        "origin": parsed.get("origin"),
+        "destination": parsed.get("destination"),
+        "vessel_type": parsed.get("vessel_type"),
+        "fuel_type": parsed.get("fuel_type"),
+        "speed": parsed.get("speed"),
+        "cargo": parsed.get("cargo"),
+        "objectives": parsed.get("objectives", []),
+    }

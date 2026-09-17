@@ -1,0 +1,32 @@
+source_file,source_column,optimization_role,status
+CPS_Poseidon_model_ready.csv,Ship_SpeedOverGround,"speed statistics input (single-vessel observed speed, knots)",REAL
+CPS_Poseidon_model_ready.csv,Ship_SpeedThroughWater,"speed statistics input (single-vessel observed speed, knots)",REAL
+CPS_Poseidon_model_ready.csv,Consumer_Total_MomentaryFuel,"fuel consumption statistics input (instantaneous, single vessel)",REAL
+CPS_Poseidon_model_ready.csv,Weather_WindSpeed10M / Weather_WaveHeight / etc.,environmental context for fuel model (not used by optimization layer directly),REAL
+WPI_model_ready.csv,PORT_NAME,port identity for port_master_derived.csv,REAL
+WPI_model_ready.csv,LATITUDE / LONGITUDE,port coordinates -> haversine distance input,REAL
+WPI_model_ready.csv,FUEL_OIL / DIESEL,port bunkering availability flag (candidate fuel_cost_parameters context),REAL
+world_ports_master.csv,portname / country / lat / lon,"port identity + coordinates -> port_master_derived.csv, haversine distance input",REAL
+world_ports_master.csv,vessel_count_total / vessel_count_*,port traffic-by-vessel-type profile (context for cargo_demand_derived.csv),REAL
+fig2_port_coordinates.csv,Port / Latitude / Longitude,named-route port coordinates -> route_derived.csv distance input,REAL
+fig2_port_coordinates.csv,(pairwise combinations),route_derived.csv distance_nm,DERIVED (haversine of REAL coordinates)
+ship_performance.csv,Speed_Over_Ground_knots,"speed statistics input, grouped by Ship_Type",REAL
+ship_performance.csv,Ship_Type,fleet segment key for fleet_parameters.csv,REAL
+ship_performance.csv,Cargo_Weight_tons,cargo tonnage input (fleet_parameters.csv),REAL
+ship_performance.csv,Average_Load_Percentage,"load ratio (already computed by source, NOT re-derived) -> fleet_parameters.csv",REAL
+ship_performance.csv,Operational_Cost_USD / Revenue_per_Voyage_USD,cost statistics input -> fuel_cost_parameters.csv,REAL
+ship_performance.csv,Distance_Traveled_nm,"distance statistics input (fleet-segment level, not tied to named port pair)",REAL
+ship_performance.csv,(no DWT column present),deadweight tonnage for load-ratio cross-check,SCENARIO_INPUT (not present in any real source)
+fleet_combined.csv,Category / Item / Value (DWT rows),AGGREGATE fleet stock by vessel category and year -> fleet_parameters.csv (aggregate segment),"REAL (aggregate, NOT per-vessel)"
+india_port_traffic_combined.csv,Port / Year / Total Traffic,cargo demand time series by port -> cargo_demand_derived.csv,REAL
+india_cargo_traffic_monthly.csv,Port_or_State / Month / current_month_curr_year,cargo demand time series (monthly) -> cargo_demand_derived.csv,REAL
+fig1_ghg_cii_by_fuel.csv,GHG_* / CII_* columns,GHG/CII per fuel reference values -> ghg_parameters.csv,REAL (reference/literature)
+fig1_scenario_comparison.csv,Scenario / Metric_Block / fuel columns,GHG/CII scenario comparison -> ghg_parameters.csv,REAL (reference/literature)
+fig5_ghg_pathway_scenarios.csv,Panel / Year / Fuel / kgCO2eq_per_MJ,GHG pathway per fuel/year -> ghg_parameters.csv,REAL (reference/literature)
+fig3_fuel_perspectives_by_power_source.csv,Metric / Fuel / Power_Source / Value,lifecycle GHG/energy metric per fuel & power source -> ghg_parameters.csv,REAL (reference/literature)
+fig9_fuel_probability_distributions.csv,GWP_tCO2::* / CarbonIntensity_*::* / EnergyConsumption_*::* / ProfitabilityIndex_*::*,distributional GHG/energy/cost reference stats per fuel -> ghg_parameters.csv & fuel_cost_parameters.csv,"REAL (reference/literature, Monte-Carlo draws)"
+fig5_lifecycle_cost_vs_hfo.csv,Panel / Fuel / Relative_Cost_vs_HFO,relative fuel cost vs HFO -> fuel_cost_parameters.csv,"REAL (reference, relative not absolute)"
+(none found),absolute fuel price $/tonne per fuel type,fuel_cost_parameters.csv absolute cost input,SCENARIO_INPUT (no real source found)
+(none found),port-to-port real observed route / OD traffic matrix,route_derived.csv real traffic weighting,SCENARIO_INPUT (no real OD-pair source found; geography-only pairs derived instead)
+(none found),carbon price / carbon tax $/tCO2,cost/GHG-linked optimization objective input,SCENARIO_INPUT (no real source found)
+ais_field_dictionary.csv / ais_navigation_status_lookup.csv / ais_required_fields.csv / ais_vessel_type_lookup.csv,all columns,AIS ingestion SCHEMA only -> ais_optimization_schema.csv,"REAL SCHEMA (lookup table, not observation data)"

@@ -1,0 +1,4 @@
+name,direction,formula,data_source,status
+Fuel,minimize,"XGBoost pipeline prediction of Consumer_Total_MomentaryFuel (an instantaneous RATE, physical unit undocumented) x assumed sampling-interval hours -> voyage fuel","models/fuel_xgb_pipeline.joblib (REAL trained model, not retrained)",MODEL_PREDICTION (rate-to-total conversion is SCENARIO_INPUT; see unit_conversion.py)
+Cost,minimize,voyage_fuel_tons_ASSUMED_UNIT * SCENARIO_FUEL_PRICE_USD_PER_TONNE[fuel_type],data_layer.py SCENARIO_FUEL_PRICE_USD_PER_TONNE,SCENARIO_INPUT (no absolute fuel price anywhere in processed data)
+GHG,minimize,voyage_fuel_tons_ASSUMED_UNIT * SCENARIO_EMISSION_FACTOR_KGCO2_PER_TONNE_FUEL[fuel_type],"data_layer.py SCENARIO_EMISSION_FACTOR_KGCO2_PER_TONNE_FUEL (standard IMO/IPCC factors, not a repo-derived value)",SCENARIO_INPUT

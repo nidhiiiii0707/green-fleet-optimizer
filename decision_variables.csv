@@ -1,0 +1,10 @@
+name,symbol,domain,data_source,status,justification
+vessel_class,v,"categorical: {Bulk Carrier, Container Ship, Fish Carrier, Tanker}",fleet_parameters.csv (segment_type=fleet_segment_ship_type),REAL,Real ship-type categories observed in ship_performance.csv with real speed/draft/cargo stats per class.
+route,r,categorical: real port-pair rows of route_derived.csv,route_derived.csv,DERIVED,Real port coordinates (fig2_port_coordinates.csv) with haversine-derived distance/voyage time.
+speed_knots,s,"continuous/grid, bounded by [speed_min_kn, speed_max_kn] of the chosen vessel_class",fleet_parameters.csv,REAL,Observed min/max speed per ship type from ship_performance.csv are real operating bounds.
+fuel_type,f,"categorical: {DM, RM380}",CPS_Poseidon_model_ready.csv fuel-type one-hot flags (via fuel_pipeline_utils),REAL,The two fuel families actually observed/engineered as model inputs in the trained XGB pipeline.
+cargo_tons,c,"continuous, bounded by [0, vessel capacity_tons]",fleet_parameters.csv (DERIVED capacity) + cargo_demand_derived.csv (real Indian port aggregate demand as a reference target),DERIVED / SCENARIO_INPUT,Capacity per vessel class is DERIVED from two real means (see data_layer.py); route-level cargo assignment target is SCENARIO_INPUT because no real OD (origin-destination) tonnage exists for the specific synthetic route pairs.
+
+EXCLUDED_VARIABLE,reason
+vessel_activation,Not modelled as a separate binary in this leg-based prototype; implicit in per-leg vessel_class choice. See module docstring.
+shore_power,No real/derived shore-power or cold-ironing data exists anywhere in the data layer; would require an invented number. EXCLUDED.

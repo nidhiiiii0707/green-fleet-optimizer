@@ -1,0 +1,18 @@
+field_name,required_for_prototype,reason
+mmsi,yes,Stable tracking key
+imo,yes,Stable vessel identity where available
+vessel_name,yes,Readable identity
+base_date_time,yes,Time ordering and voyage reconstruction
+latitude,yes,Trajectory
+longitude,yes,Trajectory
+sog,yes,Operational speed
+cog,yes,Course
+heading,yes,Heading
+vessel_type,yes,Vessel class filtering
+length,yes,Vessel size
+width,yes,Vessel size
+draft,yes,Draft/port-depth feasibility
+cargo,optional,Cargo class; not cargo quantity
+status,yes,Filter underway vs anchored/moored/etc.
+transceiver,optional,Data-quality/source classification
+call_sign,optional,Identity cross-check

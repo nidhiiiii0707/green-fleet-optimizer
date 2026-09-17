@@ -1,0 +1,18 @@
+field_name,description,unit_or_type,valid_domain,null_allowed,optimization_use
+mmsi,Maritime Mobile Service Identity,integer,,False,Vessel identity / tracking key
+base_date_time,Full UTC date and time,datetime,,False,Primary temporal key for trajectory reconstruction
+longitude,Longitude,decimal degree,"[-179.99999, 179.99999]",False,Position
+latitude,Latitude,decimal degree,"[-89.99999, 89.99999]",False,Position
+sog,Speed Over Ground,knot,"[0, 99.9]",True,Operational speed
+cog,Course Over Ground,degree,"[0, 359.9]",True,Movement direction
+heading,True Heading,degree,"[0, 359]",True,Vessel orientation
+vessel_name,Vessel name,text,,True,Human-readable vessel identity
+imo,International Maritime Organization Vessel number,text,,True,Stable vessel identity when available
+call_sign,Call sign,text,,True,Radio identity
+vessel_type,Vessel type as defined in NAIS specifications,integer code,1-1024*,True,Lookup required
+status,Navigation status,integer code,1-14*,True,Navigation-status lookup required
+length,Length of vessel,meter,"[1, 509]",True,Vessel dimensions
+width,Width of vessel,meter,"[1, 61]",True,Vessel dimensions
+draft,Draft depth of vessel,meter,"[1, 24]",True,Critical feasibility feature
+cargo,Cargo type,integer/text code,1-1024*,True,Cargo-type lookup required
+transceiver,AIS transceiver class,text,A or B,True,Data-quality / source class
