@@ -6,7 +6,7 @@ types x 2 cargo levels (50%% and 90%% of DERIVED capacity) = 6*4*3*2*2 = 288
 raw combinations, then cheap rules drop vessel/fuel-incompatible combos
 (Fish Carrier + RM380, per SCENARIO_VESSEL_FUEL_COMPATIBILITY) before any
 model call, landing in the "tens to low hundreds" prototype range the task
-asks for -- this keeps runtime manageable for NSGA-II/QUBO/MO-QIGA/MILP runs
+asks for -- this keeps runtime manageable for NSGA-II/QBHO/CQM/MILP runs
 below while still exercising every decision variable and constraint type.
 """
 from __future__ import annotations

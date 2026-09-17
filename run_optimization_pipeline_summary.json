@@ -21,10 +21,10 @@
   },
   "algorithm_pareto_sizes": {
     "NSGA-II": 2,
-    "QUBO-SA": 1,
-    "MO-QIGA": 4,
+    "QBHO": 1,
+    "CQM": 3,
     "MILP": 4
   },
   "final_pareto_archive_size": 4,
-  "total_runtime_seconds": 4.279799699783325
+  "total_runtime_seconds": 36.082010984420776
 }

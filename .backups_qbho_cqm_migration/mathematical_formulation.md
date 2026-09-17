@@ -54,16 +54,8 @@ reports the constraint status explicitly instead.
 
 ## Algorithms applied to this same problem
 
-**Active set:** NSGA-II (Stage 8), QBHO (Quantum-Behaved Hawks Optimization — **a
-classical Harris-Hawks-based metaheuristic with a quantum-behaved position update, not
-real quantum computation**, replaces QUBO-SA), CQM (Constrained Quadratic Model — **a
-real `dimod` CQM with an explicit one-hot-per-leg constraint, solved by an exact or
-classical-annealing solver — no quantum/D-Wave hardware involved**, replaces MO-QIGA),
-and an exact MILP reference (Stage 11) all search over exactly this decision space,
-objective set, and constraint set, so their outputs are directly comparable (Stage 12) and
-merged into one final Pareto archive (`run_optimization_pipeline.py`).
-
-**Retained but inactive:** QUBO + simulated annealing (Stage 9, `qubo_model.py` /
-`qubo_builder.py`) and MO-QIGA (Stage 10, `mo_qiga.py`) remain in the repository for
-reference/backup and can still be run standalone (`run_qubo.py`, `run_mo_qiga.py`), but
-are no longer part of the active pipeline or its merged Pareto archive.
+NSGA-II (Stage 8), QUBO + simulated annealing (Stage 9, **quantum-inspired mathematical
+formulation solved classically — no quantum hardware involved**), MO-QIGA (Stage 10, **a
+classical simulation of a quantum-inspired heuristic, not real quantum computation**), and
+an exact MILP reference (Stage 11) all search over exactly this decision space, objective
+set, and constraint set, so their outputs are directly comparable (Stage 12).

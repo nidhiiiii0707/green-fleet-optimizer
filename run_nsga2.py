@@ -52,7 +52,7 @@ def main():
         },
         "hypervolume": None,  # computed comparably across algorithms in Stage 12 (algorithm_comparison)
         "igd": None,          # requires a shared reference front; computed in Stage 12
-        "note": "Hypervolume/IGD are computed jointly across NSGA-II/MO-QIGA/MILP in "
+        "note": "Hypervolume/IGD are computed jointly across NSGA-II/QBHO/CQM/MILP in "
                 "algorithm_comparison.csv (Stage 12) so they share one reference point/front; "
                 "left null here to avoid a misleading single-algorithm reference.",
     }

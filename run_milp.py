@@ -1,7 +1,7 @@
 """STAGE 11 entry point. Run: python run_milp.py
 
-Also compares MILP's exact Pareto trace vs the NSGA-II/MO-QIGA CSVs produced
-by run_nsga2.py / run_mo_qiga.py (run those first for a full comparison
+Also compares MILP's exact Pareto trace vs the NSGA-II/QBHO CSVs produced
+by run_nsga2.py / run_qbho.py (run those first for a full comparison
 printout; MILP still runs standalone otherwise).
 """
 from __future__ import annotations
@@ -30,7 +30,7 @@ def main():
     df.to_csv("milp_results.csv", index=False)
     print(f"MILP (exact, scalarized weight fan): {len(front)} distinct Pareto-traced solutions, runtime={runtime:.2f}s")
 
-    for fname, label in [("nsga2_pareto.csv", "NSGA-II"), ("mo_qiga_pareto.csv", "MO-QIGA")]:
+    for fname, label in [("nsga2_pareto.csv", "NSGA-II"), ("qbho_pareto.csv", "QBHO")]:
         if os.path.exists(fname):
             other = pd.read_csv(fname)
             print(f"  vs {label}: {len(other)} solutions, MILP best fuel={df['fuel'].min():.4f} "

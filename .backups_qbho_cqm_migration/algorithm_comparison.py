@@ -1,12 +1,7 @@
-"""STAGE 12 -- Common evaluator comparing NSGA-II, QBHO, CQM, MILP on
-identical candidates/objectives/seed. Requires run_nsga2.py, run_qbho.py,
-run_cqm.py, run_milp.py to have been run first (produces their *_pareto.csv
+"""STAGE 12 -- Common evaluator comparing NSGA-II, MO-QIGA, QUBO(SA), MILP on
+identical candidates/objectives/seed. Requires run_nsga2.py, run_mo_qiga.py,
+run_qubo.py, run_milp.py to have been run first (produces their *_pareto.csv
 / *_results.csv). Run: python algorithm_comparison.py
-
-QUBO-SA and MO-QIGA (the previous active set alongside NSGA-II/MILP) are
-RETAINED in the repository (qubo_model.py/qubo_builder.py, mo_qiga.py) for
-reference/backup but are no longer part of the active comparison; they were
-replaced by QBHO (qbho.py) and CQM (cqm_model.py/cqm_solver.py).
 """
 from __future__ import annotations
 
@@ -21,9 +16,9 @@ import matplotlib.pyplot as plt
 
 from scenario_setup import build_evaluated_legs
 from nsga2_optimizer import NSGA2Optimizer
-from qbho import QBHOOptimizer
-from cqm_model import CQMModel
-from cqm_solver import CQMSolver
+from mo_qiga import MOQIGAOptimizer
+from qubo_model import QUBOModel
+from qubo_builder import QUBOSolver
 from milp_model import MILPModel
 from algo_common import pareto_front
 from metrics_utils import hypervolume_monte_carlo, igd, spacing_diversity, normalize
@@ -39,8 +34,8 @@ def run_all(legs):
     results["NSGA-II"] = {"front": front, "runtime": time.time() - t0}
 
     t0 = time.time()
-    front, _ = QBHOOptimizer(legs, population_size=30, generations=60, seed=0).run()
-    results["QBHO"] = {"front": front, "runtime": time.time() - t0}
+    front, _ = MOQIGAOptimizer(legs, population_size=30, generations=60, seed=0).run()
+    results["MO-QIGA"] = {"front": front, "runtime": time.time() - t0}
 
     t0 = time.time()
     solutions = {}
@@ -50,10 +45,10 @@ def run_all(legs):
             wg = 1.0 - wf - wc
             if wg < 0.05:
                 continue
-            model = CQMModel(legs, weights=(wf, wc, wg))
-            sol = CQMSolver(model, seed=0).solve(sweeps=1500, n_restarts=4)
+            model = QUBOModel(legs, weights=(wf, wc, wg))
+            sol = QUBOSolver(model, seed=0).solve(sweeps=1500, n_restarts=4)
             solutions[sol.selection] = sol
-    results["CQM"] = {"front": pareto_front(list(solutions.values())), "runtime": time.time() - t0}
+    results["QUBO-SA"] = {"front": pareto_front(list(solutions.values())), "runtime": time.time() - t0}
 
     t0 = time.time()
     milp_model = MILPModel(legs)
@@ -105,10 +100,9 @@ def main():
                  "approximation), NOT a verified true Pareto front -- none is known for this problem.\n\n")
         fh.write("**Hypervolume** is Monte-Carlo estimated (200,000 samples, seed 0) in "
                  "normalized objective space against a shared reference point.\n\n")
-        fh.write("**QBHO and CQM are classical computations** (a Harris-Hawks-based "
-                 "metaheuristic with quantum-behaved position updates, and a Constrained "
-                 "Quadratic Model solved by exact/classical-annealing search, respectively) "
-                 "-- no quantum hardware is used anywhere in this comparison.\n\n")
+        fh.write("**QUBO and MO-QIGA are classical computations** (simulated annealing / a "
+                 "classical simulation of a quantum-inspired heuristic respectively) -- no "
+                 "quantum hardware is used anywhere in this comparison.\n\n")
         fh.write(df.to_markdown(index=False))
         fh.write("\n\n## Caveat\n\nCost and GHG values above are SCENARIO_INPUT-dependent "
                  "(fuel price, emission factor, and the fuel-rate-to-voyage-total sampling-"
@@ -120,7 +114,7 @@ def main():
     os.makedirs(PLOTS_DIR, exist_ok=True)
 
     fig, ax = plt.subplots(figsize=(7, 6))
-    markers = {"NSGA-II": "o", "QBHO": "^", "CQM": "s", "MILP": "*"}
+    markers = {"NSGA-II": "o", "MO-QIGA": "^", "QUBO-SA": "s", "MILP": "*"}
     for name, r in results.items():
         pts = np.array([s.objectives for s in r["front"]]) if r["front"] else np.zeros((0, 3))
         if len(pts):

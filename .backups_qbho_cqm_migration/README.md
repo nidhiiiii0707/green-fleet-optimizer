@@ -1,8 +1,6 @@
 # Green Fleet Optimization Foundation
 
-This repository implements a full, working maritime fleet optimization pipeline. It loads the supplied datasets independently, exposes traceable parameter views, validates candidates against explicit feasibility constraints, calls the existing (un-retrained) XGBoost `XGBRegressor` fuel model, converts predictions into Fuel/Cost/GHG objectives, and searches the resulting decision space with four independent optimizers -- **NSGA-II**, **QBHO** (Quantum-Behaved Hawks Optimization -- a classical Harris-Hawks-based metaheuristic with a quantum-behaved position update), **CQM** (a real `dimod` Constrained Quadratic Model, solved by an exact/classical-annealing solver), and an exact **MILP** reference -- merging their outputs into one Pareto-optimal fleet-plan archive. A natural-language front end (`nlp/`) sits in front of this pipeline and translates plain-English fleet requests into the same structured candidates/constraints the pipeline already consumes.
-
-**QUBO-SA and MO-QIGA (the previous active set alongside NSGA-II/MILP) are retained in the repository for reference/backup** (`qubo_model.py`/`qubo_builder.py`, `mo_qiga.py`, still runnable standalone via `run_qubo.py`/`run_mo_qiga.py`) but are **no longer part of the active pipeline**; they were replaced by QBHO and CQM respectively.
+This repository implements a full, working maritime fleet optimization pipeline. It loads the supplied datasets independently, exposes traceable parameter views, validates candidates against explicit feasibility constraints, calls the existing (un-retrained) XGBoost `XGBRegressor` fuel model, converts predictions into Fuel/Cost/GHG objectives, and searches the resulting decision space with four independent optimizers -- **NSGA-II**, **QUBO-SA** (classical simulated annealing), **MO-QIGA** (a classical simulation of a quantum-inspired heuristic), and an exact **MILP** reference -- merging their outputs into one Pareto-optimal fleet-plan archive. A natural-language front end (`nlp/`) sits in front of this pipeline and translates plain-English fleet requests into the same structured candidates/constraints the pipeline already consumes.
 
 See [FINAL_OPTIMIZATION_REPORT.md](FINAL_OPTIMIZATION_REPORT.md) for the full data-provenance and results write-up, and [mathematical_formulation.md](mathematical_formulation.md) for the exact objective/constraint formulation used by each optimizer.
 
@@ -17,7 +15,7 @@ independent source CSVs
   -> candidate/scenario binding (speed, fuel, model completeness)
   -> real XGBoost XGBRegressor fuel prediction (fuel_model_adapter.py, models/fuel_xgb_pipeline.joblib)
   -> Fuel/Cost/GHG objectives (objective_evaluator.py, SCENARIO_INPUT price/emission factors)
-  -> NSGA-II / QBHO / CQM / MILP (run_optimization_pipeline.py)
+  -> NSGA-II / QUBO-SA / MO-QIGA / MILP (run_optimization_pipeline.py)
   -> merged Pareto archive -> final_pareto_fleet_plans.csv
 ```
 
@@ -184,16 +182,12 @@ Implemented and passing (`./.venv2/Scripts/python.exe -m pytest -q`):
 - Real/derived candidate generation, deterministic feasibility screening, and
   the real (un-retrained) XGBoost `XGBRegressor` fuel model, exactly as
   described above.
-- All four ACTIVE optimizers -- **NSGA-II** (`nsga2_optimizer.py`), **QBHO**
-  (`qbho.py`, classical Harris-Hawks-based metaheuristic with a
-  quantum-behaved position update), **CQM** (`cqm_model.py` / `cqm_solver.py`,
-  a real `dimod` Constrained Quadratic Model solved by an exact or
-  classical-annealing solver), and **MILP** (`milp_model.py`, exact
-  reference) -- run on the identical decision space and merge into one
-  Pareto archive (`run_optimization_pipeline.py`). **QUBO-SA**
-  (`qubo_model.py` / `qubo_builder.py`) and **MO-QIGA** (`mo_qiga.py`) are
-  retained in the repository (still runnable via `run_qubo.py` /
-  `run_mo_qiga.py`) but are no longer part of the active pipeline.
+- All four optimizers -- **NSGA-II** (`nsga2_optimizer.py`), **QUBO-SA**
+  (`qubo_model.py` / `qubo_builder.py`, classical simulated annealing),
+  **MO-QIGA** (`mo_qiga.py`, a classical simulation of a quantum-inspired
+  heuristic), and **MILP** (`milp_model.py`, exact reference) -- run on the
+  identical decision space and merge into one Pareto archive
+  (`run_optimization_pipeline.py`).
 - The natural-language front end described above, tested end-to-end from raw
   text through to Pareto fleet plans (`tests/test_nlp_optimization_adapter.py`).
 
@@ -206,11 +200,9 @@ Still true limitations, carried over unchanged from the sections above:
 - Cost and GHG objectives depend on the explicitly labelled `SCENARIO_INPUT`
   price/emission-factor assumptions described above, not on measured
   fuel-price or emissions data.
-- QBHO and CQM are classical algorithms (a Harris-Hawks-based metaheuristic
-  with a quantum-behaved position update, and a Constrained Quadratic Model
-  solved by an exact/classical-annealing solver, respectively); neither runs
-  on, nor claims to run on, quantum hardware anywhere in this repository, and
-  no D-Wave Leap/cloud account or token is used.
+- QUBO-SA and MO-QIGA are classical algorithms (simulated annealing / a
+  classical simulation of a quantum-inspired heuristic, respectively); neither
+  runs on, nor claims to run on, quantum hardware anywhere in this repository.
 - The candidate set remains prototype-scale (252 candidates / 6 legs / 4
   vessel classes), chosen to keep all four optimizers' runtimes manageable for
   validation, not a production fleet size.
