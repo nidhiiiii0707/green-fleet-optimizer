@@ -58,7 +58,7 @@ export interface Assignment {
   cargoTEU: number;
   originId: string;
   destinationId: string;
-  routeId: string;
+  routeId: string | null;
   vesselType?: string;
   origin?: string;
   destination?: string;
@@ -69,10 +69,18 @@ export interface Assignment {
   eta: string | null;
   fuelConsumption: number;
   cost: number;
+  costUsd?: number;
   ghg: number;
   ghgUnit?: string;
   status: "on-schedule" | "warning" | "critical";
   constraints: Constraint[];
+  originLatitude?: number | null;
+  originLongitude?: number | null;
+  destinationLatitude?: number | null;
+  destinationLongitude?: number | null;
+  distanceNm?: number | null;
+  voyageTimeHours?: number | null;
+  routeName?: string;
 }
 
 export interface ParetoSolution {

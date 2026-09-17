@@ -2,24 +2,56 @@ import React from "react";
 
 type Screen = "overview" | "fleet" | "optimization" | "fleetplan" | "scenarios" | "alerts" | "reports";
 
+interface RunMeta {
+  method: string;
+  runId: string;
+  feasibleSolutions: number;
+  paretoCount: number;
+}
+
 interface Props {
   screen: Screen;
   onAlerts: () => void;
   alertCount: number;
+  selectedSolutionId: string;
+  runMeta: RunMeta | null;
 }
 
-const TITLES: Record<Screen, { title: string; sub: string }> = {
-  overview:     { title: "Fleet Optimization Overview",            sub: "Solution #07 · MO-QIGA Run #024 · Updated 04 Feb 2025, 04:00" },
-  fleet:        { title: "Fleet & Routes",                         sub: "Vessel assignments, routes and operational status" },
-  optimization: { title: "Optimization Results",                   sub: "Pareto-optimal fleet deployment plans — 18 solutions" },
-  fleetplan:    { title: "Optimized Fleet Plan — Solution #07",    sub: "Vessel assignments, routes and constraint status" },
-  scenarios:    { title: "What-If Scenario Analysis",              sub: "Assess changes in operating conditions against the baseline plan" },
-  alerts:       { title: "Operational Alerts",                     sub: "Active notifications for fleet, environmental and optimization events" },
-  reports:      { title: "Reports & Exports",                      sub: "Generate and download compliance and optimization reports" },
-};
+function titlesFor(screen: Screen, selectedSolutionId: string, runMeta: RunMeta | null): { title: string; sub: string } {
+  const solutionLabel = selectedSolutionId || "no solution selected";
+  switch (screen) {
+    case "overview":
+      return {
+        title: "Fleet Optimization Overview",
+        sub: runMeta
+          ? `${solutionLabel} · ${runMeta.method} · Run ${runMeta.runId}`
+          : "No optimization result loaded yet",
+      };
+    case "fleet":
+      return { title: "Fleet & Routes", sub: "Vessel assignments, routes and operational status" };
+    case "optimization":
+      return {
+        title: "Optimization Results",
+        sub: runMeta
+          ? `Pareto-optimal fleet deployment plans — ${runMeta.paretoCount} solutions`
+          : "No optimization result loaded yet",
+      };
+    case "fleetplan":
+      return {
+        title: `Optimized Fleet Plan — ${solutionLabel}`,
+        sub: "Vessel assignments, routes and constraint status",
+      };
+    case "scenarios":
+      return { title: "What-If Scenario Analysis", sub: "Assess changes in operating conditions against the baseline plan" };
+    case "alerts":
+      return { title: "Operational Alerts", sub: "Active notifications for fleet, environmental and optimization events" };
+    case "reports":
+      return { title: "Reports & Exports", sub: "Generate and download compliance and optimization reports" };
+  }
+}
 
-export default function Header({ screen, onAlerts, alertCount }: Props) {
-  const { title, sub } = TITLES[screen];
+export default function Header({ screen, onAlerts, alertCount, selectedSolutionId, runMeta }: Props) {
+  const { title, sub } = titlesFor(screen, selectedSolutionId, runMeta);
   return (
     <header style={{
       background: "#FFFFFF",
@@ -48,9 +80,11 @@ export default function Header({ screen, onAlerts, alertCount }: Props) {
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         {/* Run status indicator */}
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#15803D" }} />
+          <div style={{ width: 5, height: 5, borderRadius: "50%", background: runMeta ? "#15803D" : "#9A9793" }} />
           <span style={{ fontSize: 11, color: "#6A6763", fontFamily: "'JetBrains Mono', monospace" }}>
-            MO-QIGA · Run #024 · 42 solutions
+            {runMeta
+              ? `${runMeta.method} · Run ${runMeta.runId} · ${runMeta.feasibleSolutions} evaluated`
+              : "No optimization result"}
           </span>
         </div>
 

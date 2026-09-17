@@ -16,7 +16,7 @@ interface Props {
 export const AXIS_LABELS: Record<AxisKey, string> = {
   cost: "Operating Cost ($M)",
   ghg:  "Lifecycle GHG (kgCO₂)",
-  fuel: "Fuel Consumption (model units)",
+  fuel: "Fuel Consumption (t)",
 };
 
 export const AXIS_PAIRS: { x: AxisKey; y: AxisKey; label: string }[] = [

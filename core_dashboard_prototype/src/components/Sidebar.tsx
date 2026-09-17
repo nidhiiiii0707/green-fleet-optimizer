@@ -6,6 +6,7 @@ interface Props {
   current: Screen;
   onNav: (s: Screen) => void;
   alertCount: number;
+  runId?: string | null;
 }
 
 const NAV = [
@@ -32,7 +33,7 @@ const SB = {
   accentTeal:  "#0A6C70",
 };
 
-export default function Sidebar({ current, onNav, alertCount }: Props) {
+export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
   return (
     <aside style={{
       width: 212, minWidth: 212,
@@ -72,11 +73,11 @@ export default function Sidebar({ current, onNav, alertCount }: Props) {
       {/* Active run indicator */}
       <div style={{ padding: "10px 18px", borderBottom: `1px solid ${SB.borderColor}` }}>
         <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-          <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#15803D", flexShrink: 0 }} />
-          <span style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: SB.textHover, letterSpacing: "0.05em" }}>
-            RUN #024
+          <div style={{ width: 5, height: 5, borderRadius: "50%", background: runId ? "#15803D" : "#6A6763", flexShrink: 0 }} />
+          <span style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: SB.textHover, letterSpacing: "0.05em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            {runId ? `RUN ${runId}` : "No run"}
           </span>
-          <span style={{ marginLeft: "auto", fontSize: 9, color: SB.text }}>Completed</span>
+          <span style={{ marginLeft: "auto", fontSize: 9, color: SB.text, flexShrink: 0 }}>{runId ? "Completed" : ""}</span>
         </div>
       </div>
 

@@ -163,7 +163,7 @@ export default function ScenarioAnalysis({ onGoToFleetPlan }: Props) {
               {/* Scenario result KPIs */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 12 }}>
                 {[
-                  { label: "Fuel Change",       val: fmtDelta(result.fuelChange), bad: result.fuelChange, base: `${result.baselineFuel.toLocaleString()} model units` },
+                  { label: "Fuel Change",       val: fmtDelta(result.fuelChange), bad: result.fuelChange, base: `${result.baselineFuel.toLocaleString()} t` },
                   { label: "Cost Change",       val: fmtDelta(result.costChange), bad: result.costChange, base: `$${result.baselineCost}M` },
                   { label: "GHG Change",        val: fmtDelta(result.ghgChange),  bad: result.ghgChange,  base: `${result.baselineGhg.toLocaleString()} kgCO₂` },
                   { label: "Cargo Fulfillment", val: result.cargoFulfillment == null ? "Unavailable" : `${result.cargoFulfillment.toFixed(1)}%`, bad: null, base: "not computed by optimizer" },
@@ -194,7 +194,7 @@ export default function ScenarioAnalysis({ onGoToFleetPlan }: Props) {
                   </thead>
                   <tbody>
                     {[
-                      { metric: "Fuel Consumption", base: `${result.baselineFuel.toLocaleString()} model units`, scenario: `${result.scenarioFuel.toLocaleString()} model units`, delta: result.fuelChange },
+                      { metric: "Fuel Consumption", base: `${result.baselineFuel.toLocaleString()} t`, scenario: `${result.scenarioFuel.toLocaleString()} t`, delta: result.fuelChange },
                       { metric: "Operating Cost",   base: `$${result.baselineCost}M`,   scenario: `$${result.scenarioCost}M`,                      delta: result.costChange },
                       { metric: "Lifecycle GHG",    base: `${result.baselineGhg.toLocaleString()} kgCO₂`, scenario: `${result.scenarioGhg.toLocaleString()} kgCO₂`, delta: result.ghgChange },
                       { metric: "Cargo Fulfillment", base: "Unavailable", scenario: result.cargoFulfillment == null ? "Unavailable" : `${result.cargoFulfillment.toFixed(1)}%`, delta: null },

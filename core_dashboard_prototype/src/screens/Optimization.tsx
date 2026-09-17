@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import ParetoChart, { AXIS_PAIRS, AxisKey } from "../components/ParetoChart";
 import type { ParetoSolution, StructuredRequest, Objective } from "../api/types";
 import { useLatestOptimization, useOptimizationRun, useNLPQuery } from "../api/hooks";
+import { cargoDemandDisplay, cargoFulfillmentPct } from "../lib/cargo";
 
 interface Props {
   selectedId: string;
@@ -108,7 +109,9 @@ function EngrRangeSlider({ label, min, max, step, value, onChange, format }: {
 }
 
 // ── Solution analytical summary ───────────────────────────────────────────────
-function SolutionPanel({ sol, onViewPlan, inFilter }: { sol: ParetoSolution; onViewPlan: () => void; inFilter: boolean }) {
+function SolutionPanel({ sol, onViewPlan, inFilter, requestedCargo }: { sol: ParetoSolution; onViewPlan: () => void; inFilter: boolean; requestedCargo: number | null }) {
+  const cargoDemand = cargoDemandDisplay(requestedCargo);
+  const fulfillmentPct = cargoFulfillmentPct(sol.assignments ?? [], requestedCargo);
   return (
     <div style={{
       background: T.surface,
@@ -145,8 +148,8 @@ function SolutionPanel({ sol, onViewPlan, inFilter }: { sol: ParetoSolution; onV
         {[
           { label: "Operating Cost",  val: `$${sol.cost}M`,                          mono: true  },
           { label: "Lifecycle GHG",   val: `${(sol.ghg / 1000).toFixed(1)}k kgCO₂`, mono: true  },
-          { label: "Fuel Consump.",   val: `${sol.fuel.toLocaleString()} model units`, mono: true  },
-          { label: "Cargo Fulfil.",   val: sol.cargoFulfillment == null ? "Unavailable" : `${sol.cargoFulfillment}%`, mono: true  },
+          { label: "Fuel Consump.",   val: `${sol.fuel.toLocaleString()} t`, mono: true  },
+          { label: "Cargo Demand",    val: fulfillmentPct != null ? `${cargoDemand.value} (${fulfillmentPct}% assigned)` : cargoDemand.value, mono: true  },
         ].map(m => (
           <div key={m.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
             <span style={{ fontSize: 10, color: T.textSec, fontFamily: "'Instrument Sans', sans-serif" }}>{m.label}</span>
@@ -227,15 +230,17 @@ function PanelLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function RadioOpt({ val, current, label, onChange }: {
+function RadioOpt({ val, current, label, onChange, disabled }: {
   val: FixedParam; current: FixedParam; label: string;
   onChange: (v: FixedParam) => void;
+  disabled?: boolean;
 }) {
   const active = current === val;
+  const handleClick = () => { if (!disabled) onChange(val); };
   return (
-    <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer", marginBottom: 5 }}>
+    <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: disabled ? "not-allowed" : "pointer", marginBottom: 5, opacity: disabled ? 0.45 : 1 }}>
       <div
-        onClick={() => onChange(val)}
+        onClick={handleClick}
         style={{
           width: 12, height: 12, borderRadius: "50%", flexShrink: 0,
           border: `1.5px solid ${active ? T.teal : T.borderMed}`,
@@ -246,7 +251,7 @@ function RadioOpt({ val, current, label, onChange }: {
         {active && <div style={{ width: 3, height: 3, borderRadius: "50%", background: "white" }} />}
       </div>
       <span
-        onClick={() => onChange(val)}
+        onClick={handleClick}
         style={{ fontSize: 10, color: active ? T.teal : T.textSec, fontWeight: active ? 600 : 400, fontFamily: "'Instrument Sans', sans-serif" }}
       >
         {label}
@@ -268,6 +273,7 @@ interface RequestFormProps {
   onChange: (value: StructuredRequest) => void;
   originFlag?: { valid?: boolean; suggestion?: string | null } | null;
   destinationFlag?: { valid?: boolean; suggestion?: string | null } | null;
+  compact?: boolean;
 }
 
 function RequestField({ label, children }: { label: string; children: React.ReactNode }) {
@@ -284,7 +290,7 @@ const fieldInputStyle: React.CSSProperties = {
   borderRadius: 4, fontFamily: "'Instrument Sans', sans-serif", color: T.text, boxSizing: "border-box",
 };
 
-function RequestForm({ value, onChange, originFlag, destinationFlag }: RequestFormProps) {
+function RequestForm({ value, onChange, originFlag, destinationFlag, compact }: RequestFormProps) {
   function set<K extends keyof StructuredRequest>(key: K, v: StructuredRequest[K]) {
     onChange({ ...value, [key]: v });
   }
@@ -294,7 +300,7 @@ function RequestForm({ value, onChange, originFlag, destinationFlag }: RequestFo
   }
   return (
     <div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+      <div style={{ display: "grid", gridTemplateColumns: compact ? "1fr" : "1fr 1fr", gap: 12 }}>
         <RequestField label="Origin">
           <input style={fieldInputStyle} placeholder="Any" value={value.origin ?? ""}
             onChange={e => set("origin", e.target.value || null)} />
@@ -331,7 +337,7 @@ function RequestForm({ value, onChange, originFlag, destinationFlag }: RequestFo
         </RequestField>
       </div>
       <RequestField label="Objectives">
-        <div style={{ display: "flex", gap: 14 }}>
+        <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
           {(Object.keys(OBJECTIVE_LABELS) as Objective[]).map(o => (
             <label key={o} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: T.text, cursor: "pointer" }}>
               <input type="checkbox" checked={value.objectives.includes(o)} onChange={() => toggleObjective(o)} />
@@ -418,6 +424,13 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
     return vals.length ? [Math.min(...vals), Math.max(...vals)] as [number, number] : [0, 0] as [number, number];
   }, [allSolutions]);
   const cargoAvailable = allSolutions.some(s => s.cargoFulfillment != null);
+
+  // Cargo fulfillment isn't computed by the optimizer for this run — never
+  // leave a fake "fixed cargo" filter selected once that becomes known.
+  useEffect(() => {
+    if (fixedParam === "cargo" && !cargoAvailable) setFixedParam(null);
+  }, [fixedParam, cargoAvailable]);
+
   const cargoBounds = useMemo(() => {
     const vals = allSolutions.map(s => s.cargoFulfillment).filter((v): v is number => v != null);
     return vals.length ? [Math.min(...vals), Math.max(...vals)] as [number, number] : [0, 100] as [number, number];
@@ -468,7 +481,7 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
 
   type MetricKey = "fuel" | "cost" | "ghg" | "cargoFulfillment" | "vessels" | "routes";
   const compareMetrics: { key: MetricKey; label: string; fmt: (v: number | null) => string }[] = [
-    { key: "fuel",             label: "Fuel Consumption", fmt: v => v == null ? "Unavailable" : `${v.toLocaleString()} model units` },
+    { key: "fuel",             label: "Fuel Consumption", fmt: v => v == null ? "Unavailable" : `${v.toLocaleString()} t` },
     { key: "cost",             label: "Operating Cost",   fmt: v => v == null ? "Unavailable" : `$${v}M` },
     { key: "ghg",              label: "Lifecycle GHG",    fmt: v => v == null ? "Unavailable" : `${v.toLocaleString()} kgCO₂` },
     { key: "cargoFulfillment", label: "Cargo Fulfil.",    fmt: v => v == null ? "Unavailable" : `${v}%` },
@@ -513,21 +526,95 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
             ))}
           </div>
 
-          <div style={{ padding: "14px 18px" }}>
-            {requestMode === "manual" ? (
-              <>
+          <div style={{ padding: "14px 18px", display: "grid", gridTemplateColumns: "1fr 340px", gap: 20 }}>
+            {/* Left: input method */}
+            <div>
+              {requestMode === "manual" ? (
                 <RequestForm value={pendingRequest} onChange={setPendingRequest} />
-                {requestErr && (
-                  <div style={{ fontSize: 11, color: T.red, marginBottom: 8 }}>⚠ {requestErr}</div>
-                )}
-                {!hasAnyConstraint && (
-                  <div style={{ fontSize: 10, color: T.textTer, marginBottom: 8 }}>
-                    No fields set — optimizing across all available routes/vessels/fuels.
+              ) : (
+                <>
+                  <div style={{ fontSize: 11, color: T.textSec, marginBottom: 8, fontFamily: "'Instrument Sans', sans-serif" }}>
+                    Describe your fleet optimization requirement
                   </div>
+                  <textarea
+                    placeholder='e.g. "Find a low-emission route from Yokohama to Singapore carrying 5000 tonnes at 18 knots"'
+                    value={nlqText}
+                    onChange={e => setNlqText(e.target.value)}
+                    rows={4}
+                    style={{ width: "100%", padding: "9px 12px", fontSize: 12, border: `1px solid ${T.border}`, borderRadius: 4, fontFamily: "'Instrument Sans', sans-serif", color: T.text, boxSizing: "border-box", resize: "vertical", marginBottom: 10 }}
+                  />
+                  {nlpError && (
+                    <div style={{ fontSize: 11, color: T.red, marginBottom: 8 }}>⚠ {nlpError}</div>
+                  )}
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <button
+                      onClick={handleGenerateRequest}
+                      disabled={nlpLoading}
+                      style={{ background: nlpLoading ? "#9CA3AF" : T.teal, color: "white", border: "none", padding: "8px 16px", fontSize: 11, fontWeight: 700, cursor: nlpLoading ? "not-allowed" : "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
+                    >
+                      {nlpLoading ? "Parsing..." : requestReviewReady ? "Regenerate Request" : "Generate Request"}
+                    </button>
+                    {requestReviewReady && (
+                      <button
+                        onClick={() => { setRequestReviewReady(false); resetNLQ(); setNlqText(""); setPendingRequest(EMPTY_REQUEST); }}
+                        style={{ background: "white", color: T.textSec, border: `1px solid ${T.border}`, padding: "8px 14px", fontSize: 11, cursor: "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </div>
+                  {requestReviewReady && (
+                    <div style={{ fontSize: 10, color: T.textTer, marginTop: 10 }}>
+                      {nlpResult?.gemini_used
+                        ? "Normalized with Gemini, then parsed deterministically."
+                        : "Parsed deterministically (Gemini normalization unavailable)."}{" "}
+                      Review the detected request on the right, edit if needed, then Optimize.
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+
+            {/* Right: current / detected request + action */}
+            <div style={{ borderLeft: `1px solid ${T.border}`, paddingLeft: 20 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: T.text, marginBottom: 8, fontFamily: "'Instrument Sans', sans-serif" }}>
+                {requestMode === "nlp" && requestReviewReady ? "Detected Request" : "Current Request"}
+              </div>
+              {requestMode === "nlp" && !requestReviewReady ? (
+                <div style={{ fontSize: 10.5, color: T.textTer, lineHeight: 1.5 }}>
+                  Generate a request from your description to review its detected fields here before optimizing.
+                </div>
+              ) : (
+                <RequestForm
+                  value={pendingRequest}
+                  onChange={setPendingRequest}
+                  originFlag={requestMode === "nlp" && nlpResult ? { valid: nlpResult.parsed.origin_valid, suggestion: nlpResult.parsed.origin_suggestion } : null}
+                  destinationFlag={requestMode === "nlp" && nlpResult ? { valid: nlpResult.parsed.destination_valid, suggestion: nlpResult.parsed.destination_suggestion } : null}
+                  compact
+                />
+              )}
+
+              {requestErr && (
+                <div style={{ fontSize: 11, color: T.red, marginBottom: 8 }}>⚠ {requestErr}</div>
+              )}
+              {!hasAnyConstraint && (requestMode === "manual" || requestReviewReady) && (
+                <div style={{ fontSize: 10, color: T.textTer, marginBottom: 8 }}>
+                  No fields set — optimizing across all available routes/vessels/fuels.
+                </div>
+              )}
+
+              <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
+                {requestMode === "nlp" && requestReviewReady && (
+                  <button
+                    onClick={handleEditInManualForm}
+                    style={{ background: "white", color: T.textSec, border: `1px solid ${T.border}`, padding: "8px 14px", fontSize: 11, cursor: "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
+                  >
+                    Edit in Manual Form
+                  </button>
                 )}
                 <button
                   onClick={handleOptimize}
-                  disabled={optRunning || !!requestErr}
+                  disabled={optRunning || !!requestErr || (requestMode === "nlp" && !requestReviewReady)}
                   style={{
                     background: optRunning ? "#9CA3AF" : T.teal, color: "white", border: "none",
                     padding: "8px 16px", fontSize: 11, fontWeight: 700,
@@ -537,99 +624,27 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
                 >
                   {optRunning ? `Optimizing... ${jobStatus?.progress ?? 0}%` : "Optimize"}
                 </button>
-              </>
-            ) : !requestReviewReady ? (
-              <>
-                <div style={{ fontSize: 11, color: T.textSec, marginBottom: 8, fontFamily: "'Instrument Sans', sans-serif" }}>
-                  Describe your fleet optimization requirement
-                </div>
-                <textarea
-                  placeholder='e.g. "Find a low-emission route from Yokohama to Singapore carrying 5000 tonnes at 18 knots"'
-                  value={nlqText}
-                  onChange={e => setNlqText(e.target.value)}
-                  rows={3}
-                  style={{ width: "100%", padding: "9px 12px", fontSize: 12, border: `1px solid ${T.border}`, borderRadius: 4, fontFamily: "'Instrument Sans', sans-serif", color: T.text, boxSizing: "border-box", resize: "vertical", marginBottom: 10 }}
-                />
-                {nlpError && (
-                  <div style={{ fontSize: 11, color: T.red, marginBottom: 8 }}>⚠ {nlpError}</div>
-                )}
-                <button
-                  onClick={handleGenerateRequest}
-                  disabled={nlpLoading}
-                  style={{ background: nlpLoading ? "#9CA3AF" : T.teal, color: "white", border: "none", padding: "8px 16px", fontSize: 11, fontWeight: 700, cursor: nlpLoading ? "not-allowed" : "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
-                >
-                  {nlpLoading ? "Parsing..." : "Generate Request"}
-                </button>
-              </>
-            ) : (
-              <>
-                <div style={{ fontSize: 11, fontWeight: 700, color: T.text, marginBottom: 2, fontFamily: "'Instrument Sans', sans-serif" }}>Detected request</div>
-                <div style={{ fontSize: 10, color: T.textTer, marginBottom: 10 }}>
-                  {nlpResult?.gemini_used
-                    ? "Normalized with Gemini, then parsed deterministically. Review and edit before optimizing."
-                    : "Parsed deterministically (Gemini normalization unavailable). Review and edit before optimizing."}
-                </div>
-                <RequestForm
-                  value={pendingRequest}
-                  onChange={setPendingRequest}
-                  originFlag={nlpResult ? { valid: nlpResult.parsed.origin_valid, suggestion: nlpResult.parsed.origin_suggestion } : null}
-                  destinationFlag={nlpResult ? { valid: nlpResult.parsed.destination_valid, suggestion: nlpResult.parsed.destination_suggestion } : null}
-                />
-                {requestErr && (
-                  <div style={{ fontSize: 11, color: T.red, marginBottom: 8 }}>⚠ {requestErr}</div>
-                )}
-                {!hasAnyConstraint && (
-                  <div style={{ fontSize: 10, color: T.textTer, marginBottom: 8 }}>
-                    No fields were detected in your request — optimizing across all available routes/vessels/fuels.
-                  </div>
-                )}
-                <div style={{ display: "flex", gap: 8 }}>
-                  <button
-                    onClick={() => { setRequestReviewReady(false); resetNLQ(); setNlqText(""); }}
-                    style={{ background: "white", color: T.textSec, border: `1px solid ${T.border}`, padding: "8px 14px", fontSize: 11, cursor: "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
-                  >
-                    New Query
-                  </button>
-                  <button
-                    onClick={handleEditInManualForm}
-                    style={{ background: "white", color: T.textSec, border: `1px solid ${T.border}`, padding: "8px 14px", fontSize: 11, cursor: "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
-                  >
-                    Edit in Manual Form
-                  </button>
-                  <button
-                    onClick={handleOptimize}
-                    disabled={optRunning || !!requestErr}
-                    style={{
-                      background: optRunning ? "#9CA3AF" : T.teal, color: "white", border: "none",
-                      padding: "8px 16px", fontSize: 11, fontWeight: 700,
-                      cursor: optRunning || requestErr ? "not-allowed" : "pointer",
-                      fontFamily: "'Instrument Sans', sans-serif",
-                    }}
-                  >
-                    {optRunning ? `Optimizing... ${jobStatus?.progress ?? 0}%` : "Optimize"}
-                  </button>
-                </div>
-              </>
-            )}
+              </div>
 
-            {optRunning && jobStatus && (
-              <div style={{ background: T.tealLight, border: `1px solid ${T.teal}30`, padding: "6px 14px", display: "flex", alignItems: "center", gap: 10, marginTop: 10 }}>
-                <div style={{ flex: 1, height: 4, background: T.border, borderRadius: 2 }}>
-                  <div style={{ width: `${jobStatus.progress}%`, height: "100%", background: T.teal, borderRadius: 2, transition: "width 0.3s" }} />
+              {optRunning && jobStatus && (
+                <div style={{ background: T.tealLight, border: `1px solid ${T.teal}30`, padding: "6px 14px", display: "flex", alignItems: "center", gap: 10, marginTop: 10 }}>
+                  <div style={{ flex: 1, height: 4, background: T.border, borderRadius: 2 }}>
+                    <div style={{ width: `${jobStatus.progress}%`, height: "100%", background: T.teal, borderRadius: 2, transition: "width 0.3s" }} />
+                  </div>
+                  <span style={{ fontSize: 10, color: T.teal, fontFamily: "'JetBrains Mono', monospace", whiteSpace: "nowrap" }}>{jobStatus.message}</span>
                 </div>
-                <span style={{ fontSize: 10, color: T.teal, fontFamily: "'JetBrains Mono', monospace", whiteSpace: "nowrap" }}>{jobStatus.message}</span>
-              </div>
-            )}
-            {!optRunning && jobStatus?.status === "failed" && (
-              <div style={{ background: T.redL, border: `1px solid ${T.red}40`, padding: "8px 14px", fontSize: 11, color: T.red, marginTop: 10 }}>
-                ⚠ Optimization failed: {jobStatus.error ?? jobStatus.message}
-              </div>
-            )}
-            {!optRunning && jobStatus?.status === "completed" && liveResult?.request_warnings && liveResult.request_warnings.length > 0 && (
-              <div style={{ background: "#FFFBEB", border: "1px solid #FDE68A", padding: "8px 14px", fontSize: 11, color: "#78350F", marginTop: 10 }}>
-                {liveResult.request_warnings.map((w, i) => <div key={i}>⚠ {w}</div>)}
-              </div>
-            )}
+              )}
+              {!optRunning && jobStatus?.status === "failed" && (
+                <div style={{ background: T.redL, border: `1px solid ${T.red}40`, padding: "8px 14px", fontSize: 11, color: T.red, marginTop: 10 }}>
+                  ⚠ Optimization failed: {jobStatus.error ?? jobStatus.message}
+                </div>
+              )}
+              {!optRunning && jobStatus?.status === "completed" && liveResult?.request_warnings && liveResult.request_warnings.length > 0 && (
+                <div style={{ background: "#FFFBEB", border: "1px solid #FDE68A", padding: "8px 14px", fontSize: 11, color: "#78350F", marginTop: 10 }}>
+                  {liveResult.request_warnings.map((w, i) => <div key={i}>⚠ {w}</div>)}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -675,7 +690,7 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
           </div>
           <RadioOpt val={null}      current={fixedParam} label="No fixed parameter"    onChange={setFixedParam} />
           <RadioOpt val="vessels"   current={fixedParam} label="Fix vessel count"       onChange={setFixedParam} />
-          <RadioOpt val="cargo"     current={fixedParam} label="Fix cargo fulfillment"  onChange={setFixedParam} />
+          <RadioOpt val="cargo"     current={fixedParam} label="Fix cargo fulfillment"  onChange={setFixedParam} disabled={!cargoAvailable} />
           <RadioOpt val="routes"    current={fixedParam} label="Fix route count"        onChange={setFixedParam} />
 
           {/* Constraint window */}
@@ -768,7 +783,7 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
 
             {/* Selected solution analytical panel */}
             {selected ? (
-              <SolutionPanel sol={selected} onViewPlan={onViewPlan} inFilter={isSelectedInFilter} />
+              <SolutionPanel sol={selected} onViewPlan={onViewPlan} inFilter={isSelectedInFilter} requestedCargo={liveResult?.structured_request?.cargo ?? null} />
             ) : (
               <div style={{ background: T.surface, border: `1px solid ${T.border}`, padding: "14px 16px", fontSize: 11, color: T.textTer }}>
                 No optimization result loaded yet.

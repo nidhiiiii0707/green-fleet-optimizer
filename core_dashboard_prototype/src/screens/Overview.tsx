@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import WorldMap from "../components/WorldMap";
+import GoogleFleetMap from "../components/GoogleFleetMap";
 import VesselDrawer from "../components/VesselDrawer";
 import { useFleetData, useLatestOptimization } from "../api/hooks";
+import { cargoDemandDisplay, cargoFulfillmentPct } from "../lib/cargo";
 
 interface Props {
   solutionId: string;
@@ -51,13 +52,17 @@ export default function Overview({ solutionId, onGoToOptimization }: Props) {
   const paretoCount = liveResult?.pareto_count ?? 0;
 
   const assignments = optimized?.assignments ?? [];
-  const activeRouteIds = Array.from(new Set(assignments.map(a => a.routeId)));
+  const activeRouteIds = Array.from(new Set(assignments.map(a => a.routeId).filter((id): id is string => id != null)));
+
+  const requestedCargo = liveResult?.structured_request?.cargo ?? null;
+  const cargoDemand = cargoDemandDisplay(requestedCargo);
+  const fulfillmentPct = cargoFulfillmentPct(assignments, requestedCargo);
 
   const KPI_DATA = [
-    { label: "Total Fuel",      value: loading || !optimized ? null : `${optimized.fuel.toLocaleString()} model units`, delta: "", good: null, sub: optimized?.label ?? "" },
+    { label: "Total Fuel",      value: loading || !optimized ? null : `${optimized.fuel.toLocaleString()} t`, delta: "", good: null, sub: optimized?.label ?? "" },
     { label: "Operating Cost",  value: loading || !optimized ? null : `$${optimized.cost.toFixed(3)}M`, delta: "", good: null, sub: optimized?.label ?? "" },
     { label: "Lifecycle GHG",   value: loading || !optimized ? null : `${optimized.ghg.toLocaleString()} kgCO₂`, delta: "", good: null, sub: optimized?.label ?? "" },
-    { label: "Cargo Fulfil.",   value: loading || !optimized ? null : optimized.cargoFulfillment == null ? "Unavailable" : `${optimized.cargoFulfillment}%`, delta: "", good: null, sub: "not an optimizer objective" },
+    { label: "Cargo Demand",    value: loading || !optimized ? null : cargoDemand.value, delta: "", good: null, sub: loading || !optimized ? "" : fulfillmentPct != null ? `${fulfillmentPct}% assigned · ${cargoDemand.sub}` : cargoDemand.sub },
     { label: "Assignments",     value: loading ? null : `${optimized?.vessels ?? 0}`,                          delta: "",         good: null,  sub: "leg-level vessel classes" },
     { label: "Constraint Sat.", value: loading ? null : `${optimized?.constraintsSatisfied ?? 0} / ${optimized?.totalConstraints ?? 0}`, delta: "", good: null, sub: optimized?.label ?? "" },
   ];
@@ -158,7 +163,7 @@ export default function Overview({ solutionId, onGoToOptimization }: Props) {
           </div>
         </div>
         <div style={{ height: 340 }}>
-          <WorldMap
+          <GoogleFleetMap
             ports={ports}
             routes={routes}
             highlightRouteIds={activeRouteIds}
@@ -189,7 +194,7 @@ export default function Overview({ solutionId, onGoToOptimization }: Props) {
               Select a solution to compare against the baseline.
             </div>
           ) : [
-            { label: "Fuel Consumption", base: `${baseline.fuel.toLocaleString()} model units`, opt: `${optimized.fuel.toLocaleString()} model units` },
+            { label: "Fuel Consumption", base: `${baseline.fuel.toLocaleString()} t`, opt: `${optimized.fuel.toLocaleString()} t` },
             { label: "Operating Cost",   base: `$${baseline.cost}M`,                             opt: `$${optimized.cost}M` },
             { label: "Lifecycle GHG",    base: `${baseline.ghg.toLocaleString()} kgCO₂`,         opt: `${optimized.ghg.toLocaleString()} kgCO₂` },
             { label: "Cargo Fulfil.",    base: baseline.cargoFulfillment == null ? "Unavailable" : `${baseline.cargoFulfillment}%`, opt: optimized.cargoFulfillment == null ? "Unavailable" : `${optimized.cargoFulfillment}%` },
@@ -249,7 +254,7 @@ export default function Overview({ solutionId, onGoToOptimization }: Props) {
                     </div>
                   </div>
                   <div style={{ textAlign: "right" }}>
-                    <div style={{ fontSize: 12, fontWeight: 600, color: T.text, fontFamily: "'JetBrains Mono', monospace" }}>{f.consumption.toLocaleString()} model units</div>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: T.text, fontFamily: "'JetBrains Mono', monospace" }}>{f.consumption.toLocaleString()} t</div>
                     <div style={{ fontSize: 10, color: T.textTer }}>{f.ghg.toLocaleString()} kgCO₂</div>
                   </div>
                 </div>

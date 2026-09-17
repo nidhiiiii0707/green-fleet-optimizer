@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import WorldMap from "../components/WorldMap";
+import React, { useMemo, useState } from "react";
+import GoogleFleetMap from "../components/GoogleFleetMap";
+import VesselSimulationPanel from "../components/VesselSimulationPanel";
 import VesselDrawer from "../components/VesselDrawer";
 import type { Assignment } from "../api/types";
 import { useFleetData, useLatestOptimization } from "../api/hooks";
+import { cargoDemandDisplay, cargoFulfillmentPct } from "../lib/cargo";
+import { buildSimVessels, useVesselSimulation } from "../lib/vesselSimulation";
 
 interface Props {
   solutionId: string;
@@ -15,7 +18,7 @@ const FUEL_COLORS: Record<string, string> = {
 };
 
 export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimization }: Props) {
-  const [selectedVesselId, setSelectedVesselId] = useState<string | null>(null);
+  const [selectedAssignmentId, setSelectedAssignmentId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [sortCol, setSortCol] = useState<keyof Assignment | null>(null);
 
@@ -23,7 +26,11 @@ export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimizati
   const { vessels, ports, routes, error: fleetError } = useFleetData();
   const sol = liveResult?.pareto_solutions.find((solution) => solution.id === solutionId);
   const assignments: Assignment[] = sol?.assignments ?? [];
-  const activeRouteIds = Array.from(new Set(assignments.map(a => a.routeId)));
+  const activeRouteIds = Array.from(new Set(assignments.map(a => a.routeId).filter((id): id is string => id != null)));
+
+  const simVessels = useMemo(() => buildSimVessels(assignments), [assignments]);
+  const sim = useVesselSimulation(simVessels);
+  const selectedVesselId = assignments.find(a => a.id === selectedAssignmentId)?.vesselId ?? null;
 
   if (loading) return <div style={{ padding: 28, color: "#64748B" }}>Loading real optimization result…</div>;
   if (error || fleetError) return <div style={{ padding: 28, color: "#B91C1C" }}>Backend data unavailable: {error ?? fleetError}</div>;
@@ -44,6 +51,10 @@ export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimizati
 
   const planConstraints = assignments.flatMap((assignment) => assignment.constraints);
   const ghgWarning = planConstraints.find((constraint) => constraint.label.toLowerCase().includes("ghg") && constraint.note);
+
+  const requestedCargo = liveResult?.structured_request?.cargo ?? null;
+  const cargoDemand = cargoDemandDisplay(requestedCargo);
+  const fulfillmentPct = cargoFulfillmentPct(assignments, requestedCargo);
 
   return (
     <div style={{ padding: "24px 28px", overflowY: "auto", height: "100%" }}>
@@ -79,13 +90,14 @@ export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimizati
           { label: "Total Fuel",          val: `${sol.fuel.toLocaleString()} t`,      color: "#1D4ED8", bg: "#EFF6FF" },
           { label: "Total Cost",          val: `$${sol.cost}M`,                         color: "#059669", bg: "#F0FDF4" },
           { label: "Lifecycle GHG",       val: `${sol.ghg.toLocaleString()} kgCO₂`,    color: "#0F172A", bg: "#F8FAFC" },
-          { label: "Cargo Fulfillment",   val: sol.cargoFulfillment == null ? "Unavailable" : `${sol.cargoFulfillment}%`, color: "#059669", bg: "#F0FDF4" },
+          { label: "Cargo Demand",        val: cargoDemand.value,                       color: "#059669", bg: "#F0FDF4", sub: fulfillmentPct != null ? `${fulfillmentPct}% assigned` : cargoDemand.sub },
           { label: "Vessels Deployed",    val: `${sol.vessels}`,                        color: "#0F172A", bg: "#F8FAFC" },
           { label: "Routes",              val: `${sol.routes}`,                         color: "#0F172A", bg: "#F8FAFC" },
         ].map(k => (
           <div key={k.label} style={{ flex: 1, background: k.bg, borderRadius: 9, padding: "14px 16px", border: "1px solid #E2E8F0" }}>
             <div style={{ fontSize: 10, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 6 }}>{k.label}</div>
             <div style={{ fontSize: 18, fontWeight: 700, color: k.color, fontFamily: "'JetBrains Mono', monospace" }}>{k.val}</div>
+            {"sub" in k && k.sub && <div style={{ fontSize: 10, color: "#94A3B8", marginTop: 3 }}>{k.sub}</div>}
           </div>
         ))}
       </div>
@@ -96,15 +108,21 @@ export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimizati
           <div style={{ fontSize: 14, fontWeight: 700, color: "#0F172A", fontFamily: "'DM Sans', sans-serif" }}>Optimized Route Map — {sol.label}</div>
           <div style={{ fontSize: 12, color: "#64748B" }}>All {sol.routes} active deployment routes for this fleet plan.</div>
         </div>
-        <div style={{ height: 280 }}>
-          <WorldMap
+        <div style={{ height: 320 }}>
+          <GoogleFleetMap
             ports={ports}
             routes={routes}
             highlightRouteIds={activeRouteIds}
             showAllRoutes={false}
-            onPortClick={id => {}}
+            selectedPortId={null}
             compact={true}
+            vessels={sim.markers}
+            selectedVesselId={selectedAssignmentId}
+            onVesselClick={id => { setSelectedAssignmentId(id); setDrawerOpen(true); }}
           />
+        </div>
+        <div style={{ padding: "10px 14px", borderTop: "1px solid #F1F5F9" }}>
+          <VesselSimulationPanel sim={sim} vesselCount={simVessels.length} />
         </div>
       </div>
 
@@ -130,12 +148,12 @@ export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimizati
               </thead>
               <tbody>
                 {displayRows.map((row, i) => {
-                  const isSelected = row.vesselId === selectedVesselId;
+                  const isSelected = row.id === selectedAssignmentId;
                   const ss = STATUS_STYLE[row.status] ?? { bg: "white", color: "#475569" };
                   return (
                     <tr
                       key={row.id}
-                      onClick={() => { setSelectedVesselId(row.vesselId); setDrawerOpen(true); }}
+                      onClick={() => { setSelectedAssignmentId(row.id); setDrawerOpen(true); }}
                       style={{
                         background: isSelected ? "#EFF6FF" : i % 2 === 0 ? "white" : "#FAFAFA",
                         cursor: "pointer", borderBottom: "1px solid #F1F5F9",
@@ -210,33 +228,13 @@ export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimizati
             ))}
           </div>
 
-          {/* Plan explanation */}
-          <div style={{ background: "white", border: "1px solid #E2E8F0", borderRadius: 10, padding: "16px" }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "#0F172A", fontFamily: "'DM Sans', sans-serif", marginBottom: 8 }}>Why this plan is feasible</div>
-            {[
-              "All 12 cargo demands are fully or partially covered (97.8% fulfillment).",
-              "Vessel capacity constraints satisfied across 24 assignments.",
-              "All fuels are compatible with assigned vessels and available at origin ports.",
-              "Delivery deadlines met with scheduling margins of 12–48 hours.",
-              "Port capacity limits respected at all 12 ports in the network.",
-            ].map((r, i) => (
-              <div key={i} style={{ display: "flex", gap: 7, marginBottom: 7 }}>
-                <span style={{ color: "#059669", fontSize: 13, flexShrink: 0, marginTop: 1 }}>✓</span>
-                <span style={{ fontSize: 12, color: "#334155", lineHeight: 1.5 }}>{r}</span>
-              </div>
-            ))}
-            <div style={{ marginTop: 12, padding: "10px 12px", background: "#F8FAFC", borderRadius: 6, border: "1px solid #E2E8F0" }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 4 }}>Trade-off Summary</div>
-              <div style={{ fontSize: 12, color: "#64748B", lineHeight: 1.5 }}>
-                Lower lifecycle GHG than Solution #04 (53,200 → 54,820 tCO₂e) with lower operating cost ($4.97M → $4.82M). Higher GHG than Solution #01 with $0.58M cost savings.
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
       <VesselDrawer
         vesselId={selectedVesselId}
+        assignmentId={selectedAssignmentId}
+        progressPct={selectedAssignmentId ? sim.progressOf(selectedAssignmentId) : null}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         assignments={assignments}

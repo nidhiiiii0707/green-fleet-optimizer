@@ -9,6 +9,11 @@ interface Props {
   vessels?: Vessel[];
   ports?: Port[];
   routes?: Route[];
+  /** When set, selects the exact leg/assignment (e.g. from a simulation
+   * marker click) instead of the first assignment matching vesselId. */
+  assignmentId?: string | null;
+  /** Simulation progress 0-100 for this assignment, if a simulation is running. */
+  progressPct?: number | null;
 }
 
 const BADGE_STYLE: Record<string, { bg: string; color: string }> = {
@@ -40,9 +45,11 @@ function Row({ label, value, mono = false }: { label: string; value: React.React
   );
 }
 
-export default function VesselDrawer({ vesselId, open, onClose, assignments = [], vessels = [], ports = [], routes = [] }: Props) {
-  const vessel = vessels.find(v => v.id === vesselId);
-  const assignment = assignments.find(a => a.vesselId === vesselId);
+export default function VesselDrawer({ vesselId, open, onClose, assignments = [], vessels = [], ports = [], routes = [], assignmentId = null, progressPct = null }: Props) {
+  const assignment = assignmentId
+    ? assignments.find(a => a.id === assignmentId)
+    : assignments.find(a => a.vesselId === vesselId);
+  const vessel = vessels.find(v => v.id === (assignment?.vesselId ?? vesselId));
   const origin = ports.find(p => p.id === assignment?.originId);
   const dest = ports.find(p => p.id === assignment?.destinationId);
   const route = routes.find(r => r.id === assignment?.routeId);
@@ -120,9 +127,10 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
                     <Row label="Volume" value={`${assignment.cargoTEU.toLocaleString()} ${vessel.capacityUnit}`} mono />
                     <Row label="Origin" value={`${origin?.name ?? assignment.originId} (${assignment.originId})`} />
                     <Row label="Destination" value={`${dest?.name ?? assignment.destinationId} (${assignment.destinationId})`} />
-                    <Row label="Route" value={route?.name ?? assignment.routeId} />
+                    <Row label="Route" value={route?.name ?? assignment.routeName ?? assignment.routeId ?? "Unavailable"} />
                     <Row label="Cruising Speed" value={`${assignment.speed} kn`} mono />
                     <Row label="ETA" value={assignment.eta ?? "Unavailable"} />
+                    {progressPct != null && <Row label="Simulation Progress" value={`${progressPct.toFixed(1)}%`} mono />}
                   </div>
 
                   <div style={{ paddingTop: 14, paddingBottom: 4 }}>
@@ -131,7 +139,7 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
                       <span style={{ background: "#EFF6FF", color: "#1D4ED8", borderRadius: 4, padding: "1px 7px", fontSize: 11, fontWeight: 600 }}>{assignment.fuelType}</span>
                     } />
                     <Row label="Shore Power" value={assignment.shorepower == null ? "Unavailable" : assignment.shorepower ? "Used at port" : "Not used"} />
-                    <Row label="Predicted Fuel" value={`${assignment.fuelConsumption.toLocaleString()} model units`} mono />
+                    <Row label="Predicted Fuel" value={`${assignment.fuelConsumption.toLocaleString()} t`} mono />
                     <Row label="Operating Cost" value={`$${assignment.cost}K`} mono />
                     <Row label="Lifecycle GHG" value={`${assignment.ghg.toLocaleString()} kgCO₂`} mono />
                   </div>
@@ -154,23 +162,6 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
                         </div>
                       ))}
                     </div>
-                  </div>
-
-                  <div style={{ marginTop: 16, padding: "14px 16px", background: "#F0FDF4", borderRadius: 8, border: "1px solid #BBF7D0" }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: "#15803D", marginBottom: 8 }}>Why this vessel was selected</div>
-                    {[
-                      "Capacity requirement satisfied",
-                      "Fuel compatibility satisfied",
-                      "Available within planning window",
-                      "Delivery deadline satisfied",
-                      "Port constraints satisfied",
-                      "GHG constraint satisfied",
-                    ].map((r, i) => (
-                      <div key={i} style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 5 }}>
-                        <span style={{ color: "#15803D", fontSize: 13 }}>✓</span>
-                        <span style={{ fontSize: 12, color: "#166534" }}>{r}</span>
-                      </div>
-                    ))}
                   </div>
                 </>
               )}

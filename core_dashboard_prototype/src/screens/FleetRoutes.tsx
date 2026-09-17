@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import WorldMap from "../components/WorldMap";
+import GoogleFleetMap from "../components/GoogleFleetMap";
 import VesselDrawer from "../components/VesselDrawer";
 import type { Assignment } from "../api/types";
 import { useFleetData, useLatestOptimization } from "../api/hooks";
@@ -25,7 +25,8 @@ export default function FleetRoutes({ solutionId }: { solutionId: string }) {
   const { data: liveResult, loading: optimizationLoading, error: optimizationError } = useLatestOptimization();
   const solution = liveResult?.pareto_solutions.find((item) => item.id === solutionId);
   const assignments: Assignment[] = solution?.assignments ?? [];
-  const activeRouteIds = Array.from(new Set(assignments.map(a => a.routeId)));
+  const activeRouteIds = Array.from(new Set(assignments.map(a => a.routeId).filter((id): id is string => id != null)));
+  const availabilitySupported = VESSELS.some(v => v.availability != null);
 
   const displayRows = assignments.map(a => {
     const vessel = VESSELS.find(v => v.id === a.vesselId);
@@ -34,7 +35,7 @@ export default function FleetRoutes({ solutionId }: { solutionId: string }) {
     return { ...a, vessel, vesselName: vessel?.name ?? a.vesselId, originName: origin?.name ?? a.originId, destName: dest?.name ?? a.destinationId };
   }).filter(row => {
     if (fuelFilter !== "All" && row.fuelType !== fuelFilter) return false;
-    if (availFilter !== "All" && row.vessel?.availability !== availFilter) return false;
+    if (availabilitySupported && availFilter !== "All" && row.vessel?.availability !== availFilter) return false;
     if (statusFilter !== "All" && row.status !== statusFilter) return false;
     return true;
   });
@@ -54,19 +55,23 @@ export default function FleetRoutes({ solutionId }: { solutionId: string }) {
         <div style={{ fontSize: 12, fontWeight: 700, color: "#0F172A", marginBottom: 12 }}>Filters</div>
 
         {[
-          { label: "Fuel Type", options: ["All", "DM", "RM380"], value: fuelFilter, set: setFuelFilter },
-          { label: "Availability", options: ["All", "available", "in-transit", "maintenance"], value: availFilter, set: setAvailFilter },
-          { label: "Status", options: ["All", "on-schedule", "warning", "critical"], value: statusFilter, set: setStatusFilter },
+          { label: "Fuel Type", options: ["All", "DM", "RM380"], value: fuelFilter, set: setFuelFilter, disabled: false },
+          { label: "Availability", options: ["All", "available", "in-transit", "maintenance"], value: availFilter, set: setAvailFilter, disabled: !availabilitySupported },
+          { label: "Status", options: ["All", "on-schedule", "warning", "critical"], value: statusFilter, set: setStatusFilter, disabled: false },
         ].map(f => (
-          <div key={f.label} style={{ marginBottom: 16 }}>
+          <div key={f.label} style={{ marginBottom: 16, opacity: f.disabled ? 0.45 : 1 }}>
             <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700, color: "#94A3B8", marginBottom: 6 }}>{f.label}</div>
+            {f.disabled && (
+              <div style={{ fontSize: 10, color: "#94A3B8", marginBottom: 6 }}>Not tracked by the current fleet data.</div>
+            )}
             {f.options.map(opt => (
-              <label key={opt} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4, cursor: "pointer" }}>
+              <label key={opt} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4, cursor: f.disabled ? "not-allowed" : "pointer" }}>
                 <input
                   type="radio"
                   name={f.label}
                   value={opt}
                   checked={f.value === opt}
+                  disabled={f.disabled}
                   onChange={() => f.set(opt)}
                   style={{ accentColor: "#1D4ED8" }}
                 />
@@ -87,7 +92,7 @@ export default function FleetRoutes({ solutionId }: { solutionId: string }) {
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
         {/* Map */}
         <div style={{ background: "white", borderBottom: "1px solid #E2E8F0", height: 260, flexShrink: 0 }}>
-          <WorldMap
+          <GoogleFleetMap
             ports={PORTS}
             routes={ROUTES}
             highlightRouteIds={selectedRoute ? [selectedRoute] : activeRouteIds}

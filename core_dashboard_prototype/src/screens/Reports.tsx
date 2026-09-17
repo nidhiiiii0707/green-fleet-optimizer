@@ -142,39 +142,6 @@ export default function Reports({ solutionId }: Props) {
         </div>
       )}
 
-      {/* Technical evaluation section */}
-      <div style={{ marginTop: 24, background: "white", border: "1px solid #E2E8F0", borderRadius: 10, padding: "18px 20px" }}>
-        <div style={{ fontSize: 14, fontWeight: 700, color: "#0F172A", fontFamily: "'DM Sans', sans-serif", marginBottom: 4 }}>Technical Evaluation — Algorithm Performance</div>
-        <div style={{ fontSize: 12, color: "#64748B", marginBottom: 16 }}>Comparative performance metrics for technical review.</div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
-          {[
-            { title: "MO-QIGA vs NSGA-II", titleColor: "#7C3AED", bg: "#F5F3FF", colColor: "#7C3AED",
-              rows: [["Pareto solutions","18","12"],["Solution quality","High","Medium"],["Diversity index","0.84","0.61"],["Runtime (s)","252","418"]] },
-            { title: "MILP Exact (small instances)", titleColor: "#1D4ED8", bg: "#EFF6FF", colColor: "#1D4ED8",
-              rows: [["Obj. value (fuel)","4,820","4,750"],["Optimality gap","1.47%","—"],["Runtime (s)","18","3,240"],["Scalable?","Yes","No"]] },
-            { title: "Scalability (MO-QIGA)", titleColor: "#059669", bg: "#F0FDF4", colColor: "#059669",
-              rows: [["10 vessels, 5 ports","8s"],["20 vessels, 10 ports","52s"],["30 vessels, 15 ports","185s"],["50 vessels, 20 ports","~12m"]] },
-          ].map(panel => (
-            <div key={panel.title} style={{ border: "1px solid #E2E8F0", borderRadius: 8, overflow: "hidden" }}>
-              <div style={{ background: panel.bg, padding: "10px 14px", borderBottom: "1px solid #E2E8F0" }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: panel.titleColor }}>{panel.title}</div>
-              </div>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
-                <tbody>
-                  {panel.rows.map(([m, a, b], i) => (
-                    <tr key={m} style={{ background: i % 2 === 0 ? "white" : "#FAFAFA", borderBottom: "1px solid #F1F5F9" }}>
-                      <td style={{ padding: "7px 10px", color: "#64748B" }}>{m}</td>
-                      <td style={{ padding: "7px 10px", textAlign: "center", color: panel.colColor, fontWeight: 600, fontFamily: "'JetBrains Mono', monospace" }}>{a}</td>
-                      {b !== undefined && <td style={{ padding: "7px 10px", textAlign: "center", color: "#94A3B8", fontFamily: "'JetBrains Mono', monospace" }}>{b}</td>}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }

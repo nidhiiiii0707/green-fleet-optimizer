@@ -74,12 +74,20 @@ export default function App() {
         current={screen}
         onNav={s => setScreen(s)}
         alertCount={activeAlerts}
+        runId={optimizationResult?.run_id}
       />
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", height: "100vh" }}>
         <Header
           screen={screen}
           onAlerts={() => setScreen("alerts")}
           alertCount={activeAlerts}
+          selectedSolutionId={activeSolutionId}
+          runMeta={optimizationResult ? {
+            method: optimizationResult.method,
+            runId: optimizationResult.run_id,
+            feasibleSolutions: optimizationResult.feasible_solutions,
+            paretoCount: optimizationResult.pareto_count,
+          } : null}
         />
         <main style={{ flex: 1, overflowY: "auto", background: "#F4F3EF", display: "flex", flexDirection: "column" }}>
           {renderScreen()}
