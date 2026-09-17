@@ -1,14 +1,13 @@
 """STAGE 14 -- End-to-end driver.
 
 real/derived data -> candidate generation -> hard feasibility -> XGB fuel
-prediction -> cost/GHG -> NSGA-II -> QBHO -> CQM -> MILP -> Pareto
+prediction -> cost/GHG -> NSGA-II -> QBHO -> CQM -> MILP -> MO-QIGA -> Pareto
 archive -> comparison -> final outputs.
 
-ACTIVE algorithm set (as of the QUBO-SA -> QBHO / MO-QIGA -> CQM migration):
-NSGA-II, QBHO, CQM, MILP. QUBO-SA (qubo_model.py/qubo_builder.py) and
-MO-QIGA (mo_qiga.py) are RETAINED in the repository for reference/backup
-but are no longer invoked here -- see qbho.py and cqm_model.py/cqm_solver.py
-docstrings for why they were replaced and what replaced them.
+ACTIVE algorithm set: NSGA-II, QBHO, CQM, MILP, MO-QIGA. QUBO-SA
+(qubo_model.py/qubo_builder.py) was retired and its files removed; see
+qbho.py and cqm_model.py/cqm_solver.py docstrings for why it was replaced.
+MO-QIGA (mo_qiga.py) is back in the active set as the fifth algorithm.
 
 Run: python run_optimization_pipeline.py
 """
@@ -31,6 +30,7 @@ from qbho import QBHOOptimizer
 from cqm_model import CQMModel
 from cqm_solver import CQMSolver
 from milp_model import MILPModel
+from mo_qiga import MOQIGAOptimizer
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("pipeline")
@@ -52,11 +52,11 @@ def generate_evaluated_legs(seed: int = 0, overrides: dict | None = None):
         each candidate's GHG at this fraction of the unconstrained median GHG
     """
     overrides = overrides or {}
-    log.info("STEP 1/7: generating candidates from real/derived data layer")
+    log.info("STEP 1/8: generating candidates from real/derived data layer")
     candidates = generate_candidates(seed=seed, overrides=overrides)
     log.info("  generated %d candidates", len(candidates))
 
-    log.info("STEP 2/7: evaluating feasibility + real XGB fuel model + SCENARIO_INPUT cost/GHG")
+    log.info("STEP 2/8: evaluating feasibility + real XGB fuel model + SCENARIO_INPUT cost/GHG")
     fleet = DL.load_fleet_classes()
     evaluator = ObjectiveEvaluator(fuel_price_multiplier=overrides.get("fuel_price_multiplier", 1.0))
     evaluated = []
@@ -110,29 +110,28 @@ def generate_evaluated_legs(seed: int = 0, overrides: dict | None = None):
 
 
 def run_all_algorithms(legs):
-    """STEPS 3-6: NSGA-II, QBHO, CQM, MILP -> merged Pareto archive.
+    """STEPS 3-7: NSGA-II, QBHO, CQM, MILP, MO-QIGA -> merged Pareto archive.
 
     `legs` is a list of list[EvaluatedCandidate] (one inner list per leg, as
     produced by generate_evaluated_legs()/group_by_leg()); callers may pass a
     filtered subset of the full leg/candidate set. Returns (final_front,
     final_sources, per_algorithm_fronts).
 
-    QUBO-SA and MO-QIGA are RETAINED in the repository (qubo_model.py /
-    qubo_builder.py / mo_qiga.py) but are no longer part of the active set;
-    they were replaced by QBHO and CQM respectively (see qbho.py and
-    cqm_model.py/cqm_solver.py for why and how).
+    QUBO-SA was retired (its files were removed) and replaced by QBHO; see
+    qbho.py for why and how. MO-QIGA (mo_qiga.py) is active again as the
+    fifth algorithm alongside NSGA-II/QBHO/CQM/MILP.
     """
-    log.info("STEP 3/7: NSGA-II")
+    log.info("STEP 3/8: NSGA-II")
     t0 = time.time()
     nsga2_front, _ = NSGA2Optimizer(legs, population_size=40, generations=60, seed=0).run()
     log.info("  NSGA-II: %d Pareto solutions in %.2fs", len(nsga2_front), time.time() - t0)
 
-    log.info("STEP 4/7: QBHO (Quantum-Behaved Hawks Optimization, CLASSICAL -- no quantum hardware)")
+    log.info("STEP 4/8: QBHO (Quantum-Behaved Hawks Optimization, CLASSICAL -- no quantum hardware)")
     t0 = time.time()
     qbho_front, _ = QBHOOptimizer(legs, population_size=30, generations=60, seed=0).run()
     log.info("  QBHO: %d Pareto solutions in %.2fs", len(qbho_front), time.time() - t0)
 
-    log.info("STEP 5/7: CQM (Constrained Quadratic Model, CLASSICAL solve -- no quantum hardware)")
+    log.info("STEP 5/8: CQM (Constrained Quadratic Model, CLASSICAL solve -- no quantum hardware)")
     t0 = time.time()
     cqm_solutions = {}
     steps = np.linspace(0.1, 0.8, 4)
@@ -147,15 +146,21 @@ def run_all_algorithms(legs):
     cqm_front = pareto_front(list(cqm_solutions.values()))
     log.info("  CQM: %d Pareto solutions in %.2fs", len(cqm_front), time.time() - t0)
 
-    log.info("STEP 6/7: MILP (exact reference)")
+    log.info("STEP 6/8: MILP (exact reference)")
     t0 = time.time()
     milp_front = MILPModel(legs).trace_pareto_front(n_weight_samples=15)
     log.info("  MILP: %d Pareto solutions in %.2fs", len(milp_front), time.time() - t0)
 
+    log.info("STEP 7/8: MO-QIGA (Multi-Objective Quantum-Inspired GA, CLASSICAL simulation -- no quantum hardware)")
+    t0 = time.time()
+    moqiga_front, _ = MOQIGAOptimizer(legs, population_size=30, generations=60, seed=0).run()
+    log.info("  MO-QIGA: %d Pareto solutions in %.2fs", len(moqiga_front), time.time() - t0)
+
     log.info("merging into one final Pareto archive")
-    combined = nsga2_front + qbho_front + cqm_front + milp_front
+    combined = nsga2_front + qbho_front + cqm_front + milp_front + moqiga_front
     sources = (["NSGA-II"] * len(nsga2_front) + ["QBHO"] * len(qbho_front) +
-               ["CQM"] * len(cqm_front) + ["MILP"] * len(milp_front))
+               ["CQM"] * len(cqm_front) + ["MILP"] * len(milp_front) +
+               ["MO-QIGA"] * len(moqiga_front))
     final_front = pareto_front(combined)
     final_sources = [sources[combined.index(s)] for s in final_front]
     log.info("  final archive: %d non-dominated solutions (of %d candidates)", len(final_front), len(combined))
@@ -164,7 +169,7 @@ def run_all_algorithms(legs):
 
     per_algorithm_fronts = {
         "NSGA-II": nsga2_front, "QBHO": qbho_front,
-        "CQM": cqm_front, "MILP": milp_front,
+        "CQM": cqm_front, "MILP": milp_front, "MO-QIGA": moqiga_front,
     }
     return final_front, final_sources, per_algorithm_fronts
 
@@ -180,7 +185,7 @@ def main():
 
     final_front, final_sources, per_algorithm_fronts = run_all_algorithms(legs)
 
-    log.info("STEP 7/7: writing final_pareto_fleet_plans.csv")
+    log.info("STEP 8/8: writing final_pareto_fleet_plans.csv")
     rows = []
     for sol, src in zip(final_front, final_sources):
         for leg_idx, choice in enumerate(sol.selection):

@@ -42,8 +42,8 @@ def run_optimization_async(job, seed: int = 42, progress_cb=None, request: dict 
     fuel_type, speed, cargo, objectives}. When present, it is used to filter
     the optimizer's real candidate legs via the existing
     nlp.optimization_adapter.filter_legs() (no second optimization pipeline:
-    the same NSGA-II/QBHO/CQM/MILP run and the same result builder are used
-    either way). Unspecified fields stay unrestricted.
+    the same NSGA-II/QBHO/CQM/MILP/MO-QIGA run and the same result builder
+    are used either way). Unspecified fields stay unrestricted.
     """
     import importlib
     try:
@@ -70,7 +70,7 @@ def run_optimization_async(job, seed: int = 42, progress_cb=None, request: dict 
                 )
 
         if progress_cb:
-            progress_cb(30, "Running NSGA-II optimizer...")
+            progress_cb(30, "Running NSGA-II/QBHO/CQM/MILP/MO-QIGA optimizers...")
         final_front, final_sources, per_algo = run_all_algorithms(legs)
 
         if progress_cb:
@@ -160,5 +160,5 @@ def compute_scenario_result(controls: dict) -> dict:
         "baselineGhg": baseline_selected["ghg"],
         "scenarioSolutionId": scenario_selected["id"],
         "constraintChanges": constraint_changes,
-        "note": "Scenario outputs are from an actual re-run of the real optimizer (NSGA-II / QBHO / CQM / MILP) with these inputs mapped to real candidate-generation and feasibility parameters.",
+        "note": "Scenario outputs are from an actual re-run of the real optimizer (NSGA-II / QBHO / CQM / MILP / MO-QIGA) with these inputs mapped to real candidate-generation and feasibility parameters.",
     }

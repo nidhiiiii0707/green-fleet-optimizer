@@ -261,7 +261,7 @@ def load_precomputed_result() -> dict[str, Any]:
         "status": "completed",
         "data_mode": "real_precomputed",
         "source": str(PARETO_PATH.name),
-        "method": "NSGA-II / QBHO / CQM / MILP",
+        "method": "NSGA-II / QBHO / CQM / MILP / MO-QIGA",
         "feasible_solutions": len(solutions),
         "pareto_count": len(solutions),
         "runtime_seconds": None,
@@ -345,7 +345,7 @@ def build_runtime_result(final_front, final_sources, legs) -> dict[str, Any]:
     selected = solutions[0]
     return {
         "run_id": f"runtime-{id(final_front)}", "status": "completed", "data_mode": "real_runtime",
-        "source": "run_optimization_pipeline.py", "method": "NSGA-II / QBHO / CQM / MILP",
+        "source": "run_optimization_pipeline.py", "method": "NSGA-II / QBHO / CQM / MILP / MO-QIGA",
         "feasible_solutions": len(solutions), "pareto_count": len(solutions), "runtime_seconds": None,
         "constraint_satisfaction": f"{selected['constraintsSatisfied']}/{selected['totalConstraints']}",
         "pareto_solutions": solutions, "baseline": None,

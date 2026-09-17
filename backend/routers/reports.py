@@ -14,7 +14,7 @@ REPORTS_DATA = [
     {
         "id": "R01",
         "title": "Optimization Report",
-        "description": "Full summary of the NSGA-II / QBHO / CQM / MILP optimization run, including Pareto-optimal plans, method performance, constraint satisfaction, and solution comparison.",
+        "description": "Full summary of the NSGA-II / QBHO / CQM / MILP / MO-QIGA optimization run, including Pareto-optimal plans, method performance, constraint satisfaction, and solution comparison.",
         "date": "",
         "run": "",
         "type": "optimization",

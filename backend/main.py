@@ -32,7 +32,7 @@ app = FastAPI(
     title="Green Fleet Optimizer API",
     description=(
         "REST + WebSocket API for the Green Fleet Optimizer dashboard. "
-        "Wraps the NSGA-II / QBHO / CQM / MILP multi-objective optimization pipeline."
+        "Wraps the NSGA-II / QBHO / CQM / MILP / MO-QIGA multi-objective optimization pipeline."
     ),
     version="1.0.0",
     lifespan=lifespan,

@@ -23,8 +23,9 @@
     "NSGA-II": 2,
     "QBHO": 1,
     "CQM": 3,
-    "MILP": 4
+    "MILP": 4,
+    "MO-QIGA": 4
   },
   "final_pareto_archive_size": 4,
-  "total_runtime_seconds": 36.082010984420776
+  "total_runtime_seconds": 16.861987590789795
 }

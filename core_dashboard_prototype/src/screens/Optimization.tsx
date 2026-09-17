@@ -653,7 +653,7 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
       <div style={{ padding: "14px 24px 0" }}>
         <div style={{ display: "flex", gap: 0, marginBottom: 0, border: `1px solid ${T.border}`, background: T.surface }}>
           {[
-            { label: "Optimization Method", val: runMeta.method,      sub: "NSGA-II / QBHO / CQM / MILP",      accent: T.teal  },
+            { label: "Optimization Method", val: runMeta.method,      sub: "NSGA-II / QBHO / CQM / MILP / MO-QIGA",      accent: T.teal  },
             { label: "Data Mode",           val: liveResult?.data_mode ?? "unavailable", sub: liveResult?.source ?? "no result loaded", accent: T.teal },
             { label: "Feasible Solutions",  val: String(runMeta.feasible), sub: "total evaluated",             accent: T.text  },
             { label: "Pareto-Optimal",      val: String(runMeta.pareto),   sub: "non-dominated plans",         accent: T.teal  },
