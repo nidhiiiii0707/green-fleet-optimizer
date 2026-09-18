@@ -59,11 +59,17 @@ export const nlpApi = {
 
 // ── Scenario ──────────────────────────────────────────────────────────────────
 export const scenarioApi = {
-  run: (controls: ScenarioControls) =>
-    apiFetch<ScenarioResult>("/api/scenario/run", {
+  triggerRun: (controls: ScenarioControls) =>
+    apiFetch<{ job_id: string; status: string }>("/api/scenario/run-async", {
       method: "POST",
       body: JSON.stringify(controls),
     }),
+
+  getStatus: (jobId: string) =>
+    apiFetch<JobStatus>(`/api/optimization/status/${jobId}`),
+
+  getResults: (jobId: string) =>
+    apiFetch<ScenarioResult>(`/api/optimization/results/${jobId}`),
 };
 
 // ── Alerts ───────────────────────────────────────────────────────────────────

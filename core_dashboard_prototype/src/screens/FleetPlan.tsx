@@ -2,13 +2,16 @@ import React, { useMemo, useState } from "react";
 import GoogleFleetMap from "../components/GoogleFleetMap";
 import VesselSimulationPanel from "../components/VesselSimulationPanel";
 import VesselDrawer from "../components/VesselDrawer";
-import type { Assignment } from "../api/types";
-import { useFleetData, useLatestOptimization } from "../api/hooks";
+import type { Assignment, OptimizationResult } from "../api/types";
+import { useFleetData } from "../api/hooks";
 import { cargoDemandDisplay, cargoFulfillmentPct } from "../lib/cargo";
 import { buildSimVessels, useVesselSimulation } from "../lib/vesselSimulation";
 
 interface Props {
   solutionId: string;
+  result: OptimizationResult | null;
+  loading: boolean;
+  error: string | null;
   onGoToScenario: () => void;
   onGoToOptimization: () => void;
 }
@@ -17,12 +20,11 @@ const FUEL_COLORS: Record<string, string> = {
   LNG: "#2563EB", Methanol: "#059669", Ammonia: "#7C3AED", Conv: "#94A3B8",
 };
 
-export default function FleetPlan({ solutionId, onGoToScenario, onGoToOptimization }: Props) {
+export default function FleetPlan({ solutionId, result: liveResult, loading, error, onGoToScenario, onGoToOptimization }: Props) {
   const [selectedAssignmentId, setSelectedAssignmentId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [sortCol, setSortCol] = useState<keyof Assignment | null>(null);
 
-  const { data: liveResult, loading, error } = useLatestOptimization();
   const { vessels, ports, routes, error: fleetError } = useFleetData();
   const sol = liveResult?.pareto_solutions.find((solution) => solution.id === solutionId);
   const assignments: Assignment[] = sol?.assignments ?? [];

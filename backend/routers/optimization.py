@@ -166,7 +166,11 @@ def _run_optimization_task(job_id: str, seed: int, use_real: bool, structured_re
                 if use_real else get_default_result()
             )
         progress_cb(95, "Finalizing Pareto archive...")
-        JM.set_latest_result(result)
+        # Request-specific runs are temporary views.  Keep /latest anchored to
+        # the normal precomputed/current baseline so a manual or NLP request
+        # cannot permanently replace the four-solution dashboard state.
+        if structured_request is None:
+            JM.set_latest_result(result)
         JM.update_job(job, JM.JobStatus.COMPLETED, 100, "Optimization complete.", result=result)
     except Exception as exc:
         JM.update_job(job, JM.JobStatus.FAILED, job.progress, f"Error: {exc}", error=str(exc))

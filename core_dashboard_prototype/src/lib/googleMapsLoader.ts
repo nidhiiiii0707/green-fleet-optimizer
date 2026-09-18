@@ -27,16 +27,30 @@ export function loadGoogleMaps(): Promise<typeof google> {
 
   loaderPromise = new Promise((resolve, reject) => {
     const callbackName = "__gmapsLoaderCallback__";
+    const timeout = window.setTimeout(() => {
+      reject(new Error("Google Maps did not finish loading within 15 seconds. Check the API key restrictions and network connection."));
+    }, 15_000);
+
+    const fail = (message: string) => {
+      window.clearTimeout(timeout);
+      reject(new Error(message));
+    };
+
     window[callbackName] = () => {
+      window.clearTimeout(timeout);
       if (window.google?.maps) resolve(window.google);
-      else reject(new Error("Google Maps failed to initialize."));
+      else fail("Google Maps failed to initialize.");
     };
 
     const script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(GOOGLE_MAPS_API_KEY)}&callback=${callbackName}&loading=async`;
     script.async = true;
-    script.onerror = () => reject(new Error("Failed to load the Google Maps script."));
+    script.onerror = () => fail("Failed to load the Google Maps script.");
     document.head.appendChild(script);
+  });
+
+  loaderPromise.catch(() => {
+    loaderPromise = null;
   });
 
   return loaderPromise;

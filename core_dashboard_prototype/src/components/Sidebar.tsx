@@ -36,7 +36,7 @@ const SB = {
 export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
   return (
     <aside style={{
-      width: 212, minWidth: 212,
+      width: 158, minWidth: 158,
       background: SB.bg,
       display: "flex", flexDirection: "column",
       height: "100vh", flexShrink: 0,
@@ -44,10 +44,10 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
     }}>
 
       {/* Logo / Product identity */}
-      <div style={{ padding: "18px 18px 14px", borderBottom: `1px solid ${SB.borderColor}` }}>
+      <div style={{ padding: "14px 11px 11px", borderBottom: `1px solid ${SB.borderColor}` }}>
         <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
           <div style={{
-            width: 26, height: 26,
+            width: 22, height: 22,
             background: SB.accentTeal,
             display: "flex", alignItems: "center", justifyContent: "center",
             flexShrink: 0,
@@ -59,11 +59,11 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
           </div>
           <div>
             <div style={{
-              fontSize: 12, fontWeight: 700, color: "#E8E6E1",
+              fontSize: 10, fontWeight: 700, color: "#E8E6E1",
               fontFamily: "'Instrument Sans', sans-serif",
               letterSpacing: "0.06em", textTransform: "uppercase",
             }}>GreenFleet</div>
-            <div style={{ fontSize: 9, color: SB.text, letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 1 }}>
+            <div style={{ fontSize: 7, color: SB.text, letterSpacing: "0.09em", textTransform: "uppercase", marginTop: 1 }}>
               AI · Optimization Platform
             </div>
           </div>
@@ -71,21 +71,21 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
       </div>
 
       {/* Active run indicator */}
-      <div style={{ padding: "10px 18px", borderBottom: `1px solid ${SB.borderColor}` }}>
+      <div style={{ padding: "9px 11px", borderBottom: `1px solid ${SB.borderColor}` }}>
         <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
           <div style={{ width: 5, height: 5, borderRadius: "50%", background: runId ? "#15803D" : "#6A6763", flexShrink: 0 }} />
-          <span style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: SB.textHover, letterSpacing: "0.05em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          <span style={{ fontSize: 8, fontFamily: "'JetBrains Mono', monospace", color: SB.textHover, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
             {runId ? `RUN ${runId}` : "No run"}
           </span>
-          <span style={{ marginLeft: "auto", fontSize: 9, color: SB.text, flexShrink: 0 }}>{runId ? "Completed" : ""}</span>
+          <span style={{ marginLeft: "auto", fontSize: 7, color: SB.text, flexShrink: 0 }}>{runId ? "Done" : ""}</span>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav style={{ flex: 1, padding: "8px 8px 0", overflowY: "auto" }}>
+      <nav style={{ flex: 1, padding: "7px 6px 0", overflowY: "auto" }}>
         <div style={{
           fontSize: 9, color: SB.text, textTransform: "uppercase",
-          letterSpacing: "0.1em", padding: "8px 10px 4px", fontWeight: 600,
+          letterSpacing: "0.1em", padding: "7px 8px 4px", fontWeight: 600,
         }}>
           Navigation
         </div>
@@ -97,10 +97,10 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
               onClick={() => onNav(item.id)}
               style={{
                 width: "100%", display: "flex", alignItems: "center", gap: 9,
-                padding: "8px 10px", border: "none", cursor: "pointer", marginBottom: 1,
+                padding: "7px 8px", border: "none", cursor: "pointer", marginBottom: 1,
                 background: active ? SB.activeBg : "transparent",
                 color: active ? SB.textActive : SB.text,
-                fontSize: 12,
+                fontSize: 10,
                 fontWeight: active ? 600 : 400,
                 fontFamily: "'Instrument Sans', sans-serif",
                 textAlign: "left",
@@ -122,7 +122,7 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
                 }
               }}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
                 <path d={item.icon} />
               </svg>
               {item.label}
@@ -132,7 +132,7 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
       </nav>
 
       {/* Bottom section */}
-      <div style={{ padding: "8px 8px 14px", borderTop: `1px solid ${SB.borderColor}` }}>
+      <div style={{ padding: "7px 6px 10px", borderTop: `1px solid ${SB.borderColor}` }}>
         {BOTTOM.map(item => {
           const active = current === item.id && item.id === "alerts";
           return (
@@ -141,10 +141,10 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
               onClick={() => onNav(item.id)}
               style={{
                 width: "100%", display: "flex", alignItems: "center", gap: 9,
-                padding: "8px 10px", border: "none", cursor: "pointer", marginBottom: 1,
+                padding: "7px 8px", border: "none", cursor: "pointer", marginBottom: 1,
                 background: "transparent",
                 color: SB.text,
-                fontSize: 12,
+                fontSize: 10,
                 fontFamily: "'Instrument Sans', sans-serif",
                 textAlign: "left",
                 borderLeft: active ? `2px solid ${SB.accentTeal}` : "2px solid transparent",
@@ -162,7 +162,7 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
                 el.style.background = "transparent";
               }}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
                 <path d={item.icon} />
               </svg>
               {item.label}
@@ -184,11 +184,11 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
         {/* User */}
         <div style={{
           display: "flex", alignItems: "center", gap: 9,
-          padding: "10px 10px 0", marginTop: 6,
+          padding: "9px 8px 0", marginTop: 5,
           borderTop: `1px solid ${SB.borderColor}`,
         }}>
           <div style={{
-            width: 24, height: 24,
+            width: 20, height: 20,
             background: SB.accentTeal,
             display: "flex", alignItems: "center", justifyContent: "center",
             fontSize: 9, fontWeight: 700, color: "white",
@@ -198,8 +198,8 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
             AK
           </div>
           <div>
-            <div style={{ fontSize: 11, color: SB.textHover, fontWeight: 500, fontFamily: "'Instrument Sans', sans-serif" }}>Alex Kim</div>
-            <div style={{ fontSize: 9, color: SB.text, marginTop: 1 }}>Fleet Planner</div>
+            <div style={{ fontSize: 9, color: SB.textHover, fontWeight: 500, fontFamily: "'Instrument Sans', sans-serif" }}>Alex Kim</div>
+            <div style={{ fontSize: 7, color: SB.text, marginTop: 1 }}>Fleet Planner</div>
           </div>
         </div>
       </div>

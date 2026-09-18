@@ -221,7 +221,9 @@ export default function ScenarioAnalysis({ onGoToFleetPlan }: Props) {
                     <span style={{ fontSize: 12, color: "#78350F" }}>{msg}</span>
                   </div>
                 ))}
-                <div style={{ fontSize: 12, color: "#64748B", marginTop: 8 }}>{result.note}</div>
+                <div style={{ fontSize: 12, color: "#64748B", marginTop: 8 }}>
+                  Scenario outputs are from an actual optimizer rerun with these controls mapped to candidate-generation and feasibility parameters.
+                </div>
               </div>
             </div>
           )}

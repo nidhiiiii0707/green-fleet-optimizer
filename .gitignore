@@ -1,4 +1,10 @@
 .venv/
+.venv312/
+.venv-local/
+backend/.venv/
+backend/venv/
+backend-local.*.log
+frontend-local.*.log
 .pytest_cache/
 __pycache__/
 *.py[cod]

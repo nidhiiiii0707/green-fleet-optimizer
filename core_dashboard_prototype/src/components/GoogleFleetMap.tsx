@@ -25,11 +25,11 @@ interface Props {
 }
 
 const OCEAN_MAP_STYLE: google.maps.MapTypeStyle[] = [
-  { elementType: "geometry", stylers: [{ color: "#e9e4d8" }] },
-  { elementType: "labels.text.fill", stylers: [{ color: "#6a6763" }] },
-  { elementType: "labels.text.stroke", stylers: [{ color: "#f4f3ef" }] },
-  { featureType: "water", elementType: "geometry", stylers: [{ color: "#c8dcf0" }] },
-  { featureType: "administrative", elementType: "geometry", stylers: [{ color: "#cccac5" }] },
+  { elementType: "geometry", stylers: [{ color: "#e7e4db" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#595c55" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#f4f1e9" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#0a4050" }] },
+  { featureType: "administrative", elementType: "geometry", stylers: [{ color: "#b8b8ae" }] },
   { featureType: "poi", stylers: [{ visibility: "off" }] },
   { featureType: "road", stylers: [{ visibility: "off" }] },
   { featureType: "transit", stylers: [{ visibility: "off" }] },
@@ -69,10 +69,20 @@ export default function GoogleFleetMap({
       setStatus("unconfigured");
       return;
     }
+    // Vite Fast Refresh can preserve refs while resetting component state.
+    // Restore the ready state when the live Google map instance survived HMR.
+    if (mapRef.current && window.google?.maps) {
+      setStatus("ready");
+      return;
+    }
     let cancelled = false;
     loadGoogleMaps()
       .then((g) => {
-        if (cancelled || !containerRef.current || mapRef.current) return;
+        if (cancelled || !containerRef.current) return;
+        if (mapRef.current) {
+          setStatus("ready");
+          return;
+        }
         mapRef.current = new g.maps.Map(containerRef.current, {
           center: { lat: 20, lng: 60 },
           zoom: 2,
@@ -122,8 +132,8 @@ export default function GoogleFleetMap({
       const polyline = new g.maps.Polyline({
         path,
         geodesic: true,
-        strokeColor: highlighted ? "#1D4ED8" : "#7295B0",
-        strokeOpacity: highlighted ? 0.9 : 0.45,
+        strokeColor: highlighted ? "#4ea965" : "#c9b640",
+        strokeOpacity: highlighted ? 0.95 : 0.58,
         strokeWeight: highlighted ? 3 : 1.5,
         map,
       });
@@ -141,7 +151,7 @@ export default function GoogleFleetMap({
         icon: {
           path: g.maps.SymbolPath.CIRCLE,
           scale: selected ? 8 : 6,
-          fillColor: "#1D4ED8",
+          fillColor: selected ? "#d3a52f" : "#218a63",
           fillOpacity: 1,
           strokeColor: "white",
           strokeWeight: 2,

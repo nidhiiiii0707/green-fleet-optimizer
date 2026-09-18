@@ -149,18 +149,31 @@ export function useScenario() {
   const [result,  setResult]  = useState<ScenarioResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error,   setError]   = useState<string | null>(null);
+  const runToken = useRef(0);
 
   const run = useCallback(async (controls: ScenarioControls) => {
+    const token = ++runToken.current;
     setLoading(true);
     setError(null);
     setResult(null);
     try {
-      const res = await scenarioApi.run(controls);
-      setResult(res);
+      const { job_id } = await scenarioApi.triggerRun(controls);
+      while (token === runToken.current) {
+        const status = await scenarioApi.getStatus(job_id);
+        if (status.status === "completed") {
+          const res = await scenarioApi.getResults(job_id);
+          if (token === runToken.current) setResult(res);
+          break;
+        }
+        if (status.status === "failed") {
+          throw new Error(status.error ?? status.message ?? "Scenario optimization failed.");
+        }
+        await new Promise(resolve => window.setTimeout(resolve, 750));
+      }
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : String(e));
+      if (token === runToken.current) setError(e instanceof Error ? e.message : String(e));
     } finally {
-      setLoading(false);
+      if (token === runToken.current) setLoading(false);
     }
   }, []);
 

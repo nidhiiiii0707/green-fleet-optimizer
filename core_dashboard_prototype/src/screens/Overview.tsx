@@ -1,278 +1,185 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import GoogleFleetMap from "../components/GoogleFleetMap";
-import VesselDrawer from "../components/VesselDrawer";
-import { useFleetData, useLatestOptimization } from "../api/hooks";
-import { cargoDemandDisplay, cargoFulfillmentPct } from "../lib/cargo";
+import { useFleetData } from "../api/hooks";
+import type { OptimizationResult, ParetoSolution } from "../api/types";
 
 interface Props {
   solutionId: string;
+  result: OptimizationResult | null;
+  loading: boolean;
+  error: string | null;
   onGoToOptimization: () => void;
 }
 
-// Design tokens
-const T = {
-  surface:    "#FFFFFF",
-  border:     "#E4E2DE",
-  borderMed:  "#CCC9C4",
-  text:       "#1A1918",
-  textSec:    "#6A6763",
-  textTer:    "#9A9793",
-  teal:       "#0A6C70",
-  tealLight:  "#F0F9FA",
-  green:      "#15803D",
-  greenLight: "#F0FDF4",
-  amber:      "#B45309",
+const C = {
+  canvas: "var(--gf-canvas)",
+  card: "var(--gf-card)",
+  ink: "var(--gf-ink)",
+  muted: "var(--gf-muted)",
+  faint: "var(--gf-faint)",
+  line: "var(--gf-line)",
+  teal: "#075f62",
+  tealDark: "#08444d",
+  green: "#278852",
+  lime: "#91aa42",
+  gold: "#bea443",
 };
 
-function LoadingSkeleton({ height = 20, width = "100%" }: { height?: number; width?: string }) {
+function pctChange(base: number | undefined, value: number | undefined) {
+  if (!base || value == null) return null;
+  return ((base - value) / base) * 100;
+}
+
+function MiniTrend({ base, value, color }: { base?: number; value?: number; color: string }) {
+  const improving = base != null && value != null && value <= base;
+  const y1 = improving ? 10 : 21;
+  const y2 = improving ? 21 : 10;
   return (
-    <div style={{
-      height, width, background: "linear-gradient(90deg, #E4E2DE 25%, #EEE 50%, #E4E2DE 75%)",
-      backgroundSize: "200% 100%", animation: "shimmer 1.4s infinite",
-      borderRadius: 3,
-    }} />
+    <svg viewBox="0 0 150 30" preserveAspectRatio="none" style={{ width: "100%", height: 31, display: "block" }} aria-hidden="true">
+      <path d={`M0 ${y1} C28 ${y1 - 5}, 40 ${y1 + 8}, 62 14 S105 ${y2 + 4}, 138 ${y2}`} fill="none" stroke={color} strokeWidth="1.4" />
+      <path d={`M0 ${y1} C28 ${y1 - 5}, 40 ${y1 + 8}, 62 14 S105 ${y2 + 4}, 138 ${y2} L138 29 L0 29 Z`} fill={color} opacity="0.08" />
+      <circle cx="138" cy={y2} r="2.6" fill={color} stroke="white" strokeWidth="1" />
+    </svg>
   );
 }
 
-export default function Overview({ solutionId, onGoToOptimization }: Props) {
-  const [selectedVesselId, setSelectedVesselId] = useState<string | null>(null);
+function KpiCard({ title, value, delta, detail, base, current, color = C.teal }: {
+  title: string; value: string; delta?: string; detail: string; base?: number; current?: number; color?: string;
+}) {
+  return (
+    <div style={{ background: C.card, border: `1px solid ${C.line}`, borderLeft: `2px solid ${color}`, padding: "10px 12px 9px", minWidth: 0 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", gap: 6, alignItems: "center" }}>
+        <span style={{ fontSize: 10, fontWeight: 650, color: C.ink, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{title}</span>
+        <span style={{ width: 14, height: 14, border: `1px solid ${C.line}`, borderRadius: "50%", color: C.faint, fontSize: 8, display: "grid", placeItems: "center" }}>i</span>
+      </div>
+      <MiniTrend base={base} value={current} color={color} />
+      <div style={{ fontSize: 21, lineHeight: 1.05, fontWeight: 750, letterSpacing: "-0.03em", color: C.ink }}>{value}</div>
+      <div style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 4, minHeight: 14 }}>
+        {delta && <span style={{ color: C.green, fontSize: 9, fontWeight: 700 }}>↗ {delta}</span>}
+        <span style={{ color: C.muted, fontSize: 8.5, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{detail}</span>
+      </div>
+    </div>
+  );
+}
+
+function ParetoMiniChart({ solutions, selectedId }: { solutions: ParetoSolution[]; selectedId: string }) {
+  const width = 430;
+  const height = 125;
+  const pad = { l: 42, r: 12, t: 12, b: 25 };
+  const fuels = solutions.map(s => s.fuel);
+  const costs = solutions.map(s => s.cost);
+  const rawMinX = Math.min(...fuels); const rawMaxX = Math.max(...fuels);
+  const rawMinY = Math.min(...costs); const rawMaxY = Math.max(...costs);
+  const spanX = Math.max(rawMaxX - rawMinX, Math.abs(rawMaxX) * 0.04, 1);
+  const spanY = Math.max(rawMaxY - rawMinY, Math.abs(rawMaxY) * 0.04, 0.001);
+  const minX = rawMinX - spanX * 0.18; const maxX = rawMaxX + spanX * 0.18;
+  const minY = rawMinY - spanY * 0.18; const maxY = rawMaxY + spanY * 0.18;
+  const x = (v: number) => pad.l + ((v - minX) / Math.max(maxX - minX, 1)) * (width - pad.l - pad.r);
+  const y = (v: number) => height - pad.b - ((v - minY) / Math.max(maxY - minY, 0.001)) * (height - pad.t - pad.b);
+  const ordered = [...solutions].sort((a, b) => a.fuel - b.fuel);
+  const xTicks = [minX, (minX + maxX) / 2, maxX];
+  const yTicks = [minY, (minY + maxY) / 2, maxY];
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" style={{ width: "100%", height: 128, display: "block" }}>
+      {yTicks.map(tick => <g key={tick}><line x1={pad.l} x2={width - pad.r} y1={y(tick)} y2={y(tick)} stroke="var(--gf-grid)" /><text x={pad.l - 5} y={y(tick) + 3} fontSize="7" fill={C.muted} textAnchor="end">${tick.toFixed(3)}M</text></g>)}
+      <line x1={pad.l} x2={pad.l} y1={pad.t} y2={height - pad.b} stroke="var(--gf-axis)" />
+      <line x1={pad.l} x2={width - pad.r} y1={height - pad.b} y2={height - pad.b} stroke="var(--gf-axis)" />
+      {xTicks.map(tick => <text key={tick} x={x(tick)} y={height - pad.b + 11} fontSize="7" fill={C.muted} textAnchor="middle">{tick.toFixed(1)} t</text>)}
+      {ordered.length > 1 && <polyline points={ordered.map(s => `${x(s.fuel)},${y(s.cost)}`).join(" ")} fill="none" stroke={C.gold} strokeWidth="1.2" />}
+      {solutions.map(s => <circle key={s.id} cx={x(s.fuel)} cy={y(s.cost)} r={s.id === selectedId ? 5 : 3.7} fill={s.id === selectedId ? C.teal : "#70a4a0"} stroke="white" strokeWidth="1.4" />)}
+      <text x={width / 2} y={height - 5} fontSize="8" fill={C.muted} textAnchor="middle">Fuel consumption (t)</text>
+      <text x="10" y={height / 2} fontSize="8" fill={C.muted} textAnchor="middle" transform={`rotate(-90 10 ${height / 2})`}>Cost ($M)</text>
+    </svg>
+  );
+}
+
+export default function Overview({ solutionId, result, loading, error, onGoToOptimization }: Props) {
   const [selectedPortId, setSelectedPortId] = useState<string | null>(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const { data: liveResult, loading, error } = useLatestOptimization();
   const { vessels, ports, routes, error: fleetError } = useFleetData();
+  const solutions = result?.pareto_solutions ?? [];
+  const selected = solutions.find(s => s.id === solutionId) ?? solutions[0];
+  const assignments = selected?.assignments ?? [];
+  const baseline = result?.baseline ?? null;
+  const activeRouteIds = Array.from(new Set(assignments.map(a => a.routeId).filter((id): id is string => Boolean(id))));
 
-  const paretoSolutions = liveResult?.pareto_solutions ?? [];
-  const fuelMix = liveResult?.fuel_mix ?? [];
-  const baseline = liveResult?.baseline;
-  const optimized = paretoSolutions.find((solution) => solution.id === solutionId);
-  const runId = liveResult?.run_id ?? "";
-  const method = liveResult?.method ?? "";
-  const feasibleCount = liveResult?.feasible_solutions ?? 0;
-  const paretoCount = liveResult?.pareto_count ?? 0;
+  const utilizationRows = useMemo(() => {
+    const grouped = new Map<string, { values: number[]; fuels: Map<string, number> }>();
+    assignments.forEach(a => {
+      const vessel = vessels.find(v => v.id === a.vesselId);
+      const capacity = vessel?.capacity ?? 0;
+      const utilization = capacity > 0 ? Math.min(100, ((a.cargoTons ?? a.cargoTEU) / capacity) * 100) : 0;
+      const key = a.vesselType ?? vessel?.type ?? a.vesselId;
+      const row = grouped.get(key) ?? { values: [], fuels: new Map<string, number>() };
+      row.values.push(utilization);
+      row.fuels.set(a.fuelType, (row.fuels.get(a.fuelType) ?? 0) + 1);
+      grouped.set(key, row);
+    });
+    return Array.from(grouped.entries()).map(([name, row]) => ({
+      name,
+      utilization: row.values.length ? row.values.reduce((a, b) => a + b, 0) / row.values.length : 0,
+      primaryFuel: Array.from(row.fuels.entries()).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "Unknown",
+    }));
+  }, [assignments, vessels]);
 
-  const assignments = optimized?.assignments ?? [];
-  const activeRouteIds = Array.from(new Set(assignments.map(a => a.routeId).filter((id): id is string => id != null)));
+  const averageUtilization = utilizationRows.length ? utilizationRows.reduce((sum, row) => sum + row.utilization, 0) / utilizationRows.length : null;
+  const onTime = assignments.length ? assignments.filter(a => a.status === "on-schedule").length / assignments.length * 100 : null;
+  const fuelDelta = pctChange(baseline?.fuel, selected?.fuel);
+  const costDelta = pctChange(baseline?.cost, selected?.cost);
+  const ghgDelta = pctChange(baseline?.ghg, selected?.ghg);
+  const routeLabels = activeRouteIds.map(id => routes.find(r => r.id === id)).filter(Boolean).slice(0, 4);
+  const algorithmNames = Array.from(new Set(solutions.map(s => s.algorithm).filter(Boolean))).join(" / ") || "Optimizer";
 
-  const requestedCargo = liveResult?.structured_request?.cargo ?? null;
-  const cargoDemand = cargoDemandDisplay(requestedCargo);
-  const fulfillmentPct = cargoFulfillmentPct(assignments, requestedCargo);
-
-  const KPI_DATA = [
-    { label: "Total Fuel",      value: loading || !optimized ? null : `${optimized.fuel.toLocaleString()} t`, delta: "", good: null, sub: optimized?.label ?? "" },
-    { label: "Operating Cost",  value: loading || !optimized ? null : `$${optimized.cost.toFixed(3)}M`, delta: "", good: null, sub: optimized?.label ?? "" },
-    { label: "Lifecycle GHG",   value: loading || !optimized ? null : `${optimized.ghg.toLocaleString()} kgCO₂`, delta: "", good: null, sub: optimized?.label ?? "" },
-    { label: "Cargo Demand",    value: loading || !optimized ? null : cargoDemand.value, delta: "", good: null, sub: loading || !optimized ? "" : fulfillmentPct != null ? `${fulfillmentPct}% assigned · ${cargoDemand.sub}` : cargoDemand.sub },
-    { label: "Assignments",     value: loading ? null : `${optimized?.vessels ?? 0}`,                          delta: "",         good: null,  sub: "leg-level vessel classes" },
-    { label: "Constraint Sat.", value: loading ? null : `${optimized?.constraintsSatisfied ?? 0} / ${optimized?.totalConstraints ?? 0}`, delta: "", good: null, sub: optimized?.label ?? "" },
-  ];
-
-  if (error || fleetError) return <div style={{ padding: 24, color: "#B91C1C" }}>Backend data unavailable: {error ?? fleetError}</div>;
+  if (error || fleetError) return <div style={{ padding: 24, color: "#9c3028" }}>Backend data unavailable: {error ?? fleetError}</div>;
 
   return (
-    <div style={{ padding: "20px 24px", overflowY: "auto", height: "100%" }}>
-      <style>{`@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }`}</style>
-
-      {/* Run status bar */}
-      <div style={{
-        background: T.surface, border: `1px solid ${T.border}`,
-        padding: "10px 18px", marginBottom: 16,
-        display: "flex", alignItems: "center", gap: 28, flexWrap: "wrap",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 5, height: 5, borderRadius: "50%", background: loading ? T.amber : T.green }} />
-          <span style={{ fontSize: 12, fontWeight: 600, color: T.text, fontFamily: "'Instrument Sans', sans-serif" }}>
-            {loading ? "Loading..." : `Optimization ${runId.toUpperCase()}`}
-          </span>
-          <span style={{ fontSize: 10, color: loading ? T.amber : T.green, fontFamily: "'JetBrains Mono', monospace", marginLeft: 2 }}>
-            {loading ? "FETCHING" : "COMPLETED"}
-          </span>
-        </div>
-        <div style={{ display: "flex", gap: 28 }}>
-          {[
-            ["Method", method],
-            ["Feasible Solutions", String(feasibleCount)],
-            ["Pareto-Optimal Plans", String(paretoCount)],
-            ["Constraint Satisfaction", liveResult?.constraint_satisfaction ?? "unavailable"],
-          ].map(([k, v]) => (
-            <div key={k}>
-              <div style={{ fontSize: 9, color: T.textTer, textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 2 }}>{k}</div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: T.text, fontFamily: "'JetBrains Mono', monospace" }}>
-                {loading ? "—" : v}
-              </div>
-            </div>
-          ))}
-        </div>
-        <button
-          onClick={onGoToOptimization}
-          style={{
-            marginLeft: "auto", background: T.teal, color: "white",
-            border: "none", padding: "6px 14px",
-            fontSize: 11, fontWeight: 600, cursor: "pointer",
-            fontFamily: "'Instrument Sans', sans-serif", letterSpacing: "0.02em",
-          }}
-        >
-          View Pareto Results →
-        </button>
+    <div style={{ padding: "10px 12px 18px", minHeight: "100%", background: C.canvas }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8, fontSize: 9, color: C.muted }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 5, color: C.ink, fontWeight: 650 }}><i style={{ width: 5, height: 5, borderRadius: "50%", background: loading ? C.gold : C.green }} />{loading ? "Loading optimizer data" : "Real optimization result"}</span>
+        <span>•</span><span>{result?.source ?? "Live API"}</span><span>•</span><span>{assignments.length} assignments</span><span>•</span><span>{algorithmNames}</span>
       </div>
 
-      {/* KPI strip */}
-      <div style={{
-        display: "grid", gridTemplateColumns: "repeat(6, 1fr)",
-        background: T.surface, border: `1px solid ${T.border}`, marginBottom: 20,
-      }}>
-        {KPI_DATA.map((k, i) => (
-          <div key={k.label} style={{
-            padding: "14px 18px",
-            borderLeft: i === 0 ? `3px solid ${T.teal}` : `1px solid ${T.border}`,
-          }}>
-            <div style={{ fontSize: 9, color: T.textTer, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 5, fontFamily: "'Instrument Sans', sans-serif", fontWeight: 600 }}>
-              {k.label}
-            </div>
-            <div style={{ fontSize: 18, fontWeight: 700, color: T.text, fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.1, marginBottom: 4 }}>
-              {k.value === null ? <LoadingSkeleton height={22} width="80%" /> : k.value}
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-              {k.delta && (
-                <span style={{ fontSize: 10, fontWeight: 600, color: k.good ? T.green : T.amber, fontFamily: "'JetBrains Mono', monospace" }}>
-                  {k.delta}
-                </span>
-              )}
-              <span style={{ fontSize: 10, color: T.textTer }}>{k.sub}</span>
-            </div>
-          </div>
-        ))}
-      </div>
+      <section style={{ display: "grid", gridTemplateColumns: "repeat(5, minmax(0, 1fr))", gap: 9, marginBottom: 9 }}>
+        <KpiCard title="Fleet Fuel Consumption" value={selected ? `${selected.fuel.toLocaleString()} t` : "—"} delta={fuelDelta == null ? undefined : `${Math.abs(fuelDelta).toFixed(1)}% vs. baseline`} detail={selected?.label ?? "No solution"} base={baseline?.fuel} current={selected?.fuel} />
+        <KpiCard title="Total Operating Cost" value={selected ? `$${selected.cost.toFixed(3)}M` : "—"} delta={costDelta == null ? undefined : `${Math.abs(costDelta).toFixed(1)}% reduction`} detail="Selected fleet plan" base={baseline?.cost} current={selected?.cost} color={C.gold} />
+        <KpiCard title="GHG Emissions" value={selected ? `${selected.ghg.toLocaleString()} kgCO₂` : "—"} delta={ghgDelta == null ? undefined : `${Math.abs(ghgDelta).toFixed(1)}% reduction`} detail="Lifecycle emissions" base={baseline?.ghg} current={selected?.ghg} color={C.green} />
+        <KpiCard title="Average Vessel Utilization" value={averageUtilization == null ? "Unavailable" : `${averageUtilization.toFixed(0)}%`} detail={`${utilizationRows.length} vessel classes`} base={100} current={averageUtilization ?? undefined} color={C.tealDark} />
+        <KpiCard title="Fleet On-Time Performance" value={onTime == null ? "Unavailable" : `${onTime.toFixed(1)}%`} detail={`${assignments.length} route assignments`} base={100} current={onTime ?? undefined} />
+      </section>
 
-      {/* World Map */}
-      <div style={{ background: T.surface, border: `1px solid ${T.border}`, marginBottom: 20, overflow: "hidden" }}>
-        <div style={{
-          padding: "11px 18px", borderBottom: `1px solid ${T.border}`,
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-        }}>
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 600, color: T.text, fontFamily: "'Instrument Sans', sans-serif" }}>
-              Fleet & Route Visualization — {optimized?.label ?? "No solution selected"}
+      <section style={{ background: C.card, border: `1px solid ${C.line}`, marginBottom: 9 }}>
+        <div style={{ minHeight: 43, padding: "8px 12px", borderBottom: `1px solid ${C.line}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div><div style={{ fontSize: 11, fontWeight: 700, color: C.ink }}>Fleet & Route Visualization — {selected?.label ?? "No solution selected"}</div><div style={{ fontSize: 8.5, color: C.muted, marginTop: 2 }}>{activeRouteIds.length} active routes from real port/route coordinates · click a port to view details</div></div>
+          <button onClick={onGoToOptimization} style={{ background: C.teal, color: "white", border: 0, padding: "7px 12px", fontSize: 9, fontWeight: 700, cursor: "pointer" }}>View Pareto Results →</button>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 180px", height: 255 }}>
+          <GoogleFleetMap ports={ports} routes={routes} highlightRouteIds={activeRouteIds} selectedPortId={selectedPortId} onPortClick={id => setSelectedPortId(id === selectedPortId ? null : id)} showAllRoutes />
+          <aside style={{ borderLeft: `1px solid ${C.line}`, padding: "11px 12px", overflow: "hidden" }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: C.ink, marginBottom: 9 }}>Active Route Network</div>
+            <div style={{ fontSize: 8.5, color: C.muted, lineHeight: 1.5, marginBottom: 11 }}>Real geocoded routes for the selected fleet plan.</div>
+            <div style={{ display: "grid", gap: 6, marginBottom: 12 }}>
+              <span style={{ fontSize: 8.5, color: C.muted }}><b style={{ color: C.green }}>●</b> Selected solution route</span>
+              <span style={{ fontSize: 8.5, color: C.muted }}><b style={{ color: C.gold }}>●</b> Other available route</span>
+              <span style={{ fontSize: 8.5, color: C.muted }}><b style={{ color: C.teal }}>●</b> Port coordinate</span>
             </div>
-            <div style={{ fontSize: 11, color: T.textSec, marginTop: 1 }}>
-              {optimized?.routes ?? 0} active routes from real port/route coordinates · click a port to view details
-            </div>
-          </div>
-          <div style={{ display: "flex", gap: 14, fontSize: 10, color: T.textTer, fontFamily: "'JetBrains Mono', monospace" }}>
-            <span>● Active route</span>
+            {routeLabels.map(route => route && <div key={route.id} style={{ padding: "7px 0", borderTop: `1px solid ${C.line}` }}><div style={{ fontSize: 9, fontWeight: 650, color: C.ink, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{route.name}</div><div style={{ fontSize: 8, color: C.faint, marginTop: 2 }}>{route.distanceNm.toLocaleString()} nm</div></div>)}
+          </aside>
+        </div>
+      </section>
+
+      <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 9 }}>
+        <div style={{ background: C.card, border: `1px solid ${C.line}`, padding: "9px 12px 6px" }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: C.ink }}>Pareto-Optimal Trade-off Curve</div>
+          <div style={{ fontSize: 8.5, color: C.muted, marginTop: 2 }}>Objective improvement relative to the returned solution set</div>
+          {solutions.length ? <ParetoMiniChart solutions={solutions} selectedId={selected?.id ?? ""} /> : <div style={{ padding: 30, color: C.muted }}>No solutions available.</div>}
+        </div>
+        <div style={{ background: C.card, border: `1px solid ${C.line}`, padding: "9px 12px 10px" }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: C.ink }}>Vessel Class Utilization Breakdown</div>
+          <div style={{ fontSize: 8.5, color: C.muted, marginTop: 2, marginBottom: 12 }}>Cargo-to-capacity utilization from selected assignments</div>
+          <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.max(utilizationRows.length, 1)}, minmax(52px, 1fr))`, gap: 10, alignItems: "end", height: 104, borderBottom: `1px solid ${C.line}` }}>
+            {utilizationRows.map(row => <div key={row.name} style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-end", alignItems: "center" }}><span style={{ fontSize: 8, color: C.muted, marginBottom: 3 }}>{row.utilization.toFixed(0)}%</span><div title={`${row.name}: ${row.utilization.toFixed(1)}% · ${row.primaryFuel}`} style={{ width: "62%", minWidth: 28, height: `${Math.max(8, row.utilization)}%`, background: `linear-gradient(to top, ${C.tealDark} 0 45%, ${C.teal} 45% 78%, ${C.gold} 78% 100%)` }} /><span style={{ fontSize: 7.5, color: C.muted, marginTop: 5, maxWidth: 70, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{row.name}</span></div>)}
           </div>
         </div>
-        <div style={{ height: 340 }}>
-          <GoogleFleetMap
-            ports={ports}
-            routes={routes}
-            highlightRouteIds={activeRouteIds}
-            selectedPortId={selectedPortId}
-            onPortClick={id => setSelectedPortId(id === selectedPortId ? null : id)}
-            showAllRoutes={true}
-          />
-        </div>
-      </div>
-
-      {/* Baseline vs Optimized + Fuel Mix */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-
-        {/* Baseline vs Optimized */}
-        <div style={{ background: T.surface, border: `1px solid ${T.border}`, padding: "16px 20px" }}>
-          <div style={{ marginBottom: 14 }}>
-            <div style={{ fontSize: 12, fontWeight: 600, color: T.text, fontFamily: "'Instrument Sans', sans-serif" }}>
-              Baseline vs Optimized — {optimized?.label ?? "No solution selected"}
-            </div>
-            <div style={{ fontSize: 11, color: T.textSec, marginTop: 2 }}>Objective improvement relative to baseline fleet plan</div>
-          </div>
-          {!baseline ? (
-            <div style={{ fontSize: 12, color: T.textTer, padding: "12px 0" }}>
-              No baseline plan has been computed for this optimization run.
-            </div>
-          ) : !optimized ? (
-            <div style={{ fontSize: 12, color: T.textTer, padding: "12px 0" }}>
-              Select a solution to compare against the baseline.
-            </div>
-          ) : [
-            { label: "Fuel Consumption", base: `${baseline.fuel.toLocaleString()} t`, opt: `${optimized.fuel.toLocaleString()} t` },
-            { label: "Operating Cost",   base: `$${baseline.cost}M`,                             opt: `$${optimized.cost}M` },
-            { label: "Lifecycle GHG",    base: `${baseline.ghg.toLocaleString()} kgCO₂`,         opt: `${optimized.ghg.toLocaleString()} kgCO₂` },
-            { label: "Cargo Fulfil.",    base: baseline.cargoFulfillment == null ? "Unavailable" : `${baseline.cargoFulfillment}%`, opt: optimized.cargoFulfillment == null ? "Unavailable" : `${optimized.cargoFulfillment}%` },
-          ].map(row => (
-            <div key={row.label} style={{ marginBottom: 12 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
-                <span style={{ fontSize: 11, color: T.textSec }}>{row.label}</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "stretch", gap: 8 }}>
-                <div style={{ flex: 1, background: "#F4F3EF", borderLeft: `2px solid ${T.borderMed}`, padding: "6px 10px" }}>
-                  <div style={{ fontSize: 9, color: T.textTer, marginBottom: 2, textTransform: "uppercase", letterSpacing: "0.06em" }}>Baseline</div>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: T.textSec, fontFamily: "'JetBrains Mono', monospace" }}>
-                    {loading ? <LoadingSkeleton height={14} width="70%" /> : row.base}
-                  </div>
-                </div>
-                <svg width="12" height="20" viewBox="0 0 12 20" fill="none" style={{ flexShrink: 0, alignSelf: "center" }}>
-                  <path d="M2 10h8M7 6l4 4-4 4" stroke={T.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <div style={{ flex: 1, background: T.tealLight, borderLeft: `2px solid ${T.teal}`, padding: "6px 10px" }}>
-                  <div style={{ fontSize: 9, color: T.teal, marginBottom: 2, textTransform: "uppercase", letterSpacing: "0.06em" }}>Optimized</div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: T.teal, fontFamily: "'JetBrains Mono', monospace" }}>
-                    {loading ? <LoadingSkeleton height={14} width="70%" /> : row.opt}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Fuel Mix */}
-        <div style={{ background: T.surface, border: `1px solid ${T.border}`, padding: "16px 20px" }}>
-          <div style={{ marginBottom: 14 }}>
-            <div style={{ fontSize: 12, fontWeight: 600, color: T.text, fontFamily: "'Instrument Sans', sans-serif" }}>
-              Fuel Mix — {optimized?.label ?? "No solution selected"}
-            </div>
-            <div style={{ fontSize: 11, color: T.textSec, marginTop: 2 }}>Fuel breakdown by type across this solution's assignments</div>
-          </div>
-
-          {fuelMix.length === 0 ? (
-            <div style={{ fontSize: 12, color: T.textTer, padding: "12px 0" }}>No fuel mix data available for this solution.</div>
-          ) : (
-            <>
-              {/* Stacked bar */}
-              <div style={{ display: "flex", height: 8, marginBottom: 16, gap: 1 }}>
-                {fuelMix.map(f => (
-                  <div key={f.fuel} style={{ width: `${f.share}%`, background: f.color, opacity: 0.85 }} title={`${f.fuel}: ${f.share}%`} />
-                ))}
-              </div>
-
-              {fuelMix.map(f => (
-                <div key={f.fuel} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10, padding: "8px 0", borderBottom: `1px solid ${T.border}` }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <div style={{ width: 3, height: 28, background: f.color, flexShrink: 0 }} />
-                    <div>
-                      <div style={{ fontSize: 12, color: T.text, fontWeight: 500, fontFamily: "'Instrument Sans', sans-serif" }}>{f.fuel}</div>
-                      <div style={{ fontSize: 10, color: T.textTer }}>{f.vessels} vessels · {f.share}%</div>
-                    </div>
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <div style={{ fontSize: 12, fontWeight: 600, color: T.text, fontFamily: "'JetBrains Mono', monospace" }}>{f.consumption.toLocaleString()} t</div>
-                    <div style={{ fontSize: 10, color: T.textTer }}>{f.ghg.toLocaleString()} kgCO₂</div>
-                  </div>
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-      </div>
-
-      <VesselDrawer
-        vesselId={selectedVesselId}
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        assignments={assignments}
-        vessels={vessels}
-        ports={ports}
-        routes={routes}
-      />
+      </section>
     </div>
   );
 }

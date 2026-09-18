@@ -1,34 +1,40 @@
 import React, { useState, useMemo, useEffect } from "react";
 import ParetoChart, { AXIS_PAIRS, AxisKey } from "../components/ParetoChart";
-import type { ParetoSolution, StructuredRequest, Objective } from "../api/types";
-import { useLatestOptimization, useOptimizationRun, useNLPQuery } from "../api/hooks";
+import type { OptimizationResult, ParetoSolution, StructuredRequest, Objective } from "../api/types";
+import { useOptimizationRun, useNLPQuery } from "../api/hooks";
 import { cargoDemandDisplay, cargoFulfillmentPct } from "../lib/cargo";
 
 interface Props {
   selectedId: string;
+  result: OptimizationResult | null;
+  loading: boolean;
+  error: string | null;
+  showingRequestResult: boolean;
   onSelect: (id: string) => void;
   onViewPlan: () => void;
+  onRequestResult: (result: OptimizationResult) => void;
+  onReturnToBaseline: () => void;
 }
 
 type FixedParam = "vessels" | "cargo" | "routes" | null;
 
 // Design tokens
 const T = {
-  surface:   "#FFFFFF",
-  bg:        "#F4F3EF",
-  border:    "#E4E2DE",
-  borderMed: "#CCC9C4",
-  text:      "#1A1918",
-  textSec:   "#6A6763",
-  textTer:   "#9A9793",
+  surface:   "var(--gf-card)",
+  bg:        "var(--gf-canvas)",
+  border:    "var(--gf-line)",
+  borderMed: "var(--gf-line-medium)",
+  text:      "var(--gf-ink)",
+  textSec:   "var(--gf-muted)",
+  textTer:   "var(--gf-faint)",
   teal:      "#0A6C70",
-  tealLight: "#F0F9FA",
+  tealLight: "var(--gf-teal-soft)",
   amber:     "#B45309",
-  amberL:    "#FFFBEB",
+  amberL:    "var(--gf-amber-soft)",
   green:     "#15803D",
-  greenL:    "#F0FDF4",
+  greenL:    "var(--gf-green-soft)",
   red:       "#B91C1C",
-  redL:      "#FEF2F2",
+  redL:      "var(--gf-red-soft)",
 };
 
 function computeLiveFront(solutions: ParetoSolution[], xKey: AxisKey, yKey: AxisKey): ParetoSolution[] {
@@ -204,7 +210,7 @@ function SolutionPanel({ sol, onViewPlan, inFilter, requestedCargo }: { sol: Par
           View Fleet Plan →
         </button>
         <button style={{
-          background: "white", color: T.textSec,
+          background: T.surface, color: T.textSec,
           border: `1px solid ${T.border}`, padding: "8px 12px",
           fontSize: 11, cursor: "pointer",
           fontFamily: "'Instrument Sans', sans-serif",
@@ -244,7 +250,7 @@ function RadioOpt({ val, current, label, onChange, disabled }: {
         style={{
           width: 12, height: 12, borderRadius: "50%", flexShrink: 0,
           border: `1.5px solid ${active ? T.teal : T.borderMed}`,
-          background: active ? T.teal : "white",
+          background: active ? T.teal : T.surface,
           display: "flex", alignItems: "center", justifyContent: "center",
         }}
       >
@@ -287,7 +293,7 @@ function RequestField({ label, children }: { label: string; children: React.Reac
 
 const fieldInputStyle: React.CSSProperties = {
   width: "100%", padding: "7px 10px", fontSize: 12, border: `1px solid ${T.border}`,
-  borderRadius: 4, fontFamily: "'Instrument Sans', sans-serif", color: T.text, boxSizing: "border-box",
+  borderRadius: 4, fontFamily: "'Instrument Sans', sans-serif", color: T.text, background: T.surface, boxSizing: "border-box",
 };
 
 function RequestForm({ value, onChange, originFlag, destinationFlag, compact }: RequestFormProps) {
@@ -353,6 +359,27 @@ function RequestForm({ value, onChange, originFlag, destinationFlag, compact }: 
   );
 }
 
+function RequestSummary({ value, dark = false }: { value: StructuredRequest; dark?: boolean }) {
+  const rows = [
+    ["Route", value.origin || value.destination ? `${value.origin ?? "Any"} → ${value.destination ?? "Any"}` : "Any"],
+    ["Cargo", value.cargo == null ? "Unrestricted" : `${value.cargo.toLocaleString()} tonnes`],
+    ["Speed", value.speed == null ? "Unrestricted" : `${value.speed} knots`],
+    ["Vessel", value.vessel_type ?? "Any"],
+    ["Fuel", value.fuel_type ?? "Any"],
+    ["Objectives", value.objectives.length ? value.objectives.map(o => OBJECTIVE_LABELS[o]).join(", ") : "All Pareto objectives"],
+  ];
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "88px 1fr", columnGap: 10, rowGap: 7 }}>
+      {rows.map(([label, display]) => (
+        <React.Fragment key={label}>
+          <span style={{ fontSize: 9.5, color: dark ? "#71898E" : T.textTer, textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</span>
+          <span style={{ fontSize: 11, color: dark ? "#D6E2E0" : T.text, fontWeight: 500 }}>{display}</span>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
 function requestValidationError(value: StructuredRequest): string | null {
   if (value.cargo != null && (!Number.isFinite(value.cargo) || value.cargo <= 0)) {
     return "Cargo must be a positive number.";
@@ -364,7 +391,7 @@ function requestValidationError(value: StructuredRequest): string | null {
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
-export default function Optimization({ selectedId, onSelect, onViewPlan }: Props) {
+export default function Optimization({ selectedId, result: liveResult, loading: liveLoading, error: liveError, showingRequestResult, onSelect, onViewPlan, onRequestResult, onReturnToBaseline }: Props) {
   const [fixedParam,  setFixedParam]  = useState<FixedParam>(null);
   const [vesselRangeOverride, setVesselRangeOverride] = useState<[number, number] | null>(null);
   const [vesselFixed, setVesselFixed] = useState<number | null>(null);
@@ -375,14 +402,13 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
   const [axisIdx,     setAxisIdx]     = useState(0);
   const [compareIds,  setCompareIds]  = useState<string[] | null>(null);
 
-  const [requestMode, setRequestMode] = useState<"manual" | "nlp">("manual");
+  const [requestMode, setRequestMode] = useState<"manual" | "nlp">("nlp");
   const [nlqText,      setNlqText]      = useState("");
   const [pendingRequest, setPendingRequest] = useState<StructuredRequest>(EMPTY_REQUEST);
   const [requestReviewReady, setRequestReviewReady] = useState(false);
 
   // Live data hooks
-  const { data: liveResult, loading: liveLoading, error: liveError } = useLatestOptimization();
-  const { running: optRunning, jobStatus, triggerRun } = useOptimizationRun();
+  const { result: completedRequestResult, running: optRunning, jobStatus, triggerRun } = useOptimizationRun();
   const { result: nlpResult, loading: nlpLoading, error: nlpError, query: runNLQ, reset: resetNLQ } = useNLPQuery();
 
   const requestErr = requestValidationError(pendingRequest);
@@ -411,6 +437,10 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
       setRequestReviewReady(true);
     }
   }, [nlpResult]);
+
+  useEffect(() => {
+    if (completedRequestResult) onRequestResult(completedRequestResult);
+  }, [completedRequestResult, onRequestResult]);
 
   // Live Pareto solutions from the real optimization result. Empty when no result yet.
   const allSolutions: ParetoSolution[] = liveResult?.pareto_solutions ?? [];
@@ -445,7 +475,7 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
   const effectiveCompareIds = compareIds ?? allSolutions.slice(0, 3).map(s => s.id);
 
   const runMeta = {
-    method: liveResult?.method ?? "unavailable",
+    method: Array.from(new Set(allSolutions.map(solution => solution.algorithm).filter((algorithm): algorithm is string => Boolean(algorithm)))).join(" / ") || "unavailable",
     feasible: liveResult?.feasible_solutions ?? 0,
     pareto: liveResult?.pareto_count ?? 0,
     runtime: liveResult?.runtime_seconds != null
@@ -504,20 +534,35 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
       {liveError && (
         <div style={{ padding: "8px 24px", fontSize: 11, color: T.red }}>Backend data unavailable: {liveError}</div>
       )}
+      {showingRequestResult && liveResult && (
+        <div style={{ margin: "10px 24px 0", padding: "8px 12px", background: T.tealLight, border: `1px solid ${T.teal}35`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+          <span style={{ fontSize: 11, color: T.teal }}>
+            Showing request-specific result {liveResult.run_id}. The normal four-solution baseline is preserved.
+          </span>
+          <button onClick={onReturnToBaseline} style={{ background: T.surface, color: T.teal, border: `1px solid ${T.teal}`, padding: "6px 10px", fontSize: 10.5, fontWeight: 600, cursor: "pointer" }}>
+            Return to Baseline
+          </button>
+        </div>
+      )}
 
       {/* Request builder: Manual Input vs AI / Natural Language */}
-      <div style={{ padding: "12px 24px 0" }}>
-        <div style={{ background: T.surface, border: `1px solid ${T.border}` }}>
-          <div style={{ display: "flex", borderBottom: `1px solid ${T.border}` }}>
+      <div style={{ padding: 0 }}>
+        <div style={{
+          background: "radial-gradient(circle at 88% 120%, rgba(11,108,112,.32), transparent 30%), repeating-linear-gradient(115deg, transparent 0 38px, rgba(32,121,123,.035) 39px 40px), #07151B",
+          borderBottom: "1px solid #173139", color: "#D6E2E0", padding: "8px 18px 10px",
+        }}>
+          <div style={{ display: "flex", borderBottom: "1px solid #1A353C", gap: 2 }}>
             {([["manual", "Manual Input"], ["nlp", "AI / Natural Language"]] as const).map(([m, label]) => (
               <button
                 key={m}
                 onClick={() => setRequestMode(m)}
                 style={{
-                  padding: "9px 18px", fontSize: 11, fontWeight: 600, border: "none", cursor: "pointer",
-                  background: requestMode === m ? T.tealLight : "white",
-                  color: requestMode === m ? T.teal : T.textSec,
-                  borderBottom: requestMode === m ? `2px solid ${T.teal}` : "2px solid transparent",
+                  padding: "7px 18px", fontSize: 10, fontWeight: 650, border: "1px solid", cursor: "pointer",
+                  background: requestMode === m ? "linear-gradient(#25343A, #111F25)" : "transparent",
+                  color: requestMode === m ? "#E5EEEC" : "#779095",
+                  borderColor: requestMode === m ? "#40545A" : "transparent",
+                  borderBottom: requestMode === m ? "1px solid #6C8084" : "1px solid transparent",
+                  borderRadius: "5px 5px 0 0",
                   fontFamily: "'Instrument Sans', sans-serif",
                 }}
               >
@@ -526,45 +571,45 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
             ))}
           </div>
 
-          <div style={{ padding: "14px 18px", display: "grid", gridTemplateColumns: "1fr 340px", gap: 20 }}>
+          <div style={{ padding: "8px 0 5px", display: "grid", gridTemplateColumns: requestMode === "nlp" && !requestReviewReady ? "1fr" : "minmax(360px, 55%) 1fr", gap: 18 }}>
             {/* Left: input method */}
             <div>
               {requestMode === "manual" ? (
                 <RequestForm value={pendingRequest} onChange={setPendingRequest} />
               ) : (
                 <>
-                  <div style={{ fontSize: 11, color: T.textSec, marginBottom: 8, fontFamily: "'Instrument Sans', sans-serif" }}>
-                    Describe your fleet optimization requirement
-                  </div>
-                  <textarea
-                    placeholder='e.g. "Find a low-emission route from Yokohama to Singapore carrying 5000 tonnes at 18 knots"'
-                    value={nlqText}
-                    onChange={e => setNlqText(e.target.value)}
-                    rows={4}
-                    style={{ width: "100%", padding: "9px 12px", fontSize: 12, border: `1px solid ${T.border}`, borderRadius: 4, fontFamily: "'Instrument Sans', sans-serif", color: T.text, boxSizing: "border-box", resize: "vertical", marginBottom: 10 }}
-                  />
-                  {nlpError && (
-                    <div style={{ fontSize: 11, color: T.red, marginBottom: 8 }}>⚠ {nlpError}</div>
-                  )}
-                  <div style={{ display: "flex", gap: 8 }}>
+                  <div style={{ display: "flex", gap: 8, alignItems: "stretch" }}>
+                    <textarea
+                      placeholder='e.g. "Find a low-emission route from Yokohama to Singapore carrying 5000 tonnes at 18 knots"'
+                      value={nlqText}
+                      onChange={e => setNlqText(e.target.value)}
+                      rows={1}
+                      aria-label="Natural language optimization request"
+                      style={{ flex: 1, minHeight: 34, padding: "8px 12px", fontSize: 10.5, border: "1px solid #294249", borderRadius: 4, fontFamily: "'Instrument Sans', sans-serif", color: "#DCE8E6", background: "rgba(4,15,20,.78)", boxSizing: "border-box", resize: "none", outline: "none" }}
+                    />
                     <button
                       onClick={handleGenerateRequest}
                       disabled={nlpLoading}
-                      style={{ background: nlpLoading ? "#9CA3AF" : T.teal, color: "white", border: "none", padding: "8px 16px", fontSize: 11, fontWeight: 700, cursor: nlpLoading ? "not-allowed" : "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
+                      style={{ background: nlpLoading ? "#52666A" : "#0A6C70", color: "white", border: "1px solid #248286", borderRadius: 4, padding: "0 16px", fontSize: 10, fontWeight: 700, cursor: nlpLoading ? "not-allowed" : "pointer", fontFamily: "'Instrument Sans', sans-serif", whiteSpace: "nowrap" }}
                     >
                       {nlpLoading ? "Parsing..." : requestReviewReady ? "Regenerate Request" : "Generate Request"}
                     </button>
+                  </div>
+                  {nlpError && (
+                    <div style={{ fontSize: 11, color: T.red, marginBottom: 8 }}>⚠ {nlpError}</div>
+                  )}
+                  <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
                     {requestReviewReady && (
                       <button
                         onClick={() => { setRequestReviewReady(false); resetNLQ(); setNlqText(""); setPendingRequest(EMPTY_REQUEST); }}
-                        style={{ background: "white", color: T.textSec, border: `1px solid ${T.border}`, padding: "8px 14px", fontSize: 11, cursor: "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
+                        style={{ background: "transparent", color: "#8FA4A7", border: "1px solid #294249", padding: "5px 12px", fontSize: 9.5, cursor: "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
                       >
                         Clear
                       </button>
                     )}
                   </div>
                   {requestReviewReady && (
-                    <div style={{ fontSize: 10, color: T.textTer, marginTop: 10 }}>
+                    <div style={{ fontSize: 9, color: "#71898E", marginTop: 6 }}>
                       {nlpResult?.gemini_used
                         ? "Normalized with Gemini, then parsed deterministically."
                         : "Parsed deterministically (Gemini normalization unavailable)."}{" "}
@@ -576,22 +621,21 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
             </div>
 
             {/* Right: current / detected request + action */}
-            <div style={{ borderLeft: `1px solid ${T.border}`, paddingLeft: 20 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: T.text, marginBottom: 8, fontFamily: "'Instrument Sans', sans-serif" }}>
+            <div style={{ display: requestMode === "nlp" && !requestReviewReady ? "none" : "block", borderLeft: "1px solid #294249", paddingLeft: 18 }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "#B9CAC8", marginBottom: 7, fontFamily: "'Instrument Sans', sans-serif" }}>
                 {requestMode === "nlp" && requestReviewReady ? "Detected Request" : "Current Request"}
               </div>
               {requestMode === "nlp" && !requestReviewReady ? (
                 <div style={{ fontSize: 10.5, color: T.textTer, lineHeight: 1.5 }}>
                   Generate a request from your description to review its detected fields here before optimizing.
                 </div>
-              ) : (
-                <RequestForm
-                  value={pendingRequest}
-                  onChange={setPendingRequest}
-                  originFlag={requestMode === "nlp" && nlpResult ? { valid: nlpResult.parsed.origin_valid, suggestion: nlpResult.parsed.origin_suggestion } : null}
-                  destinationFlag={requestMode === "nlp" && nlpResult ? { valid: nlpResult.parsed.destination_valid, suggestion: nlpResult.parsed.destination_suggestion } : null}
-                  compact
-                />
+              ) : <RequestSummary value={pendingRequest} dark />}
+
+              {requestMode === "nlp" && requestReviewReady && nlpResult && (
+                <div style={{ marginTop: 8, fontSize: 10, color: T.amber }}>
+                  {nlpResult.parsed.origin_valid === false && <div>⚠ Origin is not recognized{nlpResult.parsed.origin_suggestion ? ` — did you mean "${nlpResult.parsed.origin_suggestion}"?` : "."}</div>}
+                  {nlpResult.parsed.destination_valid === false && <div>⚠ Destination is not recognized{nlpResult.parsed.destination_suggestion ? ` — did you mean "${nlpResult.parsed.destination_suggestion}"?` : "."}</div>}
+                </div>
               )}
 
               {requestErr && (
@@ -607,7 +651,7 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
                 {requestMode === "nlp" && requestReviewReady && (
                   <button
                     onClick={handleEditInManualForm}
-                    style={{ background: "white", color: T.textSec, border: `1px solid ${T.border}`, padding: "8px 14px", fontSize: 11, cursor: "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
+                    style={{ background: "transparent", color: "#9FB1B2", border: "1px solid #385158", padding: "7px 13px", fontSize: 10, cursor: "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
                   >
                     Edit in Manual Form
                   </button>
@@ -616,8 +660,8 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
                   onClick={handleOptimize}
                   disabled={optRunning || !!requestErr || (requestMode === "nlp" && !requestReviewReady)}
                   style={{
-                    background: optRunning ? "#9CA3AF" : T.teal, color: "white", border: "none",
-                    padding: "8px 16px", fontSize: 11, fontWeight: 700,
+                    background: optRunning ? "#52666A" : "#0A6C70", color: "white", border: "1px solid #248286",
+                    padding: "7px 16px", fontSize: 10, fontWeight: 700,
                     cursor: optRunning || requestErr ? "not-allowed" : "pointer",
                     fontFamily: "'Instrument Sans', sans-serif",
                   }}
@@ -640,12 +684,18 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
                 </div>
               )}
               {!optRunning && jobStatus?.status === "completed" && liveResult?.request_warnings && liveResult.request_warnings.length > 0 && (
-                <div style={{ background: "#FFFBEB", border: "1px solid #FDE68A", padding: "8px 14px", fontSize: 11, color: "#78350F", marginTop: 10 }}>
+                <div style={{ background: T.amberL, border: `1px solid ${T.amber}`, padding: "8px 14px", fontSize: 11, color: T.amber, marginTop: 10 }}>
                   {liveResult.request_warnings.map((w, i) => <div key={i}>⚠ {w}</div>)}
                 </div>
               )}
             </div>
           </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 8.5, color: "#789095", minHeight: 18 }}>
+            <strong style={{ color: "#AFC1BF", fontWeight: 650 }}>Precomputed tags:</strong>
+            <span style={{ background: "#1A2B31", border: "1px solid #2B4248", padding: "2px 7px", borderRadius: 8 }}>{liveResult?.source ?? "live optimizer result"}</span>
+            <span style={{ background: "#1A2B31", border: "1px solid #2B4248", padding: "2px 7px", borderRadius: 8 }}>{runMeta.method}</span>
+          </div>
+          <div style={{ color: "#D2DDDB", fontSize: 9, fontWeight: 750, letterSpacing: "0.04em", marginTop: 4 }}>OPTIMIZATION ANALYTICS</div>
         </div>
       </div>
 
@@ -653,7 +703,7 @@ export default function Optimization({ selectedId, onSelect, onViewPlan }: Props
       <div style={{ padding: "14px 24px 0" }}>
         <div style={{ display: "flex", gap: 0, marginBottom: 0, border: `1px solid ${T.border}`, background: T.surface }}>
           {[
-            { label: "Optimization Method", val: runMeta.method,      sub: "NSGA-II / QBHO / CQM / MILP / MO-QIGA",      accent: T.teal  },
+            { label: "Algorithms in Result", val: runMeta.method,      sub: "derived from returned solutions",      accent: T.teal  },
             { label: "Data Mode",           val: liveResult?.data_mode ?? "unavailable", sub: liveResult?.source ?? "no result loaded", accent: T.teal },
             { label: "Feasible Solutions",  val: String(runMeta.feasible), sub: "total evaluated",             accent: T.text  },
             { label: "Pareto-Optimal",      val: String(runMeta.pareto),   sub: "non-dominated plans",         accent: T.teal  },
