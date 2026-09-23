@@ -114,7 +114,9 @@ export default function FleetPlan({ solutionId, result: liveResult, loading, err
           <GoogleFleetMap
             ports={ports}
             routes={routes}
+            assignments={assignments}
             highlightRouteIds={activeRouteIds}
+            selectedRouteId={assignments.find(a => a.id === selectedAssignmentId)?.routeId ?? null}
             showAllRoutes={false}
             selectedPortId={null}
             compact={true}
@@ -132,17 +134,17 @@ export default function FleetPlan({ solutionId, result: liveResult, loading, err
       <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: 16, marginBottom: 20 }}>
 
         {/* Fleet Assignment Table */}
-        <div style={{ background: "white", border: "1px solid #E2E8F0", borderRadius: 10, overflow: "hidden" }}>
-          <div style={{ padding: "14px 18px", borderBottom: "1px solid #F1F5F9", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ fontSize: 14, fontWeight: 700, color: "#0F172A", fontFamily: "'DM Sans', sans-serif" }}>Fleet Assignment</div>
+        <div style={{ background: "var(--gf-card)", border: "1px solid var(--gf-line-medium)", borderRadius: 10, overflow: "hidden" }}>
+          <div style={{ padding: "14px 18px", borderBottom: "1px solid var(--gf-line)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "var(--gf-ink)", fontFamily: "'DM Sans', sans-serif" }}>Fleet Assignment</div>
             <span style={{ fontSize: 12, color: "#94A3B8" }}>{assignments.length} vessels · Click row for details</span>
           </div>
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
               <thead>
-                <tr style={{ background: "#F8FAFC" }}>
+                <tr style={{ background: "var(--gf-row-alt)" }}>
                   {["Vessel", "Cargo", "Origin", "Destination", "Speed", "Fuel", "Shore Power", "ETA", "Fuel (t)", "Cost", "GHG", "Status"].map(col => (
-                    <th key={col} style={{ padding: "9px 10px", textAlign: "left", fontSize: 10, fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.05em", borderBottom: "1px solid #E2E8F0", whiteSpace: "nowrap" }}>
+                    <th key={col} style={{ padding: "9px 10px", textAlign: "left", fontSize: 10, fontWeight: 700, color: "var(--gf-muted)", textTransform: "uppercase", letterSpacing: "0.05em", borderBottom: "1px solid var(--gf-line)", whiteSpace: "nowrap" }}>
                       {col}
                     </th>
                   ))}
@@ -157,28 +159,28 @@ export default function FleetPlan({ solutionId, result: liveResult, loading, err
                       key={row.id}
                       onClick={() => { setSelectedAssignmentId(row.id); setDrawerOpen(true); }}
                       style={{
-                        background: isSelected ? "#EFF6FF" : i % 2 === 0 ? "white" : "#FAFAFA",
-                        cursor: "pointer", borderBottom: "1px solid #F1F5F9",
+                        background: isSelected ? "var(--gf-selected)" : i % 2 === 0 ? "var(--gf-card)" : "var(--gf-row-alt)",
+                        cursor: "pointer", borderBottom: "1px solid var(--gf-line)",
                         transition: "background 0.1s",
                       }}
-                      onMouseEnter={e => { if (!isSelected) (e.currentTarget as HTMLElement).style.background = "#F8FAFC"; }}
-                      onMouseLeave={e => { if (!isSelected) (e.currentTarget as HTMLElement).style.background = i % 2 === 0 ? "white" : "#FAFAFA"; }}
+                      onMouseEnter={e => { if (!isSelected) (e.currentTarget as HTMLElement).style.background = "var(--gf-row-hover)"; }}
+                      onMouseLeave={e => { if (!isSelected) (e.currentTarget as HTMLElement).style.background = i % 2 === 0 ? "var(--gf-card)" : "var(--gf-row-alt)"; }}
                     >
-                      <td style={{ padding: "8px 10px", fontWeight: 600, color: isSelected ? "#1D4ED8" : "#0F172A", whiteSpace: "nowrap" }}>{row.vesselName.replace("MV ", "")}</td>
-                      <td style={{ padding: "8px 10px", color: "#475569" }}>{row.cargo}</td>
-                      <td style={{ padding: "8px 10px", color: "#475569", whiteSpace: "nowrap" }}>{row.originId}</td>
-                      <td style={{ padding: "8px 10px", color: "#475569", whiteSpace: "nowrap" }}>{row.destinationId}</td>
-                      <td style={{ padding: "8px 10px", color: "#475569", fontFamily: "'JetBrains Mono', monospace" }}>{row.speed} kn</td>
+                      <td style={{ padding: "8px 10px", fontWeight: 700, color: isSelected ? "#4f8cff" : "var(--gf-ink)", whiteSpace: "nowrap" }}>{row.vesselName.replace("MV ", "")}</td>
+                      <td style={{ padding: "8px 10px", color: "var(--gf-muted)" }}>{row.cargo}</td>
+                      <td style={{ padding: "8px 10px", color: "var(--gf-muted)", whiteSpace: "nowrap" }}>{row.originId}</td>
+                      <td style={{ padding: "8px 10px", color: "var(--gf-muted)", whiteSpace: "nowrap" }}>{row.destinationId}</td>
+                      <td style={{ padding: "8px 10px", color: "var(--gf-muted)", fontFamily: "'JetBrains Mono', monospace" }}>{row.speed} kn</td>
                       <td style={{ padding: "8px 10px" }}>
                         <span style={{ background: "#EFF6FF", color: FUEL_COLORS[row.fuelType] ?? "#1D4ED8", borderRadius: 4, padding: "1px 6px", fontSize: 10, fontWeight: 700 }}>{row.fuelType}</span>
                       </td>
                       <td style={{ padding: "8px 10px", textAlign: "center" }}>
                         {row.shorepower ? <span style={{ color: "#059669", fontSize: 12 }}>✓</span> : <span style={{ color: "#CBD5E1", fontSize: 12 }}>—</span>}
                       </td>
-                      <td style={{ padding: "8px 10px", color: "#475569", whiteSpace: "nowrap", fontSize: 11 }}>{row.eta}</td>
-                      <td style={{ padding: "8px 10px", fontFamily: "'JetBrains Mono', monospace", color: "#0F172A" }}>{row.fuelConsumption.toLocaleString()}</td>
-                      <td style={{ padding: "8px 10px", fontFamily: "'JetBrains Mono', monospace", color: "#0F172A" }}>${row.cost}K</td>
-                      <td style={{ padding: "8px 10px", fontFamily: "'JetBrains Mono', monospace", color: "#0F172A" }}>{row.ghg.toLocaleString()}</td>
+                      <td style={{ padding: "8px 10px", color: "var(--gf-muted)", whiteSpace: "nowrap", fontSize: 11 }}>{row.eta}</td>
+                      <td style={{ padding: "8px 10px", fontFamily: "'JetBrains Mono', monospace", color: "var(--gf-ink)" }}>{row.fuelConsumption.toLocaleString()}</td>
+                      <td style={{ padding: "8px 10px", fontFamily: "'JetBrains Mono', monospace", color: "var(--gf-ink)" }}>${row.cost}K</td>
+                      <td style={{ padding: "8px 10px", fontFamily: "'JetBrains Mono', monospace", color: "var(--gf-ink)" }}>{row.ghg.toLocaleString()}</td>
                       <td style={{ padding: "8px 10px" }}>
                         <span style={{ background: ss.bg, color: ss.color, borderRadius: 4, padding: "2px 7px", fontSize: 10, fontWeight: 600, whiteSpace: "nowrap" }}>
                           {row.status === "on-schedule" ? "On Schedule" : row.status === "warning" ? "⚠ Warning" : "Critical"}
@@ -207,8 +209,8 @@ export default function FleetPlan({ solutionId, result: liveResult, loading, err
           )}
 
           {/* Constraint status */}
-          <div style={{ background: "white", border: "1px solid #E2E8F0", borderRadius: 10, padding: "16px" }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "#0F172A", fontFamily: "'DM Sans', sans-serif", marginBottom: 12 }}>Constraint Status</div>
+          <div style={{ background: "var(--gf-card)", border: "1px solid var(--gf-line-medium)", borderRadius: 10, padding: "16px" }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--gf-ink)", fontFamily: "'DM Sans', sans-serif", marginBottom: 12 }}>Constraint Status</div>
             {planConstraints.map((c, i) => (
               <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 8 }}>
                 <div style={{ width: 18, height: 18, borderRadius: "50%", background: c.satisfied ? "#F0FDF4" : "#FEF2F2", border: `1.5px solid ${c.satisfied ? "#86EFAC" : "#FCA5A5"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
@@ -220,8 +222,8 @@ export default function FleetPlan({ solutionId, result: liveResult, loading, err
                   </svg>
                 </div>
                 <div>
-                  <div style={{ fontSize: 12, color: "#0F172A", fontWeight: 500 }}>{c.label}</div>
-                  {c.note && <div style={{ fontSize: 10, color: "#D97706", marginTop: 1 }}>{c.note}</div>}
+                  <div style={{ fontSize: 12, color: "var(--gf-ink)", fontWeight: 600 }}>{c.label}</div>
+                  {c.note && <div style={{ fontSize: 10, color: "#f0a338", lineHeight: 1.45, marginTop: 2 }}>{c.note}</div>}
                 </div>
                 <span style={{ marginLeft: "auto", fontSize: 11, color: c.satisfied ? "#059669" : "#DC2626", fontWeight: 600 }}>
                   {c.satisfied ? "✓ Met" : "✗ Violated"}

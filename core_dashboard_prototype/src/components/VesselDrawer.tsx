@@ -36,9 +36,9 @@ function Badge({ text }: { text: string }) {
 
 function Row({ label, value, mono = false }: { label: string; value: React.ReactNode; mono?: boolean }) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "7px 0", borderBottom: "1px solid #F1F5F9" }}>
-      <span style={{ fontSize: 12, color: "#64748B" }}>{label}</span>
-      <span style={{ fontSize: 12, color: "#0F172A", fontWeight: 500, fontFamily: mono ? "'JetBrains Mono', monospace" : "inherit", textAlign: "right", maxWidth: "55%" }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 18, padding: "9px 0", borderBottom: "1px solid var(--gf-line)" }}>
+      <span style={{ fontSize: 12, color: "var(--gf-muted)", flexShrink: 0 }}>{label}</span>
+      <span style={{ fontSize: 12, color: "var(--gf-ink)", fontWeight: 600, fontFamily: mono ? "'JetBrains Mono', monospace" : "inherit", textAlign: "right", maxWidth: "62%", overflowWrap: "anywhere" }}>
         {value}
       </span>
     </div>
@@ -58,15 +58,15 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
     <>
       {open && (
         <div
-          style={{ position: "fixed", inset: 0, background: "rgba(15,23,42,0.25)", zIndex: 40 }}
+          style={{ position: "fixed", inset: 0, background: "rgba(3,12,16,0.58)", backdropFilter: "blur(1.5px)", zIndex: 9998 }}
           onClick={onClose}
         />
       )}
       <div
         style={{
           position: "fixed", top: 0, right: 0, bottom: 0,
-          width: 380, background: "white", zIndex: 50,
-          boxShadow: "-4px 0 24px rgba(0,0,0,0.12)",
+          width: 400, maxWidth: "calc(100vw - 24px)", background: "var(--gf-card)", color: "var(--gf-ink)", zIndex: 9999,
+          borderLeft: "1px solid var(--gf-line-medium)", boxShadow: "-8px 0 32px rgba(0,0,0,0.28)",
           transform: open ? "translateX(0)" : "translateX(100%)",
           transition: "transform 0.22s ease",
           display: "flex", flexDirection: "column",
@@ -74,25 +74,25 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
         }}
       >
         {!vessel ? (
-          <div style={{ padding: 24, color: "#64748B" }}>No vessel selected.</div>
+          <div style={{ padding: 24, color: "var(--gf-muted)" }}>No vessel selected.</div>
         ) : (
           <>
-            <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid #E2E8F0", background: "#F8FAFC" }}>
+            <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid var(--gf-line)", background: "var(--gf-row-alt)" }}>
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
                 <div>
-                  <div style={{ fontSize: 13, color: "#64748B", marginBottom: 2 }}>Vessel Detail</div>
-                  <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: "#0F172A", fontFamily: "'DM Sans', sans-serif" }}>
+                  <div style={{ fontSize: 13, color: "var(--gf-muted)", marginBottom: 2 }}>Vessel Detail</div>
+                  <h2 style={{ margin: 0, fontSize: 19, fontWeight: 700, color: "var(--gf-ink)", fontFamily: "'DM Sans', sans-serif" }}>
                     {vessel.name}
                   </h2>
                   <div style={{ display: "flex", gap: 8, marginTop: 6, alignItems: "center" }}>
-                    <span style={{ fontSize: 12, color: "#64748B" }}>{vessel.type}</span>
+                    <span style={{ fontSize: 12, color: "var(--gf-muted)" }}>{vessel.type}</span>
                     {vessel.availability ? <Badge text={vessel.availability} /> : null}
                     {assignment && <Badge text={assignment.status} />}
                   </div>
                 </div>
                 <button
                   onClick={onClose}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "#94A3B8", padding: 4 }}
+                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--gf-muted)", padding: 4 }}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
@@ -101,7 +101,7 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
 
             <div style={{ padding: "0 20px 20px", overflowY: "auto" }}>
               <div style={{ paddingTop: 16, paddingBottom: 4 }}>
-                <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700, color: "#94A3B8", marginBottom: 2 }}>Vessel Identity</div>
+                <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700, color: "var(--gf-muted)", marginBottom: 2 }}>Vessel Identity</div>
                 <Row label="Vessel ID" value={vessel.id} mono />
                 <Row label="Type" value={vessel.type} />
                 <Row label="Capacity" value={`${vessel.capacity.toLocaleString()} ${vessel.capacityUnit}`} mono />
@@ -111,10 +111,10 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
               </div>
 
               <div style={{ paddingTop: 12, paddingBottom: 4 }}>
-                <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700, color: "#94A3B8", marginBottom: 6 }}>Fuel Compatibility</div>
+                <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700, color: "var(--gf-muted)", marginBottom: 6 }}>Fuel Compatibility</div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                   {vessel.fuelCompatibility.map(f => (
-                    <span key={f} style={{ background: "#EFF6FF", color: "#1D4ED8", borderRadius: 5, fontSize: 11, fontWeight: 600, padding: "3px 9px", border: "1px solid #BFDBFE" }}>{f}</span>
+                    <span key={f} style={{ background: "var(--gf-info-soft)", color: "#4f8cff", borderRadius: 5, fontSize: 11, fontWeight: 700, padding: "3px 9px", border: "1px solid var(--gf-line-medium)" }}>{f}</span>
                   ))}
                 </div>
               </div>
@@ -122,7 +122,7 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
               {assignment && (
                 <>
                   <div style={{ paddingTop: 14, paddingBottom: 4 }}>
-                    <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700, color: "#94A3B8", marginBottom: 2 }}>Assigned Voyage</div>
+                    <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700, color: "var(--gf-muted)", marginBottom: 2 }}>Assigned Voyage</div>
                     <Row label="Cargo" value={assignment.cargo} />
                     <Row label="Volume" value={`${assignment.cargoTEU.toLocaleString()} ${vessel.capacityUnit}`} mono />
                     <Row label="Origin" value={`${origin?.name ?? assignment.originId} (${assignment.originId})`} />
@@ -134,9 +134,9 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
                   </div>
 
                   <div style={{ paddingTop: 14, paddingBottom: 4 }}>
-                    <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700, color: "#94A3B8", marginBottom: 2 }}>Fuel & Environmental</div>
+                    <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700, color: "var(--gf-muted)", marginBottom: 2 }}>Fuel & Environmental</div>
                     <Row label="Fuel Type" value={
-                      <span style={{ background: "#EFF6FF", color: "#1D4ED8", borderRadius: 4, padding: "1px 7px", fontSize: 11, fontWeight: 600 }}>{assignment.fuelType}</span>
+                      <span style={{ background: "var(--gf-info-soft)", color: "#4f8cff", borderRadius: 4, padding: "1px 7px", fontSize: 11, fontWeight: 700 }}>{assignment.fuelType}</span>
                     } />
                     <Row label="Shore Power" value={assignment.shorepower == null ? "Unavailable" : assignment.shorepower ? "Used at port" : "Not used"} />
                     <Row label="Predicted Fuel" value={`${assignment.fuelConsumption.toLocaleString()} t`} mono />
@@ -145,7 +145,7 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
                   </div>
 
                   <div style={{ paddingTop: 14, paddingBottom: 4 }}>
-                    <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700, color: "#94A3B8", marginBottom: 8 }}>Constraint Status</div>
+                    <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700, color: "var(--gf-muted)", marginBottom: 8 }}>Constraint Status</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
                       {assignment.constraints.map((c, i) => (
                         <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -157,7 +157,7 @@ export default function VesselDrawer({ vesselId, open, onClose, assignments = []
                               }
                             </svg>
                           </div>
-                          <span style={{ fontSize: 12, color: "#334155" }}>{c.label}</span>
+                          <span style={{ fontSize: 12, color: "var(--gf-ink)" }}>{c.label}</span>
                           {c.note && <span style={{ fontSize: 10, color: "#D97706", marginLeft: "auto" }} title={c.note}>⚠</span>}
                         </div>
                       ))}

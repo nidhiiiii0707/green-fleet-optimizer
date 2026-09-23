@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import type { Port, Route } from "../api/types";
-import { isGoogleMapsConfigured, loadGoogleMaps } from "../lib/googleMapsLoader";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import type { Assignment, Port, Route } from "../api/types";
 
 export interface VesselMarker {
   id: string;
@@ -14,7 +15,10 @@ export interface VesselMarker {
 interface Props {
   ports: Port[];
   routes: Route[];
+  assignments?: Assignment[];
   highlightRouteIds?: string[];
+  selectedRouteId?: string | null;
+  onRouteClick?: (routeId: string) => void;
   onPortClick?: (portId: string) => void;
   selectedPortId?: string | null;
   showAllRoutes?: boolean;
@@ -24,245 +28,195 @@ interface Props {
   selectedVesselId?: string | null;
 }
 
-const OCEAN_MAP_STYLE: google.maps.MapTypeStyle[] = [
-  { elementType: "geometry", stylers: [{ color: "#e7e4db" }] },
-  { elementType: "labels.text.fill", stylers: [{ color: "#595c55" }] },
-  { elementType: "labels.text.stroke", stylers: [{ color: "#f4f1e9" }] },
-  { featureType: "water", elementType: "geometry", stylers: [{ color: "#0a4050" }] },
-  { featureType: "administrative", elementType: "geometry", stylers: [{ color: "#b8b8ae" }] },
-  { featureType: "poi", stylers: [{ visibility: "off" }] },
-  { featureType: "road", stylers: [{ visibility: "off" }] },
-  { featureType: "transit", stylers: [{ visibility: "off" }] },
-];
+const ROUTE = { optimal: "#41d36f", alternative: "#d6b93e", warning: "#d97941" };
+
+function esc(value: unknown) {
+  return String(value ?? "").replace(/[&<>'"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char] ?? char);
+}
+
+function bearing(lat1: number, lng1: number, lat2: number, lng2: number) {
+  const toRad = (v: number) => v * Math.PI / 180;
+  const toDeg = (v: number) => v * 180 / Math.PI;
+  const dLng = toRad(lng2 - lng1);
+  const y = Math.sin(dLng) * Math.cos(toRad(lat2));
+  const x = Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) - Math.sin(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.cos(dLng);
+  return (toDeg(Math.atan2(y, x)) + 360) % 360;
+}
+
+function curvedPath(from: Port, to: Port): L.LatLngExpression[] {
+  let lngDelta = to.longitude - from.longitude;
+  if (lngDelta > 180) lngDelta -= 360;
+  if (lngDelta < -180) lngDelta += 360;
+  const latDelta = to.latitude - from.latitude;
+  const curve = Math.min(8, Math.max(0.7, Math.hypot(latDelta, lngDelta) * 0.08));
+  const midLat = (from.latitude + to.latitude) / 2 + Math.sign(lngDelta || 1) * curve;
+  const midLng = from.longitude + lngDelta / 2 - Math.sign(latDelta || 1) * curve * 0.45;
+  const points: L.LatLngExpression[] = [];
+  for (let i = 0; i <= 28; i += 1) {
+    const t = i / 28;
+    const inv = 1 - t;
+    const lat = inv * inv * from.latitude + 2 * inv * t * midLat + t * t * to.latitude;
+    let lng = inv * inv * from.longitude + 2 * inv * t * midLng + t * t * (from.longitude + lngDelta);
+    if (lng > 180) lng -= 360;
+    if (lng < -180) lng += 360;
+    points.push([lat, lng]);
+  }
+  return points;
+}
+
+function shipIcon(heading: number, selected: boolean, status: string) {
+  const color = status === "arrived" ? "#57d58a" : selected ? "#50f2df" : "#75dce0";
+  const size = selected ? 34 : 28;
+  return L.divIcon({
+    className: "gf-vessel-marker",
+    iconSize: [size, size], iconAnchor: [size / 2, size / 2], popupAnchor: [0, -size / 2],
+    html: `<div class="gf-vessel-halo ${selected ? "is-selected" : ""}" style="width:${size}px;height:${size}px"><svg viewBox="0 0 24 24" style="transform:rotate(${heading}deg);width:${size - 8}px;height:${size - 8}px" aria-hidden="true"><path d="M12 2.5 17.5 17 12 21.5 6.5 17 12 2.5Z" fill="${color}" stroke="#e8ffff" stroke-width="1.2"/><path d="M12 7v10M8.8 15.5h6.4" stroke="#07353b" stroke-width="1.15" stroke-linecap="round"/></svg></div>`,
+  });
+}
+
+function portIcon(selected: boolean) {
+  return L.divIcon({
+    className: "gf-port-marker",
+    iconSize: [selected ? 20 : 16, selected ? 20 : 16],
+    iconAnchor: [selected ? 10 : 8, selected ? 10 : 8],
+    html: `<span class="${selected ? "is-selected" : ""}"><i></i></span>`,
+  });
+}
 
 export default function GoogleFleetMap({
-  ports, routes, highlightRouteIds = [], onPortClick, selectedPortId,
-  showAllRoutes = false, compact = false, vessels = [], onVesselClick, selectedVesselId,
+  ports, routes, assignments = [], highlightRouteIds = [], selectedRouteId, onRouteClick,
+  onPortClick, selectedPortId, showAllRoutes = false, compact = false, vessels = [],
+  onVesselClick, selectedVesselId,
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<google.maps.Map | null>(null);
-  const portMarkersRef = useRef<Map<string, google.maps.Marker>>(new Map());
-  const polylinesRef = useRef<Map<string, google.maps.Polyline>>(new Map());
-  const vesselMarkersRef = useRef<Map<string, google.maps.Marker>>(new Map());
-  const infoWindowRef = useRef<google.maps.InfoWindow | null>(null);
-
-  const [status, setStatus] = useState<"loading" | "ready" | "unconfigured" | "error">(
-    isGoogleMapsConfigured() ? "loading" : "unconfigured",
-  );
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const mapRef = useRef<L.Map | null>(null);
+  const dataLayerRef = useRef<L.LayerGroup | null>(null);
+  const fittedRef = useRef(false);
+  const [mapReady, setMapReady] = useState(false);
+  const mapAvailable = routes.length > 0 && ports.length > 0;
 
   const routeIds = useMemo(() => new Set(highlightRouteIds), [highlightRouteIds]);
-  const visibleRoutes = useMemo(
-    () => routes.filter((route) => showAllRoutes || routeIds.has(route.id)),
-    [routes, routeIds, showAllRoutes],
-  );
-  const portById = useMemo(() => new Map(ports.map((p) => [p.id, p])), [ports]);
-  const visiblePortIds = useMemo(() => {
-    const ids = new Set<string>();
-    visibleRoutes.forEach((r) => { ids.add(r.originId); ids.add(r.destinationId); });
-    return ids;
-  }, [visibleRoutes]);
+  const portById = useMemo(() => new Map(ports.map(port => [port.id, port])), [ports]);
+  const assignmentById = useMemo(() => new Map(assignments.map(assignment => [assignment.id, assignment])), [assignments]);
+  const assignmentByRoute = useMemo(() => {
+    const map = new Map<string, Assignment[]>();
+    assignments.forEach(assignment => {
+      if (!assignment.routeId) return;
+      const list = map.get(assignment.routeId) ?? [];
+      list.push(assignment); map.set(assignment.routeId, list);
+    });
+    return map;
+  }, [assignments]);
+  const visibleRoutes = useMemo(() => routes.filter(route => showAllRoutes || routeIds.has(route.id)), [routes, routeIds, showAllRoutes]);
 
-  // Load the Maps script and create the map instance once.
+  const displayVessels = useMemo(() => {
+    if (vessels.length) return vessels;
+    return assignments.flatMap((assignment, index) => {
+      const from = assignment.originLatitude != null && assignment.originLongitude != null
+        ? { latitude: assignment.originLatitude, longitude: assignment.originLongitude }
+        : portById.get(assignment.originId);
+      const to = assignment.destinationLatitude != null && assignment.destinationLongitude != null
+        ? { latitude: assignment.destinationLatitude, longitude: assignment.destinationLongitude }
+        : portById.get(assignment.destinationId);
+      if (!from || !to) return [];
+      const fraction = 0.28 + (index % 4) * 0.13;
+      return [{
+        id: assignment.id,
+        lat: from.latitude + (to.latitude - from.latitude) * fraction,
+        lng: from.longitude + (to.longitude - from.longitude) * fraction,
+        heading: bearing(from.latitude, from.longitude, to.latitude, to.longitude),
+        status: "in-transit" as const,
+        label: assignment.vesselId,
+      }];
+    });
+  }, [assignments, portById, vessels]);
+
   useEffect(() => {
-    if (!isGoogleMapsConfigured()) {
-      setStatus("unconfigured");
-      return;
-    }
-    // Vite Fast Refresh can preserve refs while resetting component state.
-    // Restore the ready state when the live Google map instance survived HMR.
-    if (mapRef.current && window.google?.maps) {
-      setStatus("ready");
-      return;
-    }
-    let cancelled = false;
-    loadGoogleMaps()
-      .then((g) => {
-        if (cancelled || !containerRef.current) return;
-        if (mapRef.current) {
-          setStatus("ready");
-          return;
-        }
-        mapRef.current = new g.maps.Map(containerRef.current, {
-          center: { lat: 20, lng: 60 },
-          zoom: 2,
-          minZoom: 1,
-          disableDefaultUI: compact,
-          zoomControl: true,
-          streetViewControl: false,
-          mapTypeControl: false,
-          fullscreenControl: !compact,
-          styles: OCEAN_MAP_STYLE,
-        });
-        infoWindowRef.current = new g.maps.InfoWindow();
-        setStatus("ready");
-      })
-      .catch((e: Error) => {
-        if (cancelled) return;
-        setErrorMsg(e.message);
-        setStatus("error");
-      });
-    return () => { cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (!containerRef.current || mapRef.current) return;
+    const map = L.map(containerRef.current, { zoomControl: true, attributionControl: true, minZoom: 2, worldCopyJump: true });
+    map.setView([24, 105], 3);
+    let fallbackAdded = false;
+    const darkTiles = L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+      subdomains: "abcd", maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    }).addTo(map);
+    darkTiles.on("tileerror", () => {
+      if (fallbackAdded) return;
+      fallbackAdded = true;
+      console.warn("Dark maritime tiles failed; falling back to OpenStreetMap tiles.");
+      darkTiles.remove();
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+    });
+    dataLayerRef.current = L.layerGroup().addTo(map);
+    mapRef.current = map;
+    setMapReady(true);
+    const resize = new ResizeObserver(() => map.invalidateSize(false));
+    resize.observe(containerRef.current);
+    return () => { resize.disconnect(); map.remove(); mapRef.current = null; dataLayerRef.current = null; fittedRef.current = false; setMapReady(false); };
+  }, [mapAvailable]);
 
-  // Draw ports + routes; fit bounds to what's currently visible.
   useEffect(() => {
-    if (status !== "ready" || !mapRef.current || !window.google) return;
-    const g = window.google;
-    const map = mapRef.current;
+    const map = mapRef.current; const layer = dataLayerRef.current;
+    if (!mapReady || !map || !layer) return;
+    layer.clearLayers();
+    const bounds = L.latLngBounds([]);
+    const activePrimary = selectedRouteId ?? highlightRouteIds[0] ?? null;
 
-    for (const poly of polylinesRef.current.values()) poly.setMap(null);
-    polylinesRef.current.clear();
-    for (const marker of portMarkersRef.current.values()) marker.setMap(null);
-    portMarkersRef.current.clear();
+    visibleRoutes.forEach(route => {
+      const from = portById.get(route.originId); const to = portById.get(route.destinationId);
+      if (!from || !to) return;
+      const routeAssignments = assignmentByRoute.get(route.id) ?? [];
+      const problematic = routeAssignments.some(a => a.status === "warning" || a.status === "critical");
+      const selected = route.id === activePrimary;
+      const color = problematic ? ROUTE.warning : selected ? ROUTE.optimal : ROUTE.alternative;
+      const path = curvedPath(from, to);
+      if (selected) L.polyline(path, { color, weight: 10, opacity: 0.16, interactive: false, lineCap: "round" }).addTo(layer);
+      const line = L.polyline(path, { color, weight: selected ? 4 : 2.25, opacity: selected ? 1 : 0.72, lineCap: "round", dashArray: problematic ? "8 6" : undefined }).addTo(layer);
+      line.bindTooltip(`<b>${esc(route.name)}</b><br>${route.distanceNm.toLocaleString()} nm<br>${problematic ? "Operational warning" : selected ? "Optimal route" : "Alternative route"}`, { sticky: true, className: "gf-map-tooltip" });
+      line.on("click", () => { onRouteClick?.(route.id); map.fitBounds(L.latLngBounds(path), { padding: [38, 38], maxZoom: 7 }); });
+      path.forEach(point => bounds.extend(point));
+    });
 
-    const bounds = new g.maps.LatLngBounds();
-    let hasBounds = false;
+    const portIds = new Set(visibleRoutes.flatMap(route => [route.originId, route.destinationId]));
+    ports.filter(port => portIds.has(port.id)).forEach(port => {
+      const related = assignments.filter(a => a.originId === port.id || a.destinationId === port.id);
+      const eta = related.find(a => a.destinationId === port.id && a.eta)?.eta ?? "Not available";
+      const cargo = related.reduce((sum, a) => sum + (a.cargoTons ?? a.cargoTEU ?? 0), 0);
+      const marker = L.marker([port.latitude, port.longitude], { icon: portIcon(port.id === selectedPortId), zIndexOffset: 500 }).addTo(layer);
+      marker.bindPopup(`<div class="gf-map-popup"><strong>${esc(port.name)}</strong><small>${esc(port.country ?? "Port")}</small><dl><dt>Vessels</dt><dd>${related.length}</dd><dt>ETA</dt><dd>${esc(eta)}</dd><dt>Cargo/load</dt><dd>${cargo ? `${cargo.toLocaleString(undefined, { maximumFractionDigits: 1 })} t` : "Unavailable"}</dd><dt>Coordinates</dt><dd>${port.latitude.toFixed(3)}, ${port.longitude.toFixed(3)}</dd></dl></div>`, { className: "gf-leaflet-popup" });
+      marker.on("click", () => onPortClick?.(port.id));
+      bounds.extend([port.latitude, port.longitude]);
+    });
 
-    for (const route of visibleRoutes) {
-      const from = portById.get(route.originId);
-      const to = portById.get(route.destinationId);
-      if (!from || !to) continue;
-      const highlighted = routeIds.has(route.id);
-      const path = [
-        { lat: from.latitude, lng: from.longitude },
-        { lat: to.latitude, lng: to.longitude },
-      ];
-      const polyline = new g.maps.Polyline({
-        path,
-        geodesic: true,
-        strokeColor: highlighted ? "#4ea965" : "#c9b640",
-        strokeOpacity: highlighted ? 0.95 : 0.58,
-        strokeWeight: highlighted ? 3 : 1.5,
-        map,
-      });
-      polylinesRef.current.set(route.id, polyline);
-      bounds.extend(path[0]); bounds.extend(path[1]); hasBounds = true;
+    displayVessels.forEach(vessel => {
+      const assignment = assignmentById.get(vessel.id);
+      const route = assignment?.routeId ? routes.find(item => item.id === assignment.routeId) : undefined;
+      const selected = vessel.id === selectedVesselId || (!!selectedRouteId && assignment?.routeId === selectedRouteId);
+      const marker = L.marker([vessel.lat, vessel.lng], { icon: shipIcon(vessel.heading, selected, vessel.status), zIndexOffset: selected ? 1100 : 900 }).addTo(layer);
+      marker.bindPopup(`<div class="gf-map-popup vessel"><strong>⚓ ${esc(vessel.label)}</strong><small>${esc(assignment?.vesselType ?? "Fleet vessel")}</small><dl><dt>Route</dt><dd>${esc(route?.name ?? assignment?.routeName ?? "Unavailable")}</dd><dt>Distance</dt><dd>${route?.distanceNm != null ? `${route.distanceNm.toLocaleString()} nm` : "Unavailable"}</dd><dt>Speed</dt><dd>${assignment?.speed != null ? `${assignment.speed} kn` : "Unavailable"}</dd><dt>Fuel</dt><dd>${assignment?.fuelConsumption != null ? `${assignment.fuelConsumption.toLocaleString()} t` : "Unavailable"}</dd><dt>ETA</dt><dd>${esc(assignment?.eta ?? "Unavailable")}</dd><dt>Status</dt><dd class="status">${esc(assignment?.status ?? vessel.status)}</dd></dl></div>`, { className: "gf-leaflet-popup" });
+      marker.bindTooltip(esc(vessel.label), { direction: "top", offset: [0, -12], className: "gf-map-tooltip" });
+      marker.on("click", () => onVesselClick?.(vessel.id));
+    });
+
+    if (selectedRouteId) {
+      const selected = routes.find(route => route.id === selectedRouteId);
+      const from = selected ? portById.get(selected.originId) : undefined; const to = selected ? portById.get(selected.destinationId) : undefined;
+      if (from && to) map.fitBounds(L.latLngBounds(curvedPath(from, to)), { padding: [35, 35], maxZoom: 7 });
+    } else if (!fittedRef.current && bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [28, 28], maxZoom: compact ? 5 : 6 }); fittedRef.current = true;
     }
+  }, [assignmentById, assignmentByRoute, assignments, compact, displayVessels, highlightRouteIds, mapReady, onPortClick, onRouteClick, onVesselClick, portById, ports, routes, selectedPortId, selectedRouteId, selectedVesselId, visibleRoutes]);
 
-    for (const port of ports) {
-      if (!visiblePortIds.has(port.id)) continue;
-      const selected = port.id === selectedPortId;
-      const marker = new g.maps.Marker({
-        position: { lat: port.latitude, lng: port.longitude },
-        map,
-        title: port.name,
-        icon: {
-          path: g.maps.SymbolPath.CIRCLE,
-          scale: selected ? 8 : 6,
-          fillColor: selected ? "#d3a52f" : "#218a63",
-          fillOpacity: 1,
-          strokeColor: "white",
-          strokeWeight: 2,
-        },
-        zIndex: selected ? 999 : 1,
-      });
-      marker.addListener("click", () => {
-        onPortClick?.(port.id);
-        infoWindowRef.current?.setContent(
-          `<div style="font:600 12px sans-serif;color:#0F172A">${port.name}</div>` +
-          `<div style="font:11px monospace;color:#64748B;margin-top:2px">${port.latitude.toFixed(3)}, ${port.longitude.toFixed(3)}${port.country ? " · " + port.country : ""}</div>` +
-          `<div style="font:10px sans-serif;color:#94A3B8;margin-top:2px">${port.coordinateStatus ?? "coordinate status unavailable"}</div>`,
-        );
-        infoWindowRef.current?.open({ map, anchor: marker });
-      });
-      portMarkersRef.current.set(port.id, marker);
-    }
-
-    if (hasBounds) {
-      map.fitBounds(bounds, 40);
-    }
-  }, [status, visibleRoutes, ports, visiblePortIds, portById, selectedPortId, routeIds, onPortClick]);
-
-  // Vessel markers — repositioned on every simulation tick without
-  // recreating the whole map or refitting bounds.
-  useEffect(() => {
-    if (status !== "ready" || !mapRef.current || !window.google) return;
-    const g = window.google;
-    const map = mapRef.current;
-    const seen = new Set<string>();
-
-    for (const v of vessels) {
-      seen.add(v.id);
-      const isSelected = v.id === selectedVesselId;
-      const color = v.status === "arrived" ? "#15803D" : "#B45309";
-      let marker = vesselMarkersRef.current.get(v.id);
-      if (!marker) {
-        marker = new g.maps.Marker({
-          map,
-          icon: {
-            path: g.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-            scale: 4.5,
-            rotation: v.heading,
-            fillColor: color,
-            fillOpacity: 1,
-            strokeColor: "white",
-            strokeWeight: 1.5,
-          },
-        });
-        marker.addListener("click", () => onVesselClick?.(v.id));
-        vesselMarkersRef.current.set(v.id, marker);
-      }
-      marker.setPosition({ lat: v.lat, lng: v.lng });
-      marker.setIcon({
-        path: g.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-        scale: isSelected ? 6.5 : 4.5,
-        rotation: v.heading,
-        fillColor: color,
-        fillOpacity: 1,
-        strokeColor: "white",
-        strokeWeight: isSelected ? 2.5 : 1.5,
-      });
-      marker.setZIndex(isSelected ? 1000 : 500);
-      marker.setTitle(v.label);
-    }
-
-    for (const [id, marker] of vesselMarkersRef.current.entries()) {
-      if (!seen.has(id)) {
-        marker.setMap(null);
-        vesselMarkersRef.current.delete(id);
-      }
-    }
-  }, [status, vessels, selectedVesselId, onVesselClick]);
-
-  // Cleanup markers/polylines on unmount.
-  useEffect(() => () => {
-    for (const m of portMarkersRef.current.values()) m.setMap(null);
-    for (const p of polylinesRef.current.values()) p.setMap(null);
-    for (const v of vesselMarkersRef.current.values()) v.setMap(null);
-  }, []);
-
-  if (status === "unconfigured") {
-    return (
-      <div style={{ height: "100%", display: "grid", placeItems: "center", color: "#64748B", fontSize: 12, padding: 16, textAlign: "center" }}>
-        Google Maps is not configured. Set VITE_GOOGLE_MAPS_API_KEY in .env.local to enable the map.
-      </div>
-    );
-  }
-  if (status === "error") {
-    return (
-      <div style={{ height: "100%", display: "grid", placeItems: "center", color: "#B91C1C", fontSize: 12, padding: 16, textAlign: "center" }}>
-        Could not load Google Maps: {errorMsg}
-      </div>
-    );
-  }
-  if (routes.length === 0 || ports.length === 0) {
-    return (
-      <div style={{ height: "100%", display: "grid", placeItems: "center", color: "#64748B", fontSize: 12 }}>
-        No real route coordinates are available from the backend.
-      </div>
-    );
+  if (!mapAvailable) {
+    return <div className="gf-map-empty">No real route coordinates are available from the backend.</div>;
   }
 
   return (
-    <div style={{ position: "relative", height: "100%", width: "100%" }}>
-      <div ref={containerRef} style={{ height: "100%", width: "100%" }} />
-      {status === "loading" && (
-        <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", background: "rgba(255,255,255,0.7)", fontSize: 12, color: "#64748B" }}>
-          Loading Google Maps…
-        </div>
-      )}
+    <div className="gf-maritime-map-shell">
+      <div ref={containerRef} className="gf-maritime-map" />
+      <div className="gf-map-legend">
+        <strong>Legend</strong><span><i style={{ background: ROUTE.optimal }} />Optimal route</span><span><i style={{ background: ROUTE.alternative }} />Alternative route</span><span><i style={{ background: ROUTE.warning }} />Congested route</span><span className="ship">◆ Vessel</span><span className="port">● Port</span>
+      </div>
     </div>
   );
 }

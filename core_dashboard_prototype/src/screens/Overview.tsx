@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import GoogleFleetMap from "../components/GoogleFleetMap";
 import { useFleetData } from "../api/hooks";
 import type { OptimizationResult, ParetoSolution } from "../api/types";
@@ -95,12 +95,16 @@ function ParetoMiniChart({ solutions, selectedId }: { solutions: ParetoSolution[
 
 export default function Overview({ solutionId, result, loading, error, onGoToOptimization }: Props) {
   const [selectedPortId, setSelectedPortId] = useState<string | null>(null);
+  const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
   const { vessels, ports, routes, error: fleetError } = useFleetData();
   const solutions = result?.pareto_solutions ?? [];
   const selected = solutions.find(s => s.id === solutionId) ?? solutions[0];
   const assignments = selected?.assignments ?? [];
   const baseline = result?.baseline ?? null;
   const activeRouteIds = Array.from(new Set(assignments.map(a => a.routeId).filter((id): id is string => Boolean(id))));
+  const activeSelectedRouteId = selectedRouteId && activeRouteIds.includes(selectedRouteId) ? selectedRouteId : null;
+
+  useEffect(() => { setSelectedRouteId(null); }, [selected?.id]);
 
   const utilizationRows = useMemo(() => {
     const grouped = new Map<string, { values: number[]; fuels: Map<string, number> }>();
@@ -151,8 +155,8 @@ export default function Overview({ solutionId, result, loading, error, onGoToOpt
           <div><div style={{ fontSize: 11, fontWeight: 700, color: C.ink }}>Fleet & Route Visualization — {selected?.label ?? "No solution selected"}</div><div style={{ fontSize: 8.5, color: C.muted, marginTop: 2 }}>{activeRouteIds.length} active routes from real port/route coordinates · click a port to view details</div></div>
           <button onClick={onGoToOptimization} style={{ background: C.teal, color: "white", border: 0, padding: "7px 12px", fontSize: 9, fontWeight: 700, cursor: "pointer" }}>View Pareto Results →</button>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 180px", height: 255 }}>
-          <GoogleFleetMap ports={ports} routes={routes} highlightRouteIds={activeRouteIds} selectedPortId={selectedPortId} onPortClick={id => setSelectedPortId(id === selectedPortId ? null : id)} showAllRoutes />
+        <div className="fleet-map-layout" style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 180px", height: 255 }}>
+          <GoogleFleetMap ports={ports} routes={routes} assignments={assignments} highlightRouteIds={activeSelectedRouteId ? [activeSelectedRouteId] : activeRouteIds} selectedRouteId={activeSelectedRouteId} onRouteClick={setSelectedRouteId} selectedPortId={selectedPortId} onPortClick={id => setSelectedPortId(id === selectedPortId ? null : id)} showAllRoutes compact />
           <aside style={{ borderLeft: `1px solid ${C.line}`, padding: "11px 12px", overflow: "hidden" }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: C.ink, marginBottom: 9 }}>Active Route Network</div>
             <div style={{ fontSize: 8.5, color: C.muted, lineHeight: 1.5, marginBottom: 11 }}>Real geocoded routes for the selected fleet plan.</div>
@@ -161,7 +165,7 @@ export default function Overview({ solutionId, result, loading, error, onGoToOpt
               <span style={{ fontSize: 8.5, color: C.muted }}><b style={{ color: C.gold }}>●</b> Other available route</span>
               <span style={{ fontSize: 8.5, color: C.muted }}><b style={{ color: C.teal }}>●</b> Port coordinate</span>
             </div>
-            {routeLabels.map(route => route && <div key={route.id} style={{ padding: "7px 0", borderTop: `1px solid ${C.line}` }}><div style={{ fontSize: 9, fontWeight: 650, color: C.ink, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{route.name}</div><div style={{ fontSize: 8, color: C.faint, marginTop: 2 }}>{route.distanceNm.toLocaleString()} nm</div></div>)}
+            {routeLabels.map(route => route && <button key={route.id} onClick={() => setSelectedRouteId(route.id)} style={{ width: "100%", padding: "7px 5px", border: 0, borderTop: `1px solid ${C.line}`, borderLeft: route.id === activeSelectedRouteId ? `2px solid ${C.green}` : "2px solid transparent", background: route.id === activeSelectedRouteId ? "var(--gf-selected)" : "transparent", textAlign: "left", cursor: "pointer" }}><div style={{ fontSize: 9, fontWeight: 650, color: route.id === activeSelectedRouteId ? C.green : C.ink, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{route.name}</div><div style={{ fontSize: 8, color: C.faint, marginTop: 2 }}>{route.distanceNm.toLocaleString()} nm · click to focus</div></button>)}
           </aside>
         </div>
       </section>

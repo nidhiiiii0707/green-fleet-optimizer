@@ -94,7 +94,14 @@ export default function FleetRoutes({ solutionId, result: liveResult, loading: o
           <GoogleFleetMap
             ports={PORTS}
             routes={ROUTES}
+            assignments={assignments}
             highlightRouteIds={selectedRoute ? [selectedRoute] : activeRouteIds}
+            selectedRouteId={selectedRoute}
+            selectedVesselId={assignments.find(a => a.vesselId === selectedVesselId)?.id ?? null}
+            onVesselClick={assignmentId => {
+              const assignment = assignments.find(a => a.id === assignmentId);
+              if (assignment) { setSelectedVesselId(assignment.vesselId); setDrawerOpen(true); }
+            }}
             showAllRoutes={true}
             compact={true}
           />

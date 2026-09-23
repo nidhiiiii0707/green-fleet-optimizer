@@ -120,3 +120,43 @@ input[type=range]::-webkit-slider-runnable-track {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #C8C6C1; border-radius: 1px; }
 ::-webkit-scrollbar-thumb:hover { background: #9A9793; }
+
+/* Interactive maritime map */
+.gf-maritime-map-shell { position: relative; width: 100%; height: 100%; min-height: 210px; background: #08242c; overflow: hidden; }
+.gf-maritime-map { position: absolute; inset: 0; background: #08242c; }
+.gf-maritime-map .leaflet-tile { filter: saturate(.9) contrast(1.04); }
+.gf-maritime-map .leaflet-control-zoom { border: 1px solid #31515a; box-shadow: 0 5px 18px rgba(0,0,0,.28); }
+.gf-maritime-map .leaflet-control-zoom a { background: #0d252c; color: #b9d2d1; border-color: #31515a; }
+.gf-maritime-map .leaflet-control-zoom a:hover { background: #163841; color: #57e0d0; }
+.gf-maritime-map .leaflet-control-attribution { background: rgba(5,18,23,.75); color: #789195; font-size: 8px; }
+.gf-maritime-map .leaflet-control-attribution a { color: #7bc8c2; }
+.gf-map-legend { position: absolute; z-index: 500; right: 10px; top: 10px; display: grid; gap: 4px; min-width: 126px; padding: 8px 10px; color: #aec2c3; background: rgba(6,24,30,.9); border: 1px solid #31515a; border-radius: 5px; box-shadow: 0 8px 24px rgba(0,0,0,.28); font-size: 8px; backdrop-filter: blur(5px); pointer-events: none; }
+.gf-map-legend strong { color: #e2ecea; font-size: 9px; margin-bottom: 2px; }
+.gf-map-legend span { display: flex; align-items: center; gap: 6px; }
+.gf-map-legend i { display: inline-block; width: 14px; height: 2px; border-radius: 2px; box-shadow: 0 0 5px currentColor; }
+.gf-map-legend .ship { color: #75dce0; }
+.gf-map-legend .port { color: #33d4c4; }
+.gf-vessel-marker, .gf-port-marker { background: transparent; border: 0; }
+.gf-vessel-halo { display: grid; place-items: center; border-radius: 50%; background: rgba(63,220,211,.12); box-shadow: 0 0 12px rgba(63,220,211,.7); transition: transform .18s ease; }
+.gf-vessel-halo.is-selected { background: rgba(65,211,111,.17); box-shadow: 0 0 18px rgba(65,211,111,.95); animation: gf-vessel-pulse 1.8s ease-in-out infinite; }
+@keyframes gf-vessel-pulse { 50% { transform: scale(1.12); box-shadow: 0 0 24px rgba(65,211,111,.8); } }
+.gf-port-marker > span { width: 16px; height: 16px; display: grid; place-items: center; border-radius: 50%; background: rgba(14,54,61,.9); border: 2px solid #3ad8c8; box-shadow: 0 0 9px rgba(58,216,200,.65); }
+.gf-port-marker > span.is-selected { width: 20px; height: 20px; border-color: #f1c84f; box-shadow: 0 0 13px rgba(241,200,79,.8); }
+.gf-port-marker i { width: 4px; height: 4px; border-radius: 50%; background: #dbffff; }
+.gf-map-tooltip { color: #dce8e6; background: #0b2026; border: 1px solid #31515a; box-shadow: 0 5px 16px rgba(0,0,0,.35); font: 9px/1.45 'Instrument Sans', sans-serif; }
+.gf-map-tooltip::before { border-top-color: #31515a !important; }
+.gf-leaflet-popup .leaflet-popup-content-wrapper, .gf-leaflet-popup .leaflet-popup-tip { color: #dce8e6; background: #0b2026; border: 1px solid #31515a; box-shadow: 0 8px 25px rgba(0,0,0,.42); }
+.gf-leaflet-popup .leaflet-popup-content { margin: 11px 13px; min-width: 180px; }
+.gf-map-popup strong { display: block; color: #f0f6f4; font-size: 12px; }
+.gf-map-popup small { display: block; color: #789095; margin: 2px 0 8px; }
+.gf-map-popup dl { display: grid; grid-template-columns: 70px 1fr; gap: 4px 8px; margin: 0; font-size: 9px; }
+.gf-map-popup dt { color: #789095; }
+.gf-map-popup dd { margin: 0; color: #c2d5d3; font-family: 'JetBrains Mono', monospace; }
+.gf-map-popup dd.status { color: #45d989; text-transform: capitalize; }
+.gf-map-empty { height: 100%; display: grid; place-items: center; padding: 16px; color: var(--gf-muted); background: #08242c; font-size: 11px; }
+
+@media (max-width: 900px) {
+  .fleet-map-layout { grid-template-columns: 1fr !important; height: auto !important; }
+  .fleet-map-layout > :first-child { min-height: 300px; }
+  .fleet-map-layout > aside { border-left: 0 !important; border-top: 1px solid var(--gf-line); max-height: 190px; }
+}
