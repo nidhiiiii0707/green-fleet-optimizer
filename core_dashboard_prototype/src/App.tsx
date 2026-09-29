@@ -9,9 +9,10 @@ import FleetPlan from "./screens/FleetPlan";
 import ScenarioAnalysis from "./screens/ScenarioAnalysis";
 import Alerts from "./screens/Alerts";
 import Reports from "./screens/Reports";
+import FuelPredictionLab from "./screens/FuelPredictionLab";
 import type { OptimizationResult } from "./api/types";
 
-type Screen = "overview" | "fleet" | "optimization" | "fleetplan" | "scenarios" | "alerts" | "reports";
+type Screen = "overview" | "fleet" | "fuelprediction" | "optimization" | "fleetplan" | "scenarios" | "alerts" | "reports";
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>("overview");
@@ -63,6 +64,8 @@ export default function App() {
         return <Overview solutionId={activeSolutionId} result={optimizationResult} loading={optimizationLoading} error={optimizationError} onGoToOptimization={() => setScreen("optimization")} />;
       case "fleet":
         return <FleetRoutes solutionId={activeSolutionId} result={optimizationResult} loading={optimizationLoading} error={optimizationError} />;
+      case "fuelprediction":
+        return <FuelPredictionLab />;
       case "optimization":
         return (
           <Optimization

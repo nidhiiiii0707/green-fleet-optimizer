@@ -2,12 +2,16 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import {
   optimizationApi, fleetApi, alertsApi, reportsApi, scenarioApi,
+  fuelPredictionApi,
   connectOptimizationWS,
 } from "./client";
 import type {
   OptimizationResult, JobStatus, Alert, Report,
   Vessel, Port, Route, ScenarioControls, ScenarioResult, NLPParseResult, StructuredRequest,
+  FuelPredictionRequest, FuelPredictionResult,
+  AlgorithmComparisonResult,
 } from "./types";
+import { ComparisonRequestGate, runLatestComparisonRequest } from "../lib/comparisonRequest";
 
 // ── Generic fetch hook ────────────────────────────────────────────────────────
 function useFetch<T>(fetcher: () => Promise<T>, deps: unknown[] = []) {
@@ -77,6 +81,39 @@ export function useOptimizationRun() {
   }, []);
 
   return { jobId, jobStatus, result, running, triggerRun };
+}
+
+export function useAlgorithmComparison(runId: string | undefined) {
+  const [result, setResult] = useState<AlgorithmComparisonResult | null>(null);
+  const [running, setRunning] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const gateRef = useRef<ComparisonRequestGate | null>(null);
+  if (gateRef.current === null) gateRef.current = new ComparisonRequestGate();
+
+  useEffect(() => {
+    gateRef.current?.invalidate();
+    setResult(null);
+    setError(null);
+    setRunning(false);
+  }, [runId]);
+
+  const compare = useCallback(async () => {
+    if (!runId) {
+      setError("No optimization run is available to compare.");
+      return null;
+    }
+    setRunning(true);
+    setError(null);
+    return runLatestComparisonRequest({
+      gate: gateRef.current!,
+      request: () => optimizationApi.compareAlgorithms(runId),
+      onResult: setResult,
+      onError: (e: unknown) => setError(e instanceof Error ? e.message : String(e)),
+      onSettled: () => setRunning(false),
+    });
+  }, [runId]);
+
+  return { result, running, error, compare };
 }
 
 // ── Fleet hooks ───────────────────────────────────────────────────────────────
@@ -178,6 +215,30 @@ export function useScenario() {
   }, []);
 
   return { result, loading, error, run };
+}
+
+// ── Fuel prediction hook ─────────────────────────────────────────────────────
+export function useFuelPrediction() {
+  const [result, setResult] = useState<FuelPredictionResult | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const predict = useCallback(async (request: FuelPredictionRequest) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fuelPredictionApi.predict(request);
+      setResult(response);
+      return response;
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : String(e));
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return { result, loading, error, predict };
 }
 
 // ── NLP hook ─────────────────────────────────────────────────────────────────

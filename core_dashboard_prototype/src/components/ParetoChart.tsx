@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import type { ParetoSolution } from "../api/types";
 
+export interface ComparisonChartSeries {
+  name: "MO-QIGA" | "NSGA-II" | "MILP Reference";
+  color: string;
+  solutions: Array<{ id: string; fuel: number; cost: number; ghg: number }>;
+}
+
 export type AxisKey = "cost" | "ghg" | "fuel";
 
 interface Props {
@@ -11,6 +17,7 @@ interface Props {
   liveFront: ParetoSolution[];
   axisIdx: number;
   onAxisChange: (i: number) => void;
+  comparisonSeries?: ComparisonChartSeries[];
 }
 
 export const AXIS_LABELS: Record<AxisKey, string> = {
@@ -45,7 +52,7 @@ function fmtVal(v: number, key: AxisKey) {
 }
 
 export default function ParetoChart({
-  solutions, selectedId, onSelect, filteredIds, liveFront, axisIdx, onAxisChange,
+  solutions, selectedId, onSelect, filteredIds, liveFront, axisIdx, onAxisChange, comparisonSeries = [],
 }: Props) {
   const [hovered, setHovered] = useState<string | null>(null);
 
@@ -60,8 +67,9 @@ export default function ParetoChart({
     );
   }
 
-  const allX = solutions.map(s => s[xKey] as number);
-  const allY = solutions.map(s => s[yKey] as number);
+  const comparisonSolutions = comparisonSeries.flatMap(series => series.solutions);
+  const allX = [...solutions.map(s => s[xKey] as number), ...comparisonSolutions.map(s => s[xKey])];
+  const allY = [...solutions.map(s => s[yKey] as number), ...comparisonSolutions.map(s => s[yKey])];
   const xMin = Math.min(...allX) * 0.96;
   const xMax = Math.max(...allX) * 1.04;
   const yMin = Math.min(...allY) * 0.95;
@@ -294,6 +302,20 @@ export default function ParetoChart({
             );
           })}
 
+          {/* Algorithm-comparison overlay; primary chart interactions remain unchanged. */}
+          {comparisonSeries.flatMap(series => series.solutions.map(solution => {
+            const { sx, sy } = svgPt(solution[xKey], solution[yKey]);
+            return (
+              <g key={`${series.name}-${solution.id}`}>
+                {series.name === "MILP Reference" ? (
+                  <path d={`M ${sx - 5} ${sy - 5} L ${sx + 5} ${sy + 5} M ${sx + 5} ${sy - 5} L ${sx - 5} ${sy + 5}`} stroke={series.color} strokeWidth="2" />
+                ) : (
+                  <circle cx={sx} cy={sy} r="4" fill={series.color} stroke="var(--gf-card)" strokeWidth="1" opacity="0.9" />
+                )}
+              </g>
+            );
+          }))}
+
           {/* Legend */}
           <text x={PAD.left + 8} y={PAD.top + 14} fontSize="10" fill="#0D9488"
             fontFamily="'Instrument Sans', sans-serif" fontWeight="700" opacity="0.9">
@@ -305,6 +327,11 @@ export default function ParetoChart({
               — Live front (filtered)
             </text>
           )}
+          {comparisonSeries.map((series, index) => (
+            <text key={series.name} x={PAD.left + 130 + index * 105} y={PAD.top + 14} fontSize="9" fill={series.color} fontFamily="'Instrument Sans', sans-serif" fontWeight="700">
+              {series.name}
+            </text>
+          ))}
         </svg>
       </div>
     </div>

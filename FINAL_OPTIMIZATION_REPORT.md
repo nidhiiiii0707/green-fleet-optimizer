@@ -3,15 +3,12 @@
 ## What this pipeline does
 Real/derived fleet, route, port, and fuel-cost data -> candidate generation ->
 hard feasibility screening -> real (un-retrained) XGBoost fuel-consumption
-model -> SCENARIO_INPUT cost/GHG conversion -> four ACTIVE optimizers
-(NSGA-II, QBHO, CQM, MILP) searching the identical decision space -> merged
-Pareto archive -> `final_pareto_fleet_plans.csv`.
+model -> SCENARIO_INPUT cost/GHG conversion -> MO-QIGA multi-objective search
+-> MO-QIGA non-dominated archive -> `final_pareto_fleet_plans.csv`.
 
-QUBO-SA and MO-QIGA (the previous active set alongside NSGA-II/MILP) were
-replaced by QBHO and CQM respectively; their code is retained in the
-repository for reference/backup (`qubo_model.py`/`qubo_builder.py`,
-`mo_qiga.py`, still runnable standalone) but is no longer part of the
-active pipeline or its merged Pareto archive.
+NSGA-II, QBHO, CQM, and exact MILP run on the identical decision space as
+benchmark/reference approaches. Their fronts are measured independently and
+do not contribute plans to the final decision archive.
 
 Run the whole thing with: `./.venv2/Scripts/python.exe run_optimization_pipeline.py`
 (see README.md / NEXT_STEPS.md for full environment setup).
@@ -36,9 +33,9 @@ Run the whole thing with: `./.venv2/Scripts/python.exe run_optimization_pipeline
 - `predicted_fuel_rate` in `final_pareto_fleet_plans.csv` = live call to `fuel_xgb_pipeline.joblib` (test R2 = 0.970 on its own held-out split, per the artifact's stored `test_metrics`). Cargo/load/draft are confirmed NOT model inputs (checked against `models/fuel_pipeline_utils.py` and the artifact's `raw_input_columns`/`engineered_features`).
 
 ## OPTIMIZATION OUTPUTS
-- `final_pareto_fleet_plans.csv` — merged non-dominated set across NSGA-II, QBHO, CQM, and exact MILP, all run on the identical 252-candidate / 6-leg prototype scenario, same seed.
+- `final_pareto_fleet_plans.csv` — MO-QIGA's non-dominated set for the 252-candidate / 6-leg prototype scenario.
 - `algorithm_comparison.csv/.md` + `comparison_plots/*.png` — hypervolume (Monte-Carlo, normalized), IGD (vs. union-of-fronts proxy, no true front is known), runtime, feasibility ratio, diversity.
-- `robustness_results.csv` / `robustness_report.md` — sensitivity of the NSGA-II front to SCENARIO_INPUT perturbations only.
+- `robustness_results.csv` / `robustness_report.md` — sensitivity of the MO-QIGA front to SCENARIO_INPUT perturbations only.
 
 ## LIMITATIONS (read before using any number here for a real decision)
 1. **Fuel/Cost/GHG absolute magnitudes are NOT verified real-world accurate.** The XGB
@@ -58,10 +55,10 @@ Run the whole thing with: `./.venv2/Scripts/python.exe run_optimization_pipeline
    update. CQM here is a real `dimod` Constrained Quadratic Model solved by an exact
    (small instances) or classical-annealing (realistic scale) solver.** Neither runs on, nor
    claims to run on, quantum hardware anywhere in this repository, and no D-Wave Leap/cloud
-   account or token is used. (The previously active QUBO-SA/MO-QIGA carried the identical
-   disclaimer and remain in the repository, unused, for reference.)
+   account or token is used. MO-QIGA is also a classical quantum-inspired
+   simulation and does not use quantum hardware.
 6. **Prototype scale only** — 252 candidates / 6 legs / 4 vessel classes, chosen to keep
-   NSGA-II/QBHO/CQM/MILP runtimes manageable for validation; not a production fleet size.
+   MO-QIGA and benchmark runtimes manageable for validation; not a production fleet size.
 7. Pre-existing `tests/test_candidate.py`, `test_candidate_evaluation.py`, `test_feasibility.py`,
    `test_fuel_predictor.py`, `test_loaders.py`, `test_objectives.py`, `test_parameter_builder.py`,
    `test_smoke.py` reference a `src.*` package that does not exist in this repo (orphaned from
@@ -85,21 +82,21 @@ natural language request
                                       already generates and evaluates -- it filters,
                                       it never invents a new candidate or numeric value)
         -> run_optimization_pipeline.run_all_algorithms()
-                                     (the unmodified NSGA-II / QBHO / CQM / MILP
-                                      pipeline described above, run on the filtered legs)
-        -> merged Pareto archive, returned alongside the parsed request and any warnings
+                                     (MO-QIGA decision optimizer plus benchmark/reference
+                                      algorithms, run on the filtered legs)
+        -> MO-QIGA Pareto archive, returned alongside the parsed request and any warnings
 ```
 
 `run_optimization_pipeline.py` was refactored (not rewritten) into two reusable
 functions -- `generate_evaluated_legs()` (Steps 1-2: candidate generation, real
-XGB fuel prediction, feasibility) and `run_all_algorithms()` (Steps 3-7: the four
-optimizers + Pareto merge) -- so `run_optimization_pipeline.main()` and the NLP
+XGB fuel prediction, feasibility) and `run_all_algorithms()` (Steps 3-7: the
+MO-QIGA decision optimizer plus benchmarks) -- so `run_optimization_pipeline.main()` and the NLP
 adapter call the exact same code path. `python run_optimization_pipeline.py`
-still produces identical `final_pareto_fleet_plans.csv` / summary output.
+produces the current MO-QIGA `final_pareto_fleet_plans.csv` / summary output.
 
 `nlp/optimization_adapter.optimize_from_query(text)` is the single entry point:
-it parses the text, builds the request, filters the pipeline's legs, runs the
-four optimizers, and returns the Pareto solutions plus the parsed request and
+it parses the text, builds the request, filters the pipeline's legs, runs
+MO-QIGA plus the benchmarks, and returns the MO-QIGA Pareto solutions plus the parsed request and
 any warnings (e.g. an unmatched port or an unsupported fuel name).
 
 Constraint handling rules (see `nlp/optimization_adapter.py` docstrings for the

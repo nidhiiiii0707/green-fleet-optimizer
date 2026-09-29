@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "strategy": "pure_objective_solve",
+  "candidate_fingerprint": "6fb4ed2cb3e4aee000a332e2219892579833c6e3dbf8720a3a41e6e10cc5a642",
+  "evaluated_input_fingerprint": "203d967510342774cfc8ed204d97e2237b1a5764e3d8c58573482299847643fb",
+  "references": {
+    "minimum_fuel": {
+      "weights": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "selection": [
+        9,
+        8,
+        11,
+        10,
+        10,
+        16
+      ],
+      "fuel": 181.88810172062014,
+      "cost": 126537.17348772119,
+      "ghg": 574525.8221373677,
+      "all_feasible": true
+    },
+    "minimum_cost": {
+      "weights": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "selection": [
+        11,
+        10,
+        11,
+        10,
+        10,
+        10
+      ],
+      "fuel": 190.84885396176026,
+      "cost": 104966.86967896814,
+      "ghg": 594303.3312369215,
+      "all_feasible": true
+    },
+    "minimum_ghg": {
+      "weights": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "selection": [
+        9,
+        8,
+        11,
+        10,
+        10,
+        16
+      ],
+      "fuel": 181.88810172062014,
+      "cost": 126537.17348772119,
+      "ghg": 574525.8221373677,
+      "all_feasible": true
+    }
+  }
+}

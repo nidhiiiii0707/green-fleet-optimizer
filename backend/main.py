@@ -9,7 +9,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import backend.job_manager as JM
 from backend.pipeline_bridge import get_default_result
-from backend.routers import fleet, optimization, nlp, scenario, alerts, reports
+from backend.comparison_service import register_precomputed_comparison_context
+from backend.routers import fleet, optimization, nlp, scenario, alerts, reports, fuel_prediction
 
 logging.basicConfig(
     level=logging.INFO,
@@ -22,7 +23,13 @@ log = logging.getLogger("main")
 async def lifespan(app: FastAPI):
     # Startup: seed the latest result with pre-computed data
     log.info("Loading pre-computed optimization results...")
-    JM.set_latest_result(get_default_result())
+    result = get_default_result()
+    JM.set_latest_result(result)
+    try:
+        register_precomputed_comparison_context(result)
+    except Exception as exc:
+        log.exception("Precomputed comparison context is unavailable")
+        JM.set_comparison_error(result["run_id"], str(exc))
     log.info("Green Fleet Optimizer API ready.")
     yield
     log.info("Shutting down.")
@@ -32,7 +39,7 @@ app = FastAPI(
     title="Green Fleet Optimizer API",
     description=(
         "REST + WebSocket API for the Green Fleet Optimizer dashboard. "
-        "Wraps the NSGA-II / QBHO / CQM / MILP / MO-QIGA multi-objective optimization pipeline."
+        "Wraps the MO-QIGA multi-objective decision pipeline with independent benchmark algorithms."
     ),
     version="1.0.0",
     lifespan=lifespan,
@@ -54,6 +61,7 @@ app.include_router(nlp.router)
 app.include_router(scenario.router)
 app.include_router(alerts.router)
 app.include_router(reports.router)
+app.include_router(fuel_prediction.router)
 
 
 # ── Root / health ─────────────────────────────────────────────────────────────

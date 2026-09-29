@@ -1,12 +1,8 @@
-"""STAGE 12 -- Common evaluator comparing NSGA-II, QBHO, CQM, MILP on
-identical candidates/objectives/seed. Requires run_nsga2.py, run_qbho.py,
-run_cqm.py, run_milp.py to have been run first (produces their *_pareto.csv
-/ *_results.csv). Run: python algorithm_comparison.py
+"""STAGE 12 -- Compare MO-QIGA with reference/benchmark optimizers.
 
-QUBO-SA and MO-QIGA (the previous active set alongside NSGA-II/MILP) are
-RETAINED in the repository (qubo_model.py/qubo_builder.py, mo_qiga.py) for
-reference/backup but are no longer part of the active comparison; they were
-replaced by QBHO (qbho.py) and CQM (cqm_model.py/cqm_solver.py).
+Every algorithm receives identical candidates, objectives, and seed. MO-QIGA
+owns the final decision archive; NSGA-II, QBHO, CQM, and MILP are retained here
+for performance comparison. Run: python algorithm_comparison.py
 """
 from __future__ import annotations
 
@@ -25,6 +21,7 @@ from qbho import QBHOOptimizer
 from cqm_model import CQMModel
 from cqm_solver import CQMSolver
 from milp_model import MILPModel
+from mo_qiga import MOQIGAOptimizer
 from algo_common import pareto_front
 from metrics_utils import hypervolume_monte_carlo, igd, spacing_diversity, normalize
 
@@ -59,6 +56,10 @@ def run_all(legs):
     milp_model = MILPModel(legs)
     front = milp_model.trace_pareto_front(n_weight_samples=15)
     results["MILP"] = {"front": front, "runtime": time.time() - t0}
+
+    t0 = time.time()
+    front, _ = MOQIGAOptimizer(legs, population_size=30, generations=60, seed=0).run()
+    results["MO-QIGA"] = {"front": front, "runtime": time.time() - t0}
 
     return results
 
@@ -100,12 +101,13 @@ def main():
     with open("algorithm_comparison.md", "w") as fh:
         fh.write("# Algorithm Comparison (Stage 12)\n\n")
         fh.write("Same 252-candidate / 6-leg prototype scenario, same seed (0), same real XGB "
-                 "fuel model, same SCENARIO_INPUT cost/GHG parameters for all four algorithms.\n\n")
-        fh.write("**IGD** is computed against the union of all four fronts (the best available "
+                 "fuel model, same SCENARIO_INPUT cost/GHG parameters for all five algorithms.\n\n")
+        fh.write("**IGD** is computed against the union of all five fronts (the best available "
                  "approximation), NOT a verified true Pareto front -- none is known for this problem.\n\n")
         fh.write("**Hypervolume** is Monte-Carlo estimated (200,000 samples, seed 0) in "
                  "normalized objective space against a shared reference point.\n\n")
-        fh.write("**QBHO and CQM are classical computations** (a Harris-Hawks-based "
+        fh.write("**MO-QIGA, QBHO, and CQM are classical computations** (a quantum-inspired "
+                 "genetic algorithm, a Harris-Hawks-based "
                  "metaheuristic with quantum-behaved position updates, and a Constrained "
                  "Quadratic Model solved by exact/classical-annealing search, respectively) "
                  "-- no quantum hardware is used anywhere in this comparison.\n\n")
@@ -120,7 +122,7 @@ def main():
     os.makedirs(PLOTS_DIR, exist_ok=True)
 
     fig, ax = plt.subplots(figsize=(7, 6))
-    markers = {"NSGA-II": "o", "QBHO": "^", "CQM": "s", "MILP": "*"}
+    markers = {"NSGA-II": "o", "QBHO": "^", "CQM": "s", "MILP": "*", "MO-QIGA": "D"}
     for name, r in results.items():
         pts = np.array([s.objectives for s in r["front"]]) if r["front"] else np.zeros((0, 3))
         if len(pts):

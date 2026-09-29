@@ -12,6 +12,8 @@ import logging
 from pathlib import Path
 
 from backend.data_adapter import build_runtime_result, load_precomputed_result
+from backend.comparison_service import RunComparisonContext, register_comparison_context
+import backend.job_manager as JM
 
 # Add the repo root to sys.path so we can import the optimizer modules
 REPO_ROOT = Path(__file__).parent.parent
@@ -42,8 +44,8 @@ def run_optimization_async(job, seed: int = 42, progress_cb=None, request: dict 
     fuel_type, speed, cargo, objectives}. When present, it is used to filter
     the optimizer's real candidate legs via the existing
     nlp.optimization_adapter.filter_legs() (no second optimization pipeline:
-    the same NSGA-II/QBHO/CQM/MILP/MO-QIGA run and the same result builder
-    are used either way). Unspecified fields stay unrestricted.
+    the same MO-QIGA decision run, benchmark runs, and result builder are used
+    either way). Unspecified fields stay unrestricted.
     """
     import importlib
     try:
@@ -70,13 +72,31 @@ def run_optimization_async(job, seed: int = 42, progress_cb=None, request: dict 
                 )
 
         if progress_cb:
-            progress_cb(30, "Running NSGA-II/QBHO/CQM/MILP/MO-QIGA optimizers...")
-        final_front, final_sources, per_algo = run_all_algorithms(legs)
+            progress_cb(30, "Running MO-QIGA decision optimizer and benchmark algorithms...")
+        comparison_artifacts: dict = {}
+        final_front, final_sources, per_algo = run_all_algorithms(
+            legs, comparison_recorder=comparison_artifacts.update
+        )
 
         if progress_cb:
             progress_cb(90, "Building Pareto archive...")
 
         result = build_runtime_result(final_front, final_sources, legs)
+        result["run_id"] = job.id
+        try:
+            register_comparison_context(RunComparisonContext.from_run(
+                run_id=result["run_id"],
+                structured_request=request,
+                evaluated_legs=legs,
+                fronts=comparison_artifacts["fronts"],
+                runtimes_ms=comparison_artifacts["runtimes_ms"],
+                milp_references=comparison_artifacts["milp_references"],
+                errors=comparison_artifacts["errors"],
+                algorithm_candidate_ids=comparison_artifacts["algorithm_candidate_ids"],
+            ))
+        except Exception as exc:
+            log.exception("Comparison context could not be attached to run %s", result["run_id"])
+            JM.set_comparison_error(result["run_id"], str(exc))
         if request is not None:
             result["structured_request"] = request
             result["request_warnings"] = request_warnings
@@ -160,5 +180,5 @@ def compute_scenario_result(controls: dict) -> dict:
         "baselineGhg": baseline_selected["ghg"],
         "scenarioSolutionId": scenario_selected["id"],
         "constraintChanges": constraint_changes,
-        "note": "Scenario outputs are from an actual re-run of the real optimizer (NSGA-II / QBHO / CQM / MILP / MO-QIGA) with these inputs mapped to real candidate-generation and feasibility parameters.",
+        "note": "Scenario outputs are from an actual re-run of the MO-QIGA decision optimizer and its benchmark algorithms with these inputs mapped to real candidate-generation and feasibility parameters.",
     }

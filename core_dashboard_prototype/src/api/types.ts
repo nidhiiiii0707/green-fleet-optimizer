@@ -21,6 +21,8 @@ export interface Vessel {
   capacityUnit: string;
   fuelCompatibility: string[];
   speed: number;
+  speedMin?: number | null;
+  speedMax?: number | null;
   availability: "available" | "in-transit" | "maintenance" | null;
   maintenanceStatus: string | null;
   shorepower: boolean | null;
@@ -31,6 +33,8 @@ export interface Vessel {
 export interface Route {
   id: string;
   name: string;
+  origin?: string;
+  destination?: string;
   originId: string;
   destinationId: string;
   distanceNm: number;
@@ -146,6 +150,78 @@ export interface OptimizationResult {
   };
 }
 
+export interface AlgorithmComparisonSolution {
+  id: string;
+  algorithm: "MO-QIGA" | "NSGA-II" | "MILP Reference";
+  fuel: number;
+  cost: number;
+  cost_usd: number;
+  ghg: number;
+  feasible: boolean;
+}
+
+export interface AlgorithmObjectiveMinima {
+  fuel: number;
+  cost: number;
+  ghg: number;
+}
+
+export interface AlgorithmObjectiveGaps {
+  fuel: number | null;
+  cost: number | null;
+  ghg: number | null;
+}
+
+export interface AlgorithmComparisonSummary {
+  status: "complete" | "failed";
+  error: string | null;
+  runtime_ms: number | null;
+  feasible: boolean;
+  pareto_count: number;
+  objective_minima: AlgorithmObjectiveMinima | null;
+  hypervolume: number | null;
+  spread: number | null;
+  solutions: AlgorithmComparisonSolution[];
+}
+
+export interface AlgorithmComparisonResult {
+  run_id: string;
+  structured_request: StructuredRequest | null;
+  input_audit: {
+    candidate_count: number;
+    feasible_candidate_count: number;
+    candidate_ids: string[];
+    feasible_candidate_ids: string[];
+    candidate_fingerprint: string;
+    evaluated_input_fingerprint: string;
+    verification_status: "verified" | "unavailable_archived_run";
+    algorithm_candidate_fingerprints: Record<string, string>;
+  };
+  metric_context: {
+    normalization_min: number[] | null;
+    normalization_max: number[] | null;
+    hypervolume_reference_point: number[] | null;
+    hypervolume_samples: number;
+  };
+  mo_qiga: AlgorithmComparisonSummary;
+  nsga2: AlgorithmComparisonSummary;
+  milp: {
+    status: "complete" | "failed";
+    error: string | null;
+    runtime_ms: number | null;
+    feasible: boolean;
+    pareto_count: null;
+    reference_strategy: "pure_objective_solve";
+    references: Partial<Record<"minimum_fuel" | "minimum_cost" | "minimum_ghg", AlgorithmComparisonSolution>>;
+  };
+  comparison: {
+    gaps_percent: {
+      mo_qiga: AlgorithmObjectiveGaps | null;
+      nsga2: AlgorithmObjectiveGaps | null;
+    };
+  };
+}
+
 export interface JobStatus {
   job_id: string;
   status: "pending" | "running" | "completed" | "failed";
@@ -220,4 +296,56 @@ export interface Report {
   run: string;
   type: "optimization" | "sustainability" | "tradeoff" | "compliance";
   ready: boolean;
+}
+
+export type SeaState = "Calm" | "Slight" | "Moderate" | "Rough" | "Very rough";
+
+export interface FuelPredictionRequest {
+  vessel_type: string;
+  origin: string;
+  destination: string;
+  speed_knots: number;
+  draft_m: number | null;
+  cargo_load_pct: number;
+  wind_speed_knots: number;
+  wave_height_m: number;
+  current_speed_knots: number;
+  sea_state: SeaState;
+  fuel_type: "DM" | "RM380";
+  hull_condition_pct: number;
+}
+
+export interface FuelPredictionResult {
+  mode: "xgboost_with_planning_adjustments";
+  route: { origin: string; destination: string; distance_nm: number };
+  prediction: {
+    consumption_tonnes_per_day: number;
+    lower_tonnes_per_day: number;
+    upper_tonnes_per_day: number;
+    uncertainty_tonnes_per_day: number;
+    confidence_pct: number;
+  };
+  voyage: {
+    duration_days: number;
+    fuel_tonnes: number;
+    co2e_tonnes: number;
+    cost_usd: number;
+  };
+  breakdown: Array<{
+    key: "speed" | "weather" | "draft" | "cargo" | "current" | "hull";
+    label: string;
+    percent: number;
+    source: "xgboost" | "planning_adjustment";
+  }>;
+  history: Array<{ sample: number; actual: number; predicted: number }>;
+  model: {
+    name: string;
+    test_r2: number;
+    test_mae: number;
+    excluded_from_training: string[];
+    speed_extrapolation_applied: boolean;
+    model_speed_range_knots: [number, number];
+    unit_assumption: string;
+    history_note: string;
+  };
 }

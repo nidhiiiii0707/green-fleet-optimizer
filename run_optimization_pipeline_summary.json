@@ -26,6 +26,13 @@
     "MILP": 4,
     "MO-QIGA": 4
   },
+  "final_archive_algorithm": "MO-QIGA",
+  "benchmark_algorithms": [
+    "NSGA-II",
+    "QBHO",
+    "CQM",
+    "MILP"
+  ],
   "final_pareto_archive_size": 4,
-  "total_runtime_seconds": 16.861987590789795
+  "total_runtime_seconds": 4.396546125411987
 }

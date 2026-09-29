@@ -1,7 +1,9 @@
 import React, { useState, useMemo, useEffect } from "react";
 import ParetoChart, { AXIS_PAIRS, AxisKey } from "../components/ParetoChart";
+import type { ComparisonChartSeries } from "../components/ParetoChart";
+import AlgorithmComparisonPanel from "../components/AlgorithmComparisonPanel";
 import type { OptimizationResult, ParetoSolution, StructuredRequest, Objective } from "../api/types";
-import { useOptimizationRun, useNLPQuery } from "../api/hooks";
+import { useAlgorithmComparison, useOptimizationRun, useNLPQuery } from "../api/hooks";
 import { cargoDemandDisplay, cargoFulfillmentPct } from "../lib/cargo";
 
 interface Props {
@@ -106,7 +108,7 @@ function EngrRangeSlider({ label, min, max, step, value, onChange, format }: {
 }
 
 // ── Solution analytical summary ───────────────────────────────────────────────
-function SolutionPanel({ sol, onViewPlan, inFilter, requestedCargo }: { sol: ParetoSolution; onViewPlan: () => void; inFilter: boolean; requestedCargo: number | null }) {
+export function SolutionPanel({ sol, onViewPlan, onCompare, compareRunning, inFilter, requestedCargo }: { sol: ParetoSolution; onViewPlan: () => void; onCompare: () => void; compareRunning: boolean; inFilter: boolean; requestedCargo: number | null }) {
   const cargoDemand = cargoDemandDisplay(requestedCargo);
   const fulfillmentPct = cargoFulfillmentPct(sol.assignments ?? [], requestedCargo);
   return (
@@ -177,7 +179,7 @@ function SolutionPanel({ sol, onViewPlan, inFilter, requestedCargo }: { sol: Par
             Source Algorithm
           </span>
           <span style={{ fontSize: 12, fontWeight: 750, color: "#2DD4BF", fontFamily: "'JetBrains Mono', monospace" }}>
-            {sol.algorithm ?? "NSGA-II"}
+            {sol.algorithm ?? "MO-QIGA"}
           </span>
         </div>
         <div style={{ fontSize: 11, color: "var(--gf-faint)", marginTop: 4, fontFamily: "'Instrument Sans', sans-serif" }}>
@@ -208,7 +210,7 @@ function SolutionPanel({ sol, onViewPlan, inFilter, requestedCargo }: { sol: Par
         >
           View Fleet Plan →
         </button>
-        <button style={{
+        <button onClick={onCompare} disabled={compareRunning} style={{
           background: "var(--gf-card)",
           color: "var(--gf-ink)",
           border: "1px solid var(--gf-line-medium)",
@@ -216,10 +218,11 @@ function SolutionPanel({ sol, onViewPlan, inFilter, requestedCargo }: { sol: Par
           padding: "10px 14px",
           fontSize: 12,
           fontWeight: 600,
-          cursor: "pointer",
+          cursor: compareRunning ? "wait" : "pointer",
+          opacity: compareRunning ? 0.65 : 1,
           fontFamily: "'Instrument Sans', sans-serif",
         }}>
-          Compare
+          {compareRunning ? "Running algorithm comparison..." : "Compare"}
         </button>
       </div>
     </div>
@@ -415,6 +418,7 @@ export default function Optimization({ selectedId, result: liveResult, loading: 
   // Live data hooks
   const { result: completedRequestResult, running: optRunning, jobStatus, triggerRun } = useOptimizationRun();
   const { result: nlpResult, loading: nlpLoading, error: nlpError, query: runNLQ, reset: resetNLQ } = useNLPQuery();
+  const { result: algorithmComparison, running: compareRunning, error: compareError, compare: runComparison } = useAlgorithmComparison(liveResult?.run_id);
 
   const requestErr = requestValidationError(pendingRequest);
   const hasAnyConstraint = Object.entries(pendingRequest).some(([key, v]) =>
@@ -524,6 +528,16 @@ export default function Optimization({ selectedId, result: liveResult, loading: 
     { key: "routes",           label: "Routes",           fmt: v => v == null ? "Unavailable" : `${v}` },
   ];
   const compareSols = effectiveCompareIds.map(id => allSolutions.find(s => s.id === id)).filter(Boolean) as ParetoSolution[];
+
+  const comparisonSeries = useMemo<ComparisonChartSeries[]>(() => {
+    if (!algorithmComparison) return [];
+    const milpSolutions = Object.values(algorithmComparison.milp.references);
+    return [
+      { name: "MO-QIGA", color: "#8B5CF6", solutions: algorithmComparison.mo_qiga.solutions },
+      { name: "NSGA-II", color: "#F59E0B", solutions: algorithmComparison.nsga2.solutions },
+      { name: "MILP Reference", color: "#E11D48", solutions: milpSolutions },
+    ];
+  }, [algorithmComparison]);
   function bestFor(key: MetricKey) {
     const arr = compareSols.map(s => ({ id: s.id, v: s[key] as number | null })).filter(a => a.v != null) as { id: string; v: number }[];
     if (!arr.length) return undefined;
@@ -840,19 +854,27 @@ export default function Optimization({ selectedId, result: liveResult, loading: 
                   liveFront={liveFront}
                   axisIdx={axisIdx}
                   onAxisChange={setAxisIdx}
+                  comparisonSeries={comparisonSeries}
                 />
               </div>
             </div>
 
             {/* Selected solution analytical panel */}
             {selected ? (
-              <SolutionPanel sol={selected} onViewPlan={onViewPlan} inFilter={isSelectedInFilter} requestedCargo={liveResult?.structured_request?.cargo ?? null} />
+              <SolutionPanel sol={selected} onViewPlan={onViewPlan} onCompare={runComparison} compareRunning={compareRunning} inFilter={isSelectedInFilter} requestedCargo={liveResult?.structured_request?.cargo ?? null} />
             ) : (
               <div style={{ background: "var(--gf-card)", border: "1px solid var(--gf-line)", borderRadius: 12, padding: "18px 20px", fontSize: 12, color: "var(--gf-muted)" }}>
                 No optimization result loaded yet.
               </div>
             )}
           </div>
+
+          {compareRunning && (
+            <div style={{ background: T.tealLight, border: `1px solid ${T.teal}55`, borderRadius: 12, padding: "12px 16px", color: T.text, fontSize: 12, marginBottom: 16 }}>
+              Running algorithm comparison...
+            </div>
+          )}
+          {!compareRunning && <AlgorithmComparisonPanel comparison={algorithmComparison} error={compareError} />}
 
           {/* Compare solutions table */}
           <div style={{ background: "var(--gf-card)", border: "1px solid var(--gf-line)", borderRadius: 12, overflow: "hidden", boxShadow: "0 2px 10px rgba(0,0,0,0.08)" }}>

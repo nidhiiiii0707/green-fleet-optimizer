@@ -174,6 +174,33 @@ input[type=range]::-webkit-slider-runnable-track {
 ::-webkit-scrollbar-thumb { background: #C8C6C1; border-radius: 1px; }
 ::-webkit-scrollbar-thumb:hover { background: #9A9793; }
 
+.fuel-lab-grid {
+  display: grid;
+  grid-template-columns: minmax(285px, 320px) minmax(0, 1fr);
+  gap: 12px;
+}
+
+.fuel-result-grid {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.82fr) minmax(330px, 1.18fr);
+  gap: 12px;
+}
+
+.fuel-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 1080px) {
+  .fuel-lab-grid { grid-template-columns: 1fr; }
+  .fuel-lab-grid > aside { position: static; }
+}
+
+@media (max-width: 760px) {
+  .fuel-result-grid, .fuel-metrics-grid { grid-template-columns: 1fr; }
+}
+
 /* Interactive maritime map */
 .gf-maritime-map-shell { position: relative; width: 100%; height: 100%; min-height: 210px; background: #08242c; overflow: hidden; }
 .gf-maritime-map { position: absolute; inset: 0; background: #08242c; }

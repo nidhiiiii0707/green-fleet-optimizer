@@ -1,8 +1,11 @@
 """STAGE 14 -- End-to-end driver.
 
 real/derived data -> candidate generation -> hard feasibility -> XGB fuel
-prediction -> cost/GHG -> NSGA-II -> QBHO -> CQM -> MILP -> MO-QIGA -> Pareto
-archive -> comparison -> final outputs.
+prediction -> cost/GHG -> MO-QIGA -> Pareto archive -> final outputs.
+
+NSGA-II, QBHO, CQM, and MILP run on the same evaluated candidates as
+benchmark/reference approaches. Their fronts are retained for comparison,
+but they do not contribute plans to the final decision archive.
 
 ACTIVE algorithm set: NSGA-II, QBHO, CQM, MILP, MO-QIGA. QUBO-SA
 (qubo_model.py/qubo_builder.py) was retired and its files removed; see
@@ -109,61 +112,96 @@ def generate_evaluated_legs(seed: int = 0, overrides: dict | None = None):
     return evaluated, legs, reject_reasons
 
 
-def run_all_algorithms(legs):
-    """STEPS 3-7: NSGA-II, QBHO, CQM, MILP, MO-QIGA -> merged Pareto archive.
+def run_all_algorithms(legs, comparison_recorder=None):
+    """Run MO-QIGA and its benchmark/reference algorithms.
 
     `legs` is a list of list[EvaluatedCandidate] (one inner list per leg, as
     produced by generate_evaluated_legs()/group_by_leg()); callers may pass a
-    filtered subset of the full leg/candidate set. Returns (final_front,
-    final_sources, per_algorithm_fronts).
+    filtered subset of the full leg/candidate set. Returns the MO-QIGA
+    non-dominated archive, its provenance, and every per-algorithm front for
+    benchmarking.
 
     QUBO-SA was retired (its files were removed) and replaced by QBHO; see
-    qbho.py for why and how. MO-QIGA (mo_qiga.py) is active again as the
-    fifth algorithm alongside NSGA-II/QBHO/CQM/MILP.
+    qbho.py for why and how. MO-QIGA (mo_qiga.py) is the decision optimizer;
+    NSGA-II/QBHO/CQM/MILP remain comparison approaches.
     """
+    runtimes_ms = {}
+    errors = {}
+    candidate_ids = tuple(
+        evaluated.candidate.candidate_id for leg in legs for evaluated in leg
+    )
+
     log.info("STEP 3/8: NSGA-II")
-    t0 = time.time()
-    nsga2_front, _ = NSGA2Optimizer(legs, population_size=40, generations=60, seed=0).run()
-    log.info("  NSGA-II: %d Pareto solutions in %.2fs", len(nsga2_front), time.time() - t0)
+    t0 = time.perf_counter()
+    try:
+        nsga2_front, _ = NSGA2Optimizer(legs, population_size=40, generations=60, seed=0).run()
+    except Exception as exc:
+        log.exception("  NSGA-II benchmark failed; preserving the primary MO-QIGA run")
+        nsga2_front = []
+        errors["NSGA-II"] = str(exc)
+    runtimes_ms["NSGA-II"] = (time.perf_counter() - t0) * 1000
+    log.info("  NSGA-II: %d Pareto solutions in %.2fs", len(nsga2_front), runtimes_ms["NSGA-II"] / 1000)
 
     log.info("STEP 4/8: QBHO (Quantum-Behaved Hawks Optimization, CLASSICAL -- no quantum hardware)")
-    t0 = time.time()
-    qbho_front, _ = QBHOOptimizer(legs, population_size=30, generations=60, seed=0).run()
-    log.info("  QBHO: %d Pareto solutions in %.2fs", len(qbho_front), time.time() - t0)
+    t0 = time.perf_counter()
+    try:
+        qbho_front, _ = QBHOOptimizer(legs, population_size=30, generations=60, seed=0).run()
+    except Exception as exc:
+        log.exception("  QBHO benchmark failed; preserving the primary MO-QIGA run")
+        qbho_front = []
+        errors["QBHO"] = str(exc)
+    runtimes_ms["QBHO"] = (time.perf_counter() - t0) * 1000
+    log.info("  QBHO: %d Pareto solutions in %.2fs", len(qbho_front), runtimes_ms["QBHO"] / 1000)
 
     log.info("STEP 5/8: CQM (Constrained Quadratic Model, CLASSICAL solve -- no quantum hardware)")
-    t0 = time.time()
-    cqm_solutions = {}
-    steps = np.linspace(0.1, 0.8, 4)
-    for wf in steps:
-        for wc in steps:
-            wg = 1.0 - wf - wc
-            if wg < 0.05:
-                continue
-            model = CQMModel(legs, weights=(wf, wc, wg))
-            sol = CQMSolver(model, seed=0).solve(sweeps=1000, n_restarts=3)
-            cqm_solutions[sol.selection] = sol
-    cqm_front = pareto_front(list(cqm_solutions.values()))
-    log.info("  CQM: %d Pareto solutions in %.2fs", len(cqm_front), time.time() - t0)
+    t0 = time.perf_counter()
+    try:
+        cqm_solutions = {}
+        steps = np.linspace(0.1, 0.8, 4)
+        for wf in steps:
+            for wc in steps:
+                wg = 1.0 - wf - wc
+                if wg < 0.05:
+                    continue
+                model = CQMModel(legs, weights=(wf, wc, wg))
+                sol = CQMSolver(model, seed=0).solve(sweeps=1000, n_restarts=3)
+                cqm_solutions[sol.selection] = sol
+        cqm_front = pareto_front(list(cqm_solutions.values()))
+    except Exception as exc:
+        log.exception("  CQM benchmark failed; preserving the primary MO-QIGA run")
+        cqm_front = []
+        errors["CQM"] = str(exc)
+    runtimes_ms["CQM"] = (time.perf_counter() - t0) * 1000
+    log.info("  CQM: %d Pareto solutions in %.2fs", len(cqm_front), runtimes_ms["CQM"] / 1000)
 
     log.info("STEP 6/8: MILP (exact reference)")
-    t0 = time.time()
-    milp_front = MILPModel(legs).trace_pareto_front(n_weight_samples=15)
-    log.info("  MILP: %d Pareto solutions in %.2fs", len(milp_front), time.time() - t0)
+    t0 = time.perf_counter()
+    milp_references = {}
+    try:
+        milp_model = MILPModel(legs)
+        milp_front = milp_model.trace_pareto_front(n_weight_samples=15)
+        milp_references = {
+            "minimum_fuel": milp_model.solve((1.0, 0.0, 0.0)),
+            "minimum_cost": milp_model.solve((0.0, 1.0, 0.0)),
+            "minimum_ghg": milp_model.solve((0.0, 0.0, 1.0)),
+        }
+    except Exception as exc:
+        log.exception("  MILP reference failed; preserving the primary MO-QIGA run")
+        milp_front = []
+        errors["MILP"] = str(exc)
+    runtimes_ms["MILP"] = (time.perf_counter() - t0) * 1000
+    log.info("  MILP: %d Pareto solutions in %.2fs", len(milp_front), runtimes_ms["MILP"] / 1000)
 
     log.info("STEP 7/8: MO-QIGA (Multi-Objective Quantum-Inspired GA, CLASSICAL simulation -- no quantum hardware)")
-    t0 = time.time()
+    t0 = time.perf_counter()
     moqiga_front, _ = MOQIGAOptimizer(legs, population_size=30, generations=60, seed=0).run()
-    log.info("  MO-QIGA: %d Pareto solutions in %.2fs", len(moqiga_front), time.time() - t0)
+    runtimes_ms["MO-QIGA"] = (time.perf_counter() - t0) * 1000
+    log.info("  MO-QIGA: %d Pareto solutions in %.2fs", len(moqiga_front), runtimes_ms["MO-QIGA"] / 1000)
 
-    log.info("merging into one final Pareto archive")
-    combined = nsga2_front + qbho_front + cqm_front + milp_front + moqiga_front
-    sources = (["NSGA-II"] * len(nsga2_front) + ["QBHO"] * len(qbho_front) +
-               ["CQM"] * len(cqm_front) + ["MILP"] * len(milp_front) +
-               ["MO-QIGA"] * len(moqiga_front))
-    final_front = pareto_front(combined)
-    final_sources = [sources[combined.index(s)] for s in final_front]
-    log.info("  final archive: %d non-dominated solutions (of %d candidates)", len(final_front), len(combined))
+    log.info("building final Pareto archive from MO-QIGA solutions only")
+    final_front = pareto_front(moqiga_front)
+    final_sources = ["MO-QIGA"] * len(final_front)
+    log.info("  final MO-QIGA archive: %d non-dominated solutions", len(final_front))
     for sol, src in zip(final_front, final_sources):
         log.info("    fuel=%.3f cost=%.1f ghg=%.1f source=%s selection=%s", sol.fuel, sol.cost, sol.ghg, src, sol.selection)
 
@@ -171,6 +209,19 @@ def run_all_algorithms(legs):
         "NSGA-II": nsga2_front, "QBHO": qbho_front,
         "CQM": cqm_front, "MILP": milp_front, "MO-QIGA": moqiga_front,
     }
+    if comparison_recorder is not None:
+        comparison_recorder({
+            "candidate_ids": candidate_ids,
+            "algorithm_candidate_ids": {
+                "MO-QIGA": candidate_ids,
+                "NSGA-II": candidate_ids,
+                "MILP Reference": candidate_ids,
+            },
+            "fronts": per_algorithm_fronts,
+            "runtimes_ms": runtimes_ms,
+            "milp_references": milp_references,
+            "errors": errors,
+        })
     return final_front, final_sources, per_algorithm_fronts
 
 
@@ -183,7 +234,10 @@ def main():
     cost_vals = [e.cost_usd for e in evaluated]
     ghg_vals = [e.ghg_kgco2 for e in evaluated]
 
-    final_front, final_sources, per_algorithm_fronts = run_all_algorithms(legs)
+    comparison_artifacts: dict = {}
+    final_front, final_sources, per_algorithm_fronts = run_all_algorithms(
+        legs, comparison_recorder=comparison_artifacts.update
+    )
 
     log.info("STEP 8/8: writing final_pareto_fleet_plans.csv")
     rows = []
@@ -213,6 +267,13 @@ def main():
             })
     pd.DataFrame(rows).to_csv("final_pareto_fleet_plans.csv", index=False)
 
+    # Store the exact evaluated set and the pure-objective MILP solves in one
+    # archive generation step so later comparisons never reconstruct inputs.
+    from backend.comparison_service import write_precomputed_comparison_artifacts
+    write_precomputed_comparison_artifacts(
+        legs, comparison_artifacts["milp_references"]
+    )
+
     runtime = time.time() - t_start
     log.info("PIPELINE COMPLETE in %.2fs", runtime)
 
@@ -227,6 +288,8 @@ def main():
             "ghg": [min(ghg_vals), max(ghg_vals)],
         },
         "algorithm_pareto_sizes": {name: len(front) for name, front in per_algorithm_fronts.items()},
+        "final_archive_algorithm": "MO-QIGA",
+        "benchmark_algorithms": ["NSGA-II", "QBHO", "CQM", "MILP"],
         "final_pareto_archive_size": len(final_front),
         "total_runtime_seconds": runtime,
     }

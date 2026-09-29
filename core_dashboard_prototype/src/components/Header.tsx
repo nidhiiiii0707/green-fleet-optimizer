@@ -1,6 +1,6 @@
 import React from "react";
 
-type Screen = "overview" | "fleet" | "optimization" | "fleetplan" | "scenarios" | "alerts" | "reports";
+type Screen = "overview" | "fleet" | "fuelprediction" | "optimization" | "fleetplan" | "scenarios" | "alerts" | "reports";
 
 interface RunMeta {
   method: string;
@@ -31,6 +31,8 @@ function titlesFor(screen: Screen, selectedSolutionId: string, runMeta: RunMeta 
       };
     case "fleet":
       return { title: "Fleet & Routes", sub: "Vessel assignments, routes and operational status" };
+    case "fuelprediction":
+      return { title: "Fuel Prediction Lab", sub: "XGBoost consumption forecast and voyage impact analysis" };
     case "optimization":
       return {
         title: "Optimization Results",

@@ -3,6 +3,7 @@ import { API_BASE, WS_BASE } from "./config";
 import type {
   OptimizationResult, JobStatus, ScenarioControls, ScenarioResult,
   NLPParseResult, StructuredRequest, Alert, Report, Vessel, Port, Route,
+  FuelPredictionRequest, FuelPredictionResult, AlgorithmComparisonResult,
 } from "./types";
 
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
@@ -44,6 +45,12 @@ export const optimizationApi = {
 
   getSolution: (solutionId: string) =>
     apiFetch<Record<string, unknown>>(`/api/optimization/solution/${solutionId}`),
+
+  compareAlgorithms: (runId: string) =>
+    apiFetch<AlgorithmComparisonResult>(
+      `/api/optimization/runs/${encodeURIComponent(runId)}/compare`,
+      { method: "POST" },
+    ),
 };
 
 // ── NLP ───────────────────────────────────────────────────────────────────────
@@ -70,6 +77,15 @@ export const scenarioApi = {
 
   getResults: (jobId: string) =>
     apiFetch<ScenarioResult>(`/api/optimization/results/${jobId}`),
+};
+
+// ── Fuel prediction ──────────────────────────────────────────────────────────
+export const fuelPredictionApi = {
+  predict: (request: FuelPredictionRequest) =>
+    apiFetch<FuelPredictionResult>("/api/fuel-prediction/predict", {
+      method: "POST",
+      body: JSON.stringify(request),
+    }),
 };
 
 // ── Alerts ───────────────────────────────────────────────────────────────────

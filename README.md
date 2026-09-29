@@ -2,9 +2,7 @@
 
 
 
-This repository implements a full, working maritime fleet optimization pipeline. It loads the supplied datasets independently, exposes traceable parameter views, validates candidates against explicit feasibility constraints, calls the existing (un-retrained) XGBoost `XGBRegressor` fuel model, converts predictions into Fuel/Cost/GHG objectives, and searches the resulting decision space with four independent optimizers -- **NSGA-II**, **QBHO** (Quantum-Behaved Hawks Optimization -- a classical Harris-Hawks-based metaheuristic with a quantum-behaved position update), **CQM** (a real `dimod` Constrained Quadratic Model, solved by an exact/classical-annealing solver), and an exact **MILP** reference -- merging their outputs into one Pareto-optimal fleet-plan archive. A natural-language front end (`nlp/`) sits in front of this pipeline and translates plain-English fleet requests into the same structured candidates/constraints the pipeline already consumes.
-
-**QUBO-SA and MO-QIGA (the previous active set alongside NSGA-II/MILP) are retained in the repository for reference/backup** (`qubo_model.py`/`qubo_builder.py`, `mo_qiga.py`, still runnable standalone via `run_qubo.py`/`run_mo_qiga.py`) but are **no longer part of the active pipeline**; they were replaced by QBHO and CQM respectively.
+This repository implements a full, working maritime fleet optimization pipeline. It loads the supplied datasets independently, exposes traceable parameter views, validates candidates against explicit feasibility constraints, calls the existing (un-retrained) XGBoost `XGBRegressor` fuel model, converts predictions into Fuel/Cost/GHG objectives, and uses **MO-QIGA** to generate the non-dominated fleet plans presented for human decision. **NSGA-II**, **QBHO**, **CQM**, and exact **MILP** run on the same evaluated candidates as benchmark/reference approaches; their solutions do not enter the final decision archive. A natural-language front end (`nlp/`) sits in front of this pipeline and translates plain-English fleet requests into the same structured candidates/constraints the pipeline already consumes.
 
 See [FINAL_OPTIMIZATION_REPORT.md](FINAL_OPTIMIZATION_REPORT.md) for the full data-provenance and results write-up, and [mathematical_formulation.md](mathematical_formulation.md) for the exact objective/constraint formulation used by each optimizer.
 
@@ -19,8 +17,9 @@ independent source CSVs
   -> candidate/scenario binding (speed, fuel, model completeness)
   -> real XGBoost XGBRegressor fuel prediction (fuel_model_adapter.py, models/fuel_xgb_pipeline.joblib)
   -> Fuel/Cost/GHG objectives (objective_evaluator.py, SCENARIO_INPUT price/emission factors)
-  -> NSGA-II / QBHO / CQM / MILP (run_optimization_pipeline.py)
-  -> merged Pareto archive -> final_pareto_fleet_plans.csv
+  -> MO-QIGA decision optimizer (run_optimization_pipeline.py)
+  -> MO-QIGA non-dominated archive -> final_pareto_fleet_plans.csv
+  -> NSGA-II / QBHO / CQM / MILP benchmark fronts (comparison only)
 ```
 
 with an optional natural-language front end ahead of candidate filtering:
@@ -30,7 +29,7 @@ natural language request
   -> nlp/parser.py                       (origin/destination, vessel type, fuel type, speed, cargo, objectives)
   -> nlp/optimization_adapter.py         (build_optimization_request + filter_legs: constrains the
                                            SAME candidates the pipeline already generates -- never invents one)
-  -> run_optimization_pipeline.run_all_algorithms()   (the unmodified four-optimizer pipeline above)
+  -> run_optimization_pipeline.run_all_algorithms()   (MO-QIGA archive + benchmark fronts)
   -> Pareto fleet plans + parsed request + warnings
 ```
 
@@ -176,8 +175,8 @@ optimizer on them:
   grid is finite.
 - A field the user doesn't mention is left completely unconstrained; the
   optimizer's existing full candidate grid and defaults apply.
-- Objectives only re-rank the *already Pareto-optimal* solutions the four
-  optimizers produced -- they never change how those optimizers search.
+- Objectives only re-rank the *already Pareto-optimal* solutions MO-QIGA
+  produced -- they never change how MO-QIGA searches.
 
 ## Current status
 
@@ -186,16 +185,11 @@ Implemented and passing (`./.venv2/Scripts/python.exe -m pytest -q`):
 - Real/derived candidate generation, deterministic feasibility screening, and
   the real (un-retrained) XGBoost `XGBRegressor` fuel model, exactly as
   described above.
-- All four ACTIVE optimizers -- **NSGA-II** (`nsga2_optimizer.py`), **QBHO**
-  (`qbho.py`, classical Harris-Hawks-based metaheuristic with a
-  quantum-behaved position update), **CQM** (`cqm_model.py` / `cqm_solver.py`,
-  a real `dimod` Constrained Quadratic Model solved by an exact or
-  classical-annealing solver), and **MILP** (`milp_model.py`, exact
-  reference) -- run on the identical decision space and merge into one
-  Pareto archive (`run_optimization_pipeline.py`). **QUBO-SA**
-  (`qubo_model.py` / `qubo_builder.py`) and **MO-QIGA** (`mo_qiga.py`) are
-  retained in the repository (still runnable via `run_qubo.py` /
-  `run_mo_qiga.py`) but are no longer part of the active pipeline.
+- **MO-QIGA** (`mo_qiga.py`) runs as the decision optimizer and is the sole
+  source of the final Pareto archive (`run_optimization_pipeline.py`).
+  **NSGA-II** (`nsga2_optimizer.py`), **QBHO** (`qbho.py`), **CQM**
+  (`cqm_model.py` / `cqm_solver.py`), and **MILP** (`milp_model.py`) run on
+  the identical decision space for benchmark/reference comparison only.
 - The natural-language front end described above, tested end-to-end from raw
   text through to Pareto fleet plans (`tests/test_nlp_optimization_adapter.py`).
 
@@ -208,11 +202,12 @@ Still true limitations, carried over unchanged from the sections above:
 - Cost and GHG objectives depend on the explicitly labelled `SCENARIO_INPUT`
   price/emission-factor assumptions described above, not on measured
   fuel-price or emissions data.
-- QBHO and CQM are classical algorithms (a Harris-Hawks-based metaheuristic
-  with a quantum-behaved position update, and a Constrained Quadratic Model
-  solved by an exact/classical-annealing solver, respectively); neither runs
-  on, nor claims to run on, quantum hardware anywhere in this repository, and
-  no D-Wave Leap/cloud account or token is used.
+- MO-QIGA, QBHO, and CQM are classical computations (a quantum-inspired
+  genetic algorithm, a Harris-Hawks-based metaheuristic with a quantum-behaved
+  position update, and a Constrained Quadratic Model solved by an
+  exact/classical-annealing solver, respectively); none runs on, or claims to
+  run on, quantum hardware anywhere in this repository, and no D-Wave
+  Leap/cloud account or token is used.
 - The candidate set remains prototype-scale (252 candidates / 6 legs / 4
-  vessel classes), chosen to keep all four optimizers' runtimes manageable for
+  vessel classes), chosen to keep the decision and benchmark runtimes manageable for
   validation, not a production fleet size.

@@ -51,6 +51,8 @@ class Job:
 # Global in-memory job store
 _JOBS: dict[str, Job] = {}
 _LATEST_RESULT: Optional[Any] = None  # cached latest completed optimization
+_COMPARISON_CONTEXTS: dict[str, Any] = {}
+_COMPARISON_ERRORS: dict[str, str] = {}
 
 
 def create_job() -> Job:
@@ -71,6 +73,24 @@ def set_latest_result(result: Any):
 
 def get_latest_result() -> Optional[Any]:
     return _LATEST_RESULT
+
+
+def set_comparison_context(run_id: str, context: Any):
+    _COMPARISON_CONTEXTS[run_id] = context
+    _COMPARISON_ERRORS.pop(run_id, None)
+
+
+def get_comparison_context(run_id: str) -> Optional[Any]:
+    return _COMPARISON_CONTEXTS.get(run_id)
+
+
+def set_comparison_error(run_id: str, error: str):
+    _COMPARISON_CONTEXTS.pop(run_id, None)
+    _COMPARISON_ERRORS[run_id] = error
+
+
+def get_comparison_error(run_id: str) -> Optional[str]:
+    return _COMPARISON_ERRORS.get(run_id)
 
 
 def update_job(job: Job, status: JobStatus, progress: int, msg: str, result=None, error=None):

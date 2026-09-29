@@ -255,7 +255,7 @@ def _solution_to_dict(sol, src: str, legs: list[list[EvaluatedCandidate]]) -> di
 
 def optimize_from_query(text: str, seed: int = 0) -> dict:
     """End-to-end: natural language -> parsed request -> filtered candidates
-    -> existing NSGA-II/QBHO/CQM/MILP pipeline -> Pareto results.
+    -> MO-QIGA decision optimizer + benchmarks -> Pareto results.
 
     Imported lazily from nlp.parser to avoid importing spaCy/rapidfuzz at
     module import time for callers that only need filter_legs().

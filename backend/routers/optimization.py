@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 from typing import Literal, Optional
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException, WebSocket, WebSocketDisconnect
@@ -10,8 +11,14 @@ from pydantic import BaseModel
 
 import backend.job_manager as JM
 from backend.pipeline_bridge import get_default_result, get_solution_by_id, run_optimization_async
+from backend.comparison_service import (
+    ComparisonUnavailableError,
+    compare_algorithms,
+    register_precomputed_comparison_context,
+)
 
 router = APIRouter(prefix="/api/optimization", tags=["optimization"])
+log = logging.getLogger("optimization_router")
 
 
 class StructuredRequest(BaseModel):
@@ -42,7 +49,13 @@ _initialized = False
 def _ensure_default():
     global _initialized
     if not _initialized:
-        JM.set_latest_result(get_default_result())
+        result = get_default_result()
+        JM.set_latest_result(result)
+        try:
+            register_precomputed_comparison_context(result)
+        except Exception as exc:
+            log.exception("Precomputed comparison context is unavailable")
+            JM.set_comparison_error(result["run_id"], str(exc))
         _initialized = True
 
 
@@ -91,6 +104,19 @@ def get_results(job_id: str):
     if job.status != JM.JobStatus.COMPLETED:
         raise HTTPException(status_code=202, detail=f"Job not completed yet. Status: {job.status}")
     return job.result
+
+
+@router.post("/runs/{run_id}/compare")
+def compare_run_algorithms(run_id: str):
+    try:
+        return compare_algorithms(run_id)
+    except ComparisonUnavailableError as exc:
+        raise HTTPException(status_code=503, detail=f"Algorithm comparison unavailable: {exc}")
+    except KeyError:
+        raise HTTPException(
+            status_code=404,
+            detail="Optimization run not found for comparison.",
+        )
 
 
 @router.get("/solution/{solution_id}")

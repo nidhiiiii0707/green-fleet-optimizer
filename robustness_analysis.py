@@ -2,7 +2,7 @@
 
 Perturbs SCENARIO_INPUT knobs only (fuel price, emission factor, cargo load
 fraction, voyage-deadline multiplier) -- never real/derived data -- and reruns
-NSGA-II on each perturbed scenario. This is explicitly a SCENARIO sensitivity
+MO-QIGA on each perturbed scenario. This is explicitly a SCENARIO sensitivity
 study, not a measurement of real-world robustness (see caveats throughout).
 
 Run: python robustness_analysis.py
@@ -19,7 +19,7 @@ import data_layer as DL
 from candidate_generator import generate_candidates
 from objective_evaluator import ObjectiveEvaluator
 from algo_common import group_by_leg
-from nsga2_optimizer import NSGA2Optimizer
+from mo_qiga import MOQIGAOptimizer
 
 PERTURBATIONS = [
     {"name": "baseline", "fuel_price_mult": 1.0, "emission_factor_mult": 1.0, "cargo_load_mult": 1.0, "deadline_mult": 1.0},
@@ -58,10 +58,11 @@ def run_scenario(perturbation: dict) -> dict:
 
         feasible_ratio = sum(1 for e in evaluated if e.feasible) / len(evaluated)
 
-        opt = NSGA2Optimizer(legs, population_size=30, generations=40, seed=0)
+        opt = MOQIGAOptimizer(legs, population_size=30, generations=60, seed=0)
         front, _ = opt.run()
 
         return {
+            "algorithm": "MO-QIGA",
             "scenario": perturbation["name"],
             "n_candidates": len(evaluated),
             "feasible_ratio": feasible_ratio,
@@ -87,7 +88,7 @@ def main():
         fh.write("All perturbations below are SCENARIO perturbations of SCENARIO_INPUT knobs "
                  "(fuel price, emission factor, an assumed cargo-load multiplier, and the "
                  "voyage-deadline multiplier). None of these are real measurements -- they test "
-                 "how sensitive the NSGA-II Pareto front is to the assumptions this pipeline "
+                 "how sensitive the MO-QIGA Pareto front is to the assumptions this pipeline "
                  "must make because the real data layer has no absolute fuel price, no carbon "
                  "price, and no per-route real cargo demand.\n\n")
         fh.write(df.to_markdown(index=False))
