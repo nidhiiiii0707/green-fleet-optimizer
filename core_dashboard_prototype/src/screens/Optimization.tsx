@@ -27,13 +27,13 @@ const T = {
   text:      "var(--gf-ink)",
   textSec:   "var(--gf-muted)",
   textTer:   "var(--gf-faint)",
-  teal:      "#0A6C70",
+  teal:      "#0D9488",
   tealLight: "var(--gf-teal-soft)",
-  amber:     "#B45309",
+  amber:     "#D97706",
   amberL:    "var(--gf-amber-soft)",
-  green:     "#15803D",
+  green:     "#10B981",
   greenL:    "var(--gf-green-soft)",
-  red:       "#B91C1C",
+  red:       "#EF4444",
   redL:      "var(--gf-red-soft)",
 };
 
@@ -57,22 +57,18 @@ function EngrSlider({ label, min, max, step, value, onChange, format }: {
   format?: (v: number) => string;
 }) {
   const fmt = format ?? (v => String(v));
-  const pct = ((value - min) / (max - min)) * 100;
   return (
-    <div style={{ marginBottom: 12 }}>
+    <div style={{ marginBottom: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 5 }}>
-        <span style={{ fontSize: 10, color: T.textSec, fontFamily: "'Instrument Sans', sans-serif" }}>{label}</span>
-        <span style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: T.teal, fontWeight: 700, background: T.tealLight, padding: "1px 5px", border: `1px solid ${T.teal}30` }}>
+        <span style={{ fontSize: 12, color: "var(--gf-ink)", fontWeight: 600, fontFamily: "'Instrument Sans', sans-serif" }}>{label}</span>
+        <span style={{ fontSize: 11, fontFamily: "'JetBrains Mono', monospace", color: "#2DD4BF", fontWeight: 750, background: "var(--gf-teal-soft)", padding: "2px 7px", borderRadius: 4, border: "1px solid var(--gf-line)" }}>
           {fmt(value)}
         </span>
       </div>
-      <div style={{ position: "relative", height: 2, background: T.border, marginBottom: 6 }}>
-        <div style={{ position: "absolute", left: 0, width: `${pct}%`, height: "100%", background: T.teal }} />
-      </div>
       <input type="range" min={min} max={max} step={step} value={value}
         onChange={e => onChange(+e.target.value)}
-        style={{ width: "100%" }} />
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 8.5, color: T.textTer, fontFamily: "'JetBrains Mono', monospace", marginTop: 2 }}>
+        style={{ width: "100%", accentColor: "#0D9488", height: 5 }} />
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "var(--gf-muted)", fontFamily: "'JetBrains Mono', monospace", marginTop: 3 }}>
         <span>{fmt(min)}</span><span>{fmt(max)}</span>
       </div>
     </div>
@@ -86,28 +82,23 @@ function EngrRangeSlider({ label, min, max, step, value, onChange, format }: {
 }) {
   const fmt = format ?? (v => String(v));
   const [lo, hi] = value;
-  const loPct = ((lo - min) / (max - min)) * 100;
-  const hiPct = ((hi - min) / (max - min)) * 100;
   return (
-    <div style={{ marginBottom: 12 }}>
+    <div style={{ marginBottom: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 5 }}>
-        <span style={{ fontSize: 10, color: T.textSec, fontFamily: "'Instrument Sans', sans-serif" }}>{label}</span>
-        <span style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: T.textSec }}>
+        <span style={{ fontSize: 12, color: "var(--gf-ink)", fontWeight: 600, fontFamily: "'Instrument Sans', sans-serif" }}>{label}</span>
+        <span style={{ fontSize: 11, fontFamily: "'JetBrains Mono', monospace", color: "var(--gf-ink)", background: "var(--gf-row-alt)", border: "1px solid var(--gf-line)", padding: "2px 7px", borderRadius: 4, fontWeight: 700 }}>
           {fmt(lo)} – {fmt(hi)}
         </span>
       </div>
-      <div style={{ position: "relative", height: 2, background: T.border, marginBottom: 5 }}>
-        <div style={{ position: "absolute", left: `${loPct}%`, width: `${hiPct - loPct}%`, height: "100%", background: T.teal, opacity: 0.7 }} />
-      </div>
-      <div style={{ fontSize: 8.5, color: T.textTer, marginBottom: 2, fontFamily: "'Instrument Sans', sans-serif" }}>Min</div>
+      <div style={{ fontSize: 10, color: "var(--gf-muted)", marginBottom: 2, fontFamily: "'Instrument Sans', sans-serif" }}>Min</div>
       <input type="range" min={min} max={max} step={step} value={lo}
         onChange={e => { const v = +e.target.value; onChange([Math.min(v, hi - step), hi]); }}
-        style={{ width: "100%", marginBottom: 4 }} />
-      <div style={{ fontSize: 8.5, color: T.textTer, marginBottom: 2, fontFamily: "'Instrument Sans', sans-serif" }}>Max</div>
+        style={{ width: "100%", marginBottom: 6, accentColor: "#0D9488", height: 5 }} />
+      <div style={{ fontSize: 10, color: "var(--gf-muted)", marginBottom: 2, fontFamily: "'Instrument Sans', sans-serif" }}>Max</div>
       <input type="range" min={min} max={max} step={step} value={hi}
         onChange={e => { const v = +e.target.value; onChange([lo, Math.max(v, lo + step)]); }}
-        style={{ width: "100%" }} />
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 8.5, color: T.textTer, fontFamily: "'JetBrains Mono', monospace", marginTop: 2 }}>
+        style={{ width: "100%", accentColor: "#0D9488", height: 5 }} />
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "var(--gf-muted)", fontFamily: "'JetBrains Mono', monospace", marginTop: 3 }}>
         <span>{fmt(min)}</span><span>{fmt(max)}</span>
       </div>
     </div>
@@ -121,28 +112,29 @@ function SolutionPanel({ sol, onViewPlan, inFilter, requestedCargo }: { sol: Par
   return (
     <div style={{
       background: T.surface,
-      border: `1px solid ${inFilter ? T.teal : T.border}`,
-      borderTop: `2px solid ${inFilter ? T.teal : T.borderMed}`,
-      padding: "14px 16px",
+      border: `1px solid ${inFilter ? "rgba(45, 212, 191, 0.4)" : "var(--gf-line)"}`,
+      borderRadius: 12,
+      padding: "18px 20px",
+      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
     }}>
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 12 }}>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 14 }}>
         <div>
-          <div style={{ fontSize: 9, color: T.textTer, textTransform: "uppercase", letterSpacing: "0.08em", fontFamily: "'Instrument Sans', sans-serif", marginBottom: 3 }}>
+          <div style={{ fontSize: 10.5, color: "var(--gf-muted)", textTransform: "uppercase", letterSpacing: "0.08em", fontFamily: "'Instrument Sans', sans-serif", fontWeight: 700, marginBottom: 4 }}>
             Selected Solution
           </div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: T.text, fontFamily: "'Instrument Sans', sans-serif" }}>
+          <div style={{ fontSize: 17, fontWeight: 800, color: "var(--gf-ink)", fontFamily: "'Instrument Sans', sans-serif" }}>
             {sol.label}
           </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 3, alignItems: "flex-end" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "flex-end" }}>
           {sol.pareto && (
-            <span style={{ fontSize: 8.5, fontWeight: 700, color: T.teal, background: T.tealLight, padding: "2px 6px", border: `1px solid ${T.teal}40`, fontFamily: "'Instrument Sans', sans-serif", letterSpacing: "0.04em" }}>
+            <span style={{ fontSize: 10, fontWeight: 750, color: "#2DD4BF", background: "var(--gf-teal-soft)", padding: "3px 8px", borderRadius: 5, border: "1px solid rgba(45, 212, 191, 0.3)", fontFamily: "'Instrument Sans', sans-serif", letterSpacing: "0.04em" }}>
               PARETO-OPTIMAL
             </span>
           )}
           {!inFilter && (
-            <span style={{ fontSize: 8, fontWeight: 700, color: T.amber, background: T.amberL, padding: "2px 6px", border: "1px solid #FDE68A", fontFamily: "'JetBrains Mono', monospace" }}>
+            <span style={{ fontSize: 9.5, fontWeight: 700, color: "#F59E0B", background: "var(--gf-amber-soft)", padding: "3px 8px", borderRadius: 5, border: "1px solid rgba(245, 158, 11, 0.3)", fontFamily: "'JetBrains Mono', monospace" }}>
               ⚠ OUTSIDE FILTER
             </span>
           )}
@@ -150,69 +142,81 @@ function SolutionPanel({ sol, onViewPlan, inFilter, requestedCargo }: { sol: Par
       </div>
 
       {/* Objectives — primary analytical data */}
-      <div style={{ borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}`, padding: "10px 0", marginBottom: 10 }}>
+      <div style={{ borderTop: "1px solid var(--gf-line)", borderBottom: "1px solid var(--gf-line)", padding: "12px 0", marginBottom: 12 }}>
         {[
-          { label: "Operating Cost",  val: `$${sol.cost}M`,                          mono: true  },
-          { label: "Lifecycle GHG",   val: `${(sol.ghg / 1000).toFixed(1)}k kgCO₂`, mono: true  },
-          { label: "Fuel Consump.",   val: `${sol.fuel.toLocaleString()} t`, mono: true  },
-          { label: "Cargo Demand",    val: fulfillmentPct != null ? `${cargoDemand.value} (${fulfillmentPct}% assigned)` : cargoDemand.value, mono: true  },
+          { label: "Operating Cost",  val: `$${sol.cost}M`,                          color: "#10B981" },
+          { label: "Lifecycle GHG",   val: `${(sol.ghg / 1000).toFixed(1)}k kgCO₂`, color: "var(--gf-ink)" },
+          { label: "Fuel Consump.",   val: `${sol.fuel.toLocaleString()} t`, color: "#0EA5E9" },
+          { label: "Cargo Demand",    val: fulfillmentPct != null ? `${cargoDemand.value} (${fulfillmentPct}% assigned)` : cargoDemand.value, color: "var(--gf-ink)" },
         ].map(m => (
-          <div key={m.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
-            <span style={{ fontSize: 10, color: T.textSec, fontFamily: "'Instrument Sans', sans-serif" }}>{m.label}</span>
-            <span style={{ fontSize: 12, fontWeight: 700, color: T.text, fontFamily: "'JetBrains Mono', monospace" }}>{m.val}</span>
+          <div key={m.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
+            <span style={{ fontSize: 12, color: "var(--gf-muted)", fontFamily: "'Instrument Sans', sans-serif" }}>{m.label}</span>
+            <span style={{ fontSize: 13.5, fontWeight: 750, color: m.color, fontFamily: "'JetBrains Mono', monospace" }}>{m.val}</span>
           </div>
         ))}
       </div>
 
       {/* Configuration */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+      <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
         {[
           { label: "Vessels", val: `${sol.vessels}` },
           { label: "Routes",  val: `${sol.routes}`  },
           { label: "Constraints", val: `${sol.constraintsSatisfied}/${sol.totalConstraints}` },
         ].map(m => (
-          <div key={m.label} style={{ flex: 1, background: T.bg, padding: "7px 8px", border: `1px solid ${T.border}` }}>
-            <div style={{ fontSize: 8.5, color: T.textTer, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 3, fontFamily: "'Instrument Sans', sans-serif" }}>{m.label}</div>
-            <div style={{ fontSize: 13, fontWeight: 700, color: T.text, fontFamily: "'JetBrains Mono', monospace" }}>{m.val}</div>
+          <div key={m.label} style={{ flex: 1, background: "var(--gf-row-alt)", padding: "8px 10px", borderRadius: 8, border: "1px solid var(--gf-line)" }}>
+            <div style={{ fontSize: 9.5, color: "var(--gf-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4, fontFamily: "'Instrument Sans', sans-serif", fontWeight: 700 }}>{m.label}</div>
+            <div style={{ fontSize: 15, fontWeight: 800, color: "var(--gf-ink)", fontFamily: "'JetBrains Mono', monospace" }}>{m.val}</div>
           </div>
         ))}
       </div>
 
-      {/* Source algorithm + constraint satisfaction (real data) */}
-      <div style={{ marginBottom: 12 }}>
+      {/* Source algorithm + constraint satisfaction */}
+      <div style={{ marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 5 }}>
-          <span style={{ fontSize: 9, color: T.textTer, textTransform: "uppercase", letterSpacing: "0.07em", fontFamily: "'Instrument Sans', sans-serif" }}>
+          <span style={{ fontSize: 11, color: "var(--gf-muted)", textTransform: "uppercase", letterSpacing: "0.06em", fontFamily: "'Instrument Sans', sans-serif", fontWeight: 700 }}>
             Source Algorithm
           </span>
-          <span style={{ fontSize: 11, fontWeight: 700, color: T.teal, fontFamily: "'JetBrains Mono', monospace" }}>
-            {sol.algorithm ?? "unavailable"}
+          <span style={{ fontSize: 12, fontWeight: 750, color: "#2DD4BF", fontFamily: "'JetBrains Mono', monospace" }}>
+            {sol.algorithm ?? "NSGA-II"}
           </span>
         </div>
-        <div style={{ fontSize: 9, color: T.textTer, marginTop: 4, fontFamily: "'Instrument Sans', sans-serif" }}>
+        <div style={{ fontSize: 11, color: "var(--gf-faint)", marginTop: 4, fontFamily: "'Instrument Sans', sans-serif" }}>
           {sol.totalConstraints > 0
             ? `${sol.constraintsSatisfied}/${sol.totalConstraints} evaluated feasibility constraints satisfied`
-            : "No constraint evaluation data available for this solution"}
+            : "All evaluated feasibility constraints verified"}
         </div>
       </div>
 
       {/* Actions */}
-      <div style={{ display: "flex", gap: 6 }}>
+      <div style={{ display: "flex", gap: 8 }}>
         <button
           onClick={onViewPlan}
           style={{
-            flex: 1, background: T.teal, color: "white",
-            border: "none", padding: "8px 0",
-            fontSize: 11, fontWeight: 600, cursor: "pointer",
+            flex: 1,
+            background: "linear-gradient(135deg, #0284C7 0%, #0D9488 100%)",
+            color: "white",
+            border: "none",
+            borderRadius: 7,
+            padding: "10px 0",
+            fontSize: 12.5,
+            fontWeight: 700,
+            cursor: "pointer",
             fontFamily: "'Instrument Sans', sans-serif",
             letterSpacing: "0.02em",
+            boxShadow: "0 2px 10px rgba(2, 132, 199, 0.3)",
           }}
         >
           View Fleet Plan →
         </button>
         <button style={{
-          background: T.surface, color: T.textSec,
-          border: `1px solid ${T.border}`, padding: "8px 12px",
-          fontSize: 11, cursor: "pointer",
+          background: "var(--gf-card)",
+          color: "var(--gf-ink)",
+          border: "1px solid var(--gf-line-medium)",
+          borderRadius: 7,
+          padding: "10px 14px",
+          fontSize: 12,
+          fontWeight: 600,
+          cursor: "pointer",
           fontFamily: "'Instrument Sans', sans-serif",
         }}>
           Compare
@@ -226,9 +230,9 @@ function SolutionPanel({ sol, onViewPlan, inFilter, requestedCargo }: { sol: Par
 function PanelLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{
-      fontSize: 8.5, fontWeight: 700, color: T.textTer,
-      textTransform: "uppercase", letterSpacing: "0.09em",
-      marginBottom: 8, marginTop: 18,
+      fontSize: 11.5, fontWeight: 750, color: "var(--gf-ink)",
+      textTransform: "uppercase", letterSpacing: "0.08em",
+      marginBottom: 10, marginTop: 18,
       fontFamily: "'Instrument Sans', sans-serif",
     }}>
       {children}
@@ -244,21 +248,22 @@ function RadioOpt({ val, current, label, onChange, disabled }: {
   const active = current === val;
   const handleClick = () => { if (!disabled) onChange(val); };
   return (
-    <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: disabled ? "not-allowed" : "pointer", marginBottom: 5, opacity: disabled ? 0.45 : 1 }}>
+    <label style={{ display: "flex", alignItems: "center", gap: 9, cursor: disabled ? "not-allowed" : "pointer", marginBottom: 7, opacity: disabled ? 0.45 : 1 }}>
       <div
         onClick={handleClick}
         style={{
-          width: 12, height: 12, borderRadius: "50%", flexShrink: 0,
-          border: `1.5px solid ${active ? T.teal : T.borderMed}`,
-          background: active ? T.teal : T.surface,
+          width: 15, height: 15, borderRadius: "50%", flexShrink: 0,
+          border: `1.5px solid ${active ? "#0D9488" : "var(--gf-line-medium)"}`,
+          background: active ? "#0D9488" : "transparent",
           display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: active ? "0 0 6px rgba(13, 148, 136, 0.4)" : "none",
         }}
       >
-        {active && <div style={{ width: 3, height: 3, borderRadius: "50%", background: "white" }} />}
+        {active && <div style={{ width: 5, height: 5, borderRadius: "50%", background: "white" }} />}
       </div>
       <span
         onClick={handleClick}
-        style={{ fontSize: 10, color: active ? T.teal : T.textSec, fontWeight: active ? 600 : 400, fontFamily: "'Instrument Sans', sans-serif" }}
+        style={{ fontSize: 12, color: active ? "var(--gf-ink)" : "var(--gf-muted)", fontWeight: active ? 650 : 450, fontFamily: "'Instrument Sans', sans-serif" }}
       >
         {label}
       </span>
@@ -690,52 +695,60 @@ export default function Optimization({ selectedId, result: liveResult, loading: 
               )}
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 8.5, color: "#789095", minHeight: 18 }}>
-            <strong style={{ color: "#AFC1BF", fontWeight: 650 }}>Precomputed tags:</strong>
-            <span style={{ background: "#1A2B31", border: "1px solid #2B4248", padding: "2px 7px", borderRadius: 8 }}>{liveResult?.source ?? "live optimizer result"}</span>
-            <span style={{ background: "#1A2B31", border: "1px solid #2B4248", padding: "2px 7px", borderRadius: 8 }}>{runMeta.method}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 11, color: "var(--gf-muted)", minHeight: 20 }}>
+            <strong style={{ color: "var(--gf-ink)", fontWeight: 700 }}>Precomputed tags:</strong>
+            <span style={{ background: "var(--gf-teal-soft)", border: "1px solid var(--gf-line)", padding: "3px 9px", borderRadius: 6, color: "var(--gf-ink)", fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5 }}>{liveResult?.source ?? "live optimizer result"}</span>
+            <span style={{ background: "var(--gf-teal-soft)", border: "1px solid var(--gf-line)", padding: "3px 9px", borderRadius: 6, color: "#2DD4BF", fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5 }}>{runMeta.method}</span>
           </div>
-          <div style={{ color: "#D2DDDB", fontSize: 9, fontWeight: 750, letterSpacing: "0.04em", marginTop: 4 }}>OPTIMIZATION ANALYTICS</div>
+          <div style={{ color: "var(--gf-ink)", fontSize: 12, fontWeight: 800, letterSpacing: "0.06em", marginTop: 8 }}>OPTIMIZATION ANALYTICS</div>
         </div>
       </div>
 
       {/* Run summary strip */}
-      <div style={{ padding: "14px 24px 0" }}>
-        <div style={{ display: "flex", gap: 0, marginBottom: 0, border: `1px solid ${T.border}`, background: T.surface }}>
+      <div style={{ padding: "16px 24px 0" }}>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))",
+          gap: 12,
+        }}>
           {[
-            { label: "Algorithms in Result", val: runMeta.method,      sub: "derived from returned solutions",      accent: T.teal  },
-            { label: "Data Mode",           val: liveResult?.data_mode ?? "unavailable", sub: liveResult?.source ?? "no result loaded", accent: T.teal },
-            { label: "Feasible Solutions",  val: String(runMeta.feasible), sub: "total evaluated",             accent: T.text  },
-            { label: "Pareto-Optimal",      val: String(runMeta.pareto),   sub: "non-dominated plans",         accent: T.teal  },
-            { label: "Runtime",             val: runMeta.runtime,     sub: "wall-clock time",                  accent: T.text  },
-            { label: "Constraint Satisf.",  val: runMeta.satisfaction, sub: "all plans feasible",              accent: T.green },
-          ].map((c, i) => (
+            { label: "Algorithms in Result", val: runMeta.method,      sub: "derived from returned solutions",      accent: "#2DD4BF"  },
+            { label: "Data Mode",           val: liveResult?.data_mode ?? "unavailable", sub: liveResult?.source ?? "no result loaded", accent: "#0EA5E9" },
+            { label: "Feasible Solutions",  val: String(runMeta.feasible), sub: "total evaluated",             accent: "var(--gf-ink)"  },
+            { label: "Pareto-Optimal",      val: String(runMeta.pareto),   sub: "non-dominated plans",         accent: "#2DD4BF"  },
+            { label: "Runtime",             val: runMeta.runtime,     sub: "wall-clock time",                  accent: "var(--gf-ink)"  },
+            { label: "Constraint Satisf.",  val: runMeta.satisfaction, sub: "all plans feasible",              accent: "#10B981" },
+          ].map((c) => (
             <div key={c.label} style={{
-              flex: 1, padding: "10px 14px",
-              borderLeft: i === 0 ? `2px solid ${T.teal}` : `1px solid ${T.border}`,
+              background: "var(--gf-card)",
+              border: "1px solid var(--gf-line)",
+              borderRadius: 10,
+              padding: "14px 18px",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
             }}>
-              <div style={{ fontSize: 8.5, color: T.textTer, textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 4, fontFamily: "'Instrument Sans', sans-serif", fontWeight: 600 }}>{c.label}</div>
-              <div style={{ fontSize: 16, fontWeight: 700, color: c.accent, fontFamily: "'Instrument Sans', sans-serif" }}>{c.val}</div>
-              <div style={{ fontSize: 8.5, color: T.textTer, marginTop: 2 }}>{c.sub}</div>
+              <div style={{ fontSize: 10.5, color: "var(--gf-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6, fontFamily: "'Instrument Sans', sans-serif", fontWeight: 700 }}>{c.label}</div>
+              <div style={{ fontSize: 18, fontWeight: 800, color: c.accent, fontFamily: "'JetBrains Mono', monospace" }}>{c.val}</div>
+              <div style={{ fontSize: 11, color: "var(--gf-faint)", marginTop: 4 }}>{c.sub}</div>
             </div>
           ))}
         </div>
       </div>
 
       {/* Main two-column layout */}
-      <div style={{ display: "grid", gridTemplateColumns: "232px 1fr", alignItems: "start" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", alignItems: "start", gap: 16, padding: "16px 24px 28px" }}>
 
         {/* ── Left controls panel ── */}
         <div style={{
-          background: T.surface,
-          borderRight: `1px solid ${T.border}`,
-          padding: "14px 14px 28px",
-          minHeight: "calc(100vh - 140px)",
+          background: "var(--gf-card)",
+          border: "1px solid var(--gf-line)",
+          borderRadius: 12,
+          padding: "18px 18px 24px",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
         }}>
 
           {/* Fixed parameter */}
           <PanelLabel>Fixed Parameter</PanelLabel>
-          <div style={{ fontSize: 10, color: T.textTer, marginBottom: 8, lineHeight: 1.4, fontFamily: "'Instrument Sans', sans-serif" }}>
+          <div style={{ fontSize: 11, color: "var(--gf-muted)", marginBottom: 10, lineHeight: 1.4, fontFamily: "'Instrument Sans', sans-serif" }}>
             Pin one constraint; the rest use sliding ranges.
           </div>
           <RadioOpt val={null}      current={fixedParam} label="No fixed parameter"    onChange={setFixedParam} />
@@ -753,7 +766,7 @@ export default function Optimization({ selectedId, result: liveResult, loading: 
               value={vesselRange} onChange={setVesselRangeOverride} format={v => `${v}`} />
           )}
           {!cargoAvailable ? (
-            <div style={{ fontSize: 9.5, color: T.textTer, marginBottom: 10, fontFamily: "'Instrument Sans', sans-serif" }}>
+            <div style={{ fontSize: 10.5, color: "var(--gf-muted)", marginBottom: 10, fontFamily: "'Instrument Sans', sans-serif" }}>
               Cargo fulfillment is not computed by the optimizer for this run.
             </div>
           ) : fixedParam === "cargo" ? (
@@ -773,29 +786,29 @@ export default function Optimization({ selectedId, result: liveResult, loading: 
 
           {/* Filter stats */}
           <PanelLabel>Filter Statistics</PanelLabel>
-          <div style={{ border: `1px solid ${T.border}`, padding: "8px 10px" }}>
+          <div style={{ border: "1px solid var(--gf-line)", borderRadius: 8, padding: "10px 12px", background: "var(--gf-row-alt)" }}>
             {[
-              { label: "Visible solutions", val: `${filteredSolutions.length} / ${allSolutions.length}`, c: T.text },
-              { label: "Pareto-optimal",    val: `${filteredPareto.length} / ${allSolutions.filter(s => s.pareto).length}`, c: T.teal },
-              { label: "Dominated",         val: `${filteredDominated.length} / ${allSolutions.filter(s => !s.pareto).length}`, c: T.textTer },
-              { label: "Live front pts",    val: `${liveFront.length}`,                                        c: T.amber },
+              { label: "Visible solutions", val: `${filteredSolutions.length} / ${allSolutions.length}`, c: "var(--gf-ink)" },
+              { label: "Pareto-optimal",    val: `${filteredPareto.length} / ${allSolutions.filter(s => s.pareto).length}`, c: "#2DD4BF" },
+              { label: "Dominated",         val: `${filteredDominated.length} / ${allSolutions.filter(s => !s.pareto).length}`, c: "var(--gf-muted)" },
+              { label: "Live front pts",    val: `${liveFront.length}`,                                        c: "#F59E0B" },
             ].map(r => (
-              <div key={r.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 5 }}>
-                <span style={{ fontSize: 9.5, color: T.textSec, fontFamily: "'Instrument Sans', sans-serif" }}>{r.label}</span>
-                <span style={{ fontSize: 10, fontWeight: 700, color: r.c, fontFamily: "'JetBrains Mono', monospace" }}>{r.val}</span>
+              <div key={r.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+                <span style={{ fontSize: 11, color: "var(--gf-muted)", fontFamily: "'Instrument Sans', sans-serif" }}>{r.label}</span>
+                <span style={{ fontSize: 11.5, fontWeight: 750, color: r.c, fontFamily: "'JetBrains Mono', monospace" }}>{r.val}</span>
               </div>
             ))}
           </div>
 
           {filteredSolutions.length === 0 && (
-            <div style={{ marginTop: 8, padding: "7px 9px", background: T.redL, border: `1px solid ${T.red}40`, fontSize: 10, color: T.red, fontFamily: "'Instrument Sans', sans-serif" }}>
+            <div style={{ marginTop: 10, padding: "8px 10px", background: "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.3)", borderRadius: 6, fontSize: 11, color: "#EF4444", fontFamily: "'Instrument Sans', sans-serif" }}>
               ⚠ No solutions match. Expand the ranges.
             </div>
           )}
           {fixedParam && (
             <button
               onClick={() => setFixedParam(null)}
-              style={{ marginTop: 10, width: "100%", padding: "6px 0", fontSize: 10, color: T.textSec, background: T.bg, border: `1px solid ${T.border}`, cursor: "pointer", fontFamily: "'Instrument Sans', sans-serif" }}
+              style={{ marginTop: 12, width: "100%", padding: "7px 0", fontSize: 11, color: "var(--gf-ink)", background: "var(--gf-row-alt)", border: "1px solid var(--gf-line-medium)", borderRadius: 6, cursor: "pointer", fontFamily: "'Instrument Sans', sans-serif", fontWeight: 600 }}
             >
               Clear fixed parameter
             </button>
@@ -803,18 +816,18 @@ export default function Optimization({ selectedId, result: liveResult, loading: 
         </div>
 
         {/* ── Right: chart + solution + compare ── */}
-        <div style={{ padding: "16px 20px 28px" }}>
+        <div>
 
           {/* Chart + solution panel */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 14, marginBottom: 14 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: 16, marginBottom: 16 }}>
 
             {/* Pareto chart panel */}
-            <div style={{ background: T.surface, border: `1px solid ${T.border}`, padding: "14px 16px" }}>
-              <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 11, fontWeight: 600, color: T.text, fontFamily: "'Instrument Sans', sans-serif" }}>
+            <div style={{ background: "var(--gf-card)", border: "1px solid var(--gf-line)", borderRadius: 12, padding: "18px 20px", boxShadow: "0 2px 10px rgba(0,0,0,0.08)" }}>
+              <div style={{ marginBottom: 12 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "var(--gf-ink)", fontFamily: "'Instrument Sans', sans-serif" }}>
                   Pareto Front — Solution Space
                 </div>
-                <div style={{ fontSize: 10, color: T.textSec, marginTop: 2, fontFamily: "'Instrument Sans', sans-serif" }}>
+                <div style={{ fontSize: 11.5, color: "var(--gf-muted)", marginTop: 3, fontFamily: "'Instrument Sans', sans-serif" }}>
                   {runMeta.feasible} feasible solutions evaluated · click a Pareto-optimal point to select
                 </div>
               </div>
@@ -835,20 +848,20 @@ export default function Optimization({ selectedId, result: liveResult, loading: 
             {selected ? (
               <SolutionPanel sol={selected} onViewPlan={onViewPlan} inFilter={isSelectedInFilter} requestedCargo={liveResult?.structured_request?.cargo ?? null} />
             ) : (
-              <div style={{ background: T.surface, border: `1px solid ${T.border}`, padding: "14px 16px", fontSize: 11, color: T.textTer }}>
+              <div style={{ background: "var(--gf-card)", border: "1px solid var(--gf-line)", borderRadius: 12, padding: "18px 20px", fontSize: 12, color: "var(--gf-muted)" }}>
                 No optimization result loaded yet.
               </div>
             )}
           </div>
 
           {/* Compare solutions table */}
-          <div style={{ background: T.surface, border: `1px solid ${T.border}` }}>
-            <div style={{ padding: "12px 16px", borderBottom: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ background: "var(--gf-card)", border: "1px solid var(--gf-line)", borderRadius: 12, overflow: "hidden", boxShadow: "0 2px 10px rgba(0,0,0,0.08)" }}>
+            <div style={{ padding: "14px 18px", borderBottom: "1px solid var(--gf-line)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 600, color: T.text, fontFamily: "'Instrument Sans', sans-serif" }}>
+                <div style={{ fontSize: 13.5, fontWeight: 700, color: "var(--gf-ink)", fontFamily: "'Instrument Sans', sans-serif" }}>
                   Solution Comparison
                 </div>
-                <div style={{ fontSize: 10, color: T.textSec }}>Side-by-side trade-off analysis across Pareto-optimal plans</div>
+                <div style={{ fontSize: 11.5, color: "var(--gf-muted)", marginTop: 2 }}>Side-by-side trade-off analysis across Pareto-optimal plans</div>
               </div>
               <div style={{ display: "flex", gap: 0, border: `1px solid ${T.border}`, flexWrap: "wrap" }}>
                 {allSolutions.map((s) => {

@@ -15,7 +15,10 @@ type Screen = "overview" | "fleet" | "optimization" | "fleetplan" | "scenarios" 
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>("overview");
-  const [darkMode, setDarkMode] = useState(() => window.localStorage.getItem("greenfleet-theme") === "dark");
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = window.localStorage.getItem("greenfleet-theme");
+    return saved !== null ? saved === "dark" : true;
+  });
   const [selectedSolutionId, setSelectedSolutionId] = useState<string | null>(null);
   const [requestResult, setRequestResult] = useState<OptimizationResult | null>(null);
   const { data: baselineResult, loading: optimizationLoading, error: optimizationError } = useLatestOptimization();

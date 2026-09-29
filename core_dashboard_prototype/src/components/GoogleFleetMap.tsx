@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Assignment, Port, Route } from "../api/types";
+import { routeSeaPath } from "../data/seaLanes";
+import { seaPointOnPath } from "../data/seaPath";
 
 export interface VesselMarker {
   id: string;
@@ -22,6 +24,8 @@ interface Props {
   onPortClick?: (portId: string) => void;
   selectedPortId?: string | null;
   showAllRoutes?: boolean;
+  /** Max number of plain alternative routes drawn when showAllRoutes is on (ranked by usage). Defaults to 3. */
+  maxAlternativeRoutes?: number;
   compact?: boolean;
   vessels?: VesselMarker[];
   onVesselClick?: (vesselId: string) => void;
@@ -32,36 +36,6 @@ const ROUTE = { optimal: "#41d36f", alternative: "#d6b93e", warning: "#d97941" }
 
 function esc(value: unknown) {
   return String(value ?? "").replace(/[&<>'"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char] ?? char);
-}
-
-function bearing(lat1: number, lng1: number, lat2: number, lng2: number) {
-  const toRad = (v: number) => v * Math.PI / 180;
-  const toDeg = (v: number) => v * 180 / Math.PI;
-  const dLng = toRad(lng2 - lng1);
-  const y = Math.sin(dLng) * Math.cos(toRad(lat2));
-  const x = Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) - Math.sin(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.cos(dLng);
-  return (toDeg(Math.atan2(y, x)) + 360) % 360;
-}
-
-function curvedPath(from: Port, to: Port): L.LatLngExpression[] {
-  let lngDelta = to.longitude - from.longitude;
-  if (lngDelta > 180) lngDelta -= 360;
-  if (lngDelta < -180) lngDelta += 360;
-  const latDelta = to.latitude - from.latitude;
-  const curve = Math.min(8, Math.max(0.7, Math.hypot(latDelta, lngDelta) * 0.08));
-  const midLat = (from.latitude + to.latitude) / 2 + Math.sign(lngDelta || 1) * curve;
-  const midLng = from.longitude + lngDelta / 2 - Math.sign(latDelta || 1) * curve * 0.45;
-  const points: L.LatLngExpression[] = [];
-  for (let i = 0; i <= 28; i += 1) {
-    const t = i / 28;
-    const inv = 1 - t;
-    const lat = inv * inv * from.latitude + 2 * inv * t * midLat + t * t * to.latitude;
-    let lng = inv * inv * from.longitude + 2 * inv * t * midLng + t * t * (from.longitude + lngDelta);
-    if (lng > 180) lng -= 360;
-    if (lng < -180) lng += 360;
-    points.push([lat, lng]);
-  }
-  return points;
 }
 
 function shipIcon(heading: number, selected: boolean, status: string) {
@@ -85,7 +59,7 @@ function portIcon(selected: boolean) {
 
 export default function GoogleFleetMap({
   ports, routes, assignments = [], highlightRouteIds = [], selectedRouteId, onRouteClick,
-  onPortClick, selectedPortId, showAllRoutes = false, compact = false, vessels = [],
+  onPortClick, selectedPortId, showAllRoutes = false, maxAlternativeRoutes = 3, compact = false, vessels = [],
   onVesselClick, selectedVesselId,
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -107,7 +81,41 @@ export default function GoogleFleetMap({
     });
     return map;
   }, [assignments]);
-  const visibleRoutes = useMemo(() => routes.filter(route => showAllRoutes || routeIds.has(route.id)), [routes, routeIds, showAllRoutes]);
+  const usageByRoute = useMemo(() => {
+    const map = new Map<string, number>();
+    assignments.forEach(assignment => {
+      if (!assignment.routeId) return;
+      map.set(assignment.routeId, (map.get(assignment.routeId) ?? 0) + 1);
+    });
+    return map;
+  }, [assignments]);
+  const visibleRoutes = useMemo(() => {
+    const highlighted = routes.filter(route => routeIds.has(route.id) || route.id === selectedRouteId);
+    if (!showAllRoutes) return highlighted;
+    const highlightedIds = new Set(highlighted.map(route => route.id));
+    const rest = routes.filter(route => !highlightedIds.has(route.id));
+    const isProblematic = (route: Route) => (assignmentByRoute.get(route.id) ?? [])
+      .some(a => a.status === "warning" || a.status === "critical");
+    // Congested routes are always kept; plain alternatives are capped to the most-used few.
+    const warnings = rest.filter(isProblematic);
+    const warningIds = new Set(warnings.map(route => route.id));
+    const plain = rest.filter(route => !warningIds.has(route.id));
+    plain.sort((a, b) =>
+      (usageByRoute.get(b.id) ?? 0) - (usageByRoute.get(a.id) ?? 0) ||
+      a.distanceNm - b.distanceNm,
+    );
+    return [...highlighted, ...warnings, ...plain.slice(0, Math.max(0, maxAlternativeRoutes))];
+  }, [routes, routeIds, selectedRouteId, showAllRoutes, assignmentByRoute, usageByRoute, maxAlternativeRoutes]);
+
+  const pathByRoute = useMemo(() => {
+    const map = new Map<string, Array<[number, number]>>();
+    routes.forEach(route => {
+      const from = portById.get(route.originId);
+      const to = portById.get(route.destinationId);
+      if (from && to) map.set(route.id, routeSeaPath(from, to));
+    });
+    return map;
+  }, [routes, portById]);
 
   const displayVessels = useMemo(() => {
     if (vessels.length) return vessels;
@@ -120,25 +128,30 @@ export default function GoogleFleetMap({
         : portById.get(assignment.destinationId);
       if (!from || !to) return [];
       const fraction = 0.28 + (index % 4) * 0.13;
+      // Sit the vessel ON its drawn route line (snapped to open water), never on the straight chord.
+      const path = (assignment.routeId ? pathByRoute.get(assignment.routeId) : undefined) ?? routeSeaPath(from, to);
+      const { index: pointIndex, heading } = seaPointOnPath(path, fraction);
       return [{
         id: assignment.id,
-        lat: from.latitude + (to.latitude - from.latitude) * fraction,
-        lng: from.longitude + (to.longitude - from.longitude) * fraction,
-        heading: bearing(from.latitude, from.longitude, to.latitude, to.longitude),
+        lat: path[pointIndex][0],
+        lng: path[pointIndex][1],
+        heading,
         status: "in-transit" as const,
         label: assignment.vesselId,
       }];
     });
-  }, [assignments, portById, vessels]);
+  }, [assignments, portById, vessels, pathByRoute]);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
     const map = L.map(containerRef.current, { zoomControl: true, attributionControl: true, minZoom: 2, worldCopyJump: true });
     map.setView([24, 105], 3);
     let fallbackAdded = false;
-    const darkTiles = L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      subdomains: "abcd", maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    // CARTO basemaps now require an API key (their tiles render an
+    // "API KEY REQUIRED" watermark), so use Esri's key-free dark basemap.
+    const darkTiles = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+      maxZoom: 19,
+      attribution: 'Esri, HERE, Garmin, OpenStreetMap contributors',
     }).addTo(map);
     darkTiles.on("tileerror", () => {
       if (fallbackAdded) return;
@@ -169,11 +182,12 @@ export default function GoogleFleetMap({
       const problematic = routeAssignments.some(a => a.status === "warning" || a.status === "critical");
       const selected = route.id === activePrimary;
       const color = problematic ? ROUTE.warning : selected ? ROUTE.optimal : ROUTE.alternative;
-      const path = curvedPath(from, to);
+      const path = pathByRoute.get(route.id);
+      if (!path || path.length < 2) return;
       if (selected) L.polyline(path, { color, weight: 10, opacity: 0.16, interactive: false, lineCap: "round" }).addTo(layer);
       const line = L.polyline(path, { color, weight: selected ? 4 : 2.25, opacity: selected ? 1 : 0.72, lineCap: "round", dashArray: problematic ? "8 6" : undefined }).addTo(layer);
       line.bindTooltip(`<b>${esc(route.name)}</b><br>${route.distanceNm.toLocaleString()} nm<br>${problematic ? "Operational warning" : selected ? "Optimal route" : "Alternative route"}`, { sticky: true, className: "gf-map-tooltip" });
-      line.on("click", () => { onRouteClick?.(route.id); map.fitBounds(L.latLngBounds(path), { padding: [38, 38], maxZoom: 7 }); });
+      line.on("click", () => { onRouteClick?.(route.id); map.fitBounds(L.latLngBounds(path as L.LatLngExpression[]), { padding: [38, 38], maxZoom: 7 }); });
       path.forEach(point => bounds.extend(point));
     });
 
@@ -200,12 +214,12 @@ export default function GoogleFleetMap({
 
     if (selectedRouteId) {
       const selected = routes.find(route => route.id === selectedRouteId);
-      const from = selected ? portById.get(selected.originId) : undefined; const to = selected ? portById.get(selected.destinationId) : undefined;
-      if (from && to) map.fitBounds(L.latLngBounds(curvedPath(from, to)), { padding: [35, 35], maxZoom: 7 });
+      const selectedPath = selected ? pathByRoute.get(selected.id) : undefined;
+      if (selectedPath) map.fitBounds(L.latLngBounds(selectedPath as L.LatLngExpression[]), { padding: [35, 35], maxZoom: 7 });
     } else if (!fittedRef.current && bounds.isValid()) {
       map.fitBounds(bounds, { padding: [28, 28], maxZoom: compact ? 5 : 6 }); fittedRef.current = true;
     }
-  }, [assignmentById, assignmentByRoute, assignments, compact, displayVessels, highlightRouteIds, mapReady, onPortClick, onRouteClick, onVesselClick, portById, ports, routes, selectedPortId, selectedRouteId, selectedVesselId, visibleRoutes]);
+  }, [assignmentById, assignmentByRoute, assignments, compact, displayVessels, highlightRouteIds, mapReady, onPortClick, onRouteClick, onVesselClick, pathByRoute, portById, ports, routes, selectedPortId, selectedRouteId, selectedVesselId, visibleRoutes]);
 
   if (!mapAvailable) {
     return <div className="gf-map-empty">No real route coordinates are available from the backend.</div>;

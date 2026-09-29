@@ -55,7 +55,7 @@ function titlesFor(screen: Screen, selectedSolutionId: string, runMeta: RunMeta 
 export default function Header({ screen, onAlerts, alertCount, selectedSolutionId, runMeta, darkMode, onToggleDarkMode }: Props) {
   const { title, sub } = titlesFor(screen, selectedSolutionId, runMeta);
   const optimizationTheme = screen === "optimization";
-  const darkChrome = optimizationTheme || darkMode;
+  const darkChrome = darkMode;
   return (
     <header style={{
       background: darkChrome ? "#07151B" : "#FFFFFF",
@@ -65,16 +65,16 @@ export default function Header({ screen, onAlerts, alertCount, selectedSolutionI
       display: "flex", alignItems: "center", justifyContent: "space-between",
       flexShrink: 0, position: "relative",
     }}>
-      <div style={{ display: "flex", alignItems: "baseline", gap: 10, minWidth: 0 }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 12, minWidth: 0 }}>
         <h1 style={{
-          margin: 0, fontSize: 13, fontWeight: 650, color: darkChrome ? "#F3F7F5" : "#1A1918",
+          margin: 0, fontSize: 15, fontWeight: 700, color: darkChrome ? "#F1F7F6" : "#0F172A",
           fontFamily: "'Instrument Sans', sans-serif",
           letterSpacing: "-0.01em",
         }}>
           {title}
         </h1>
         <span style={{
-          fontSize: 8.5, color: darkChrome ? "#7F969A" : "#9A9793", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+          fontSize: 11.5, color: darkChrome ? "#A0BAC0" : "#64748B", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
           fontFamily: "'JetBrains Mono', monospace",
         }}>
           {sub}
@@ -88,11 +88,11 @@ export default function Header({ screen, onAlerts, alertCount, selectedSolutionI
         </div>
       )}
 
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         {/* Run status indicator */}
-        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <div style={{ width: 5, height: 5, borderRadius: "50%", background: runMeta ? "#15803D" : "#9A9793" }} />
-          <span style={{ fontSize: 8.5, color: darkChrome ? "#8CA0A3" : "#6A6763", fontFamily: "'JetBrains Mono', monospace" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: runMeta ? "#22C55E" : "#94A3B8", boxShadow: runMeta ? "0 0 8px rgba(34,197,94,0.6)" : "none" }} />
+          <span style={{ fontSize: 11, color: darkChrome ? "#A4BEC3" : "#475569", fontFamily: "'JetBrains Mono', monospace", fontWeight: 500 }}>
             {runMeta
               ? `${runMeta.method} · Run ${runMeta.runId} · ${runMeta.feasibleSolutions} evaluated`
               : "No optimization result"}
@@ -107,9 +107,10 @@ export default function Header({ screen, onAlerts, alertCount, selectedSolutionI
           title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           style={{
-            width: 32, height: 32, border: `1px solid ${optimizationTheme || darkMode ? "#28434A" : "#E4E2DE"}`,
-            background: optimizationTheme || darkMode ? "#0B1D23" : "white", color: optimizationTheme || darkMode ? "#9FB4B5" : "#6A6763",
+            width: 32, height: 32, border: `1px solid ${darkChrome ? "#28434A" : "#E4E2DE"}`,
+            background: darkChrome ? "#0B1D23" : "white", color: darkChrome ? "#9FB4B5" : "#6A6763",
             display: "grid", placeItems: "center", cursor: "pointer",
+            borderRadius: 6,
           }}
         >
           {darkMode ? (

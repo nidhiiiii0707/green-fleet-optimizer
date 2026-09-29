@@ -91,20 +91,23 @@ export default function ParetoChart({
   return (
     <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>
       {/* Axis selector */}
-      <div style={{ display: "flex", gap: 1, marginBottom: 10, flexShrink: 0 }}>
+      <div style={{ display: "flex", gap: 6, marginBottom: 14, flexShrink: 0 }}>
         {AXIS_PAIRS.map((ap, i) => (
           <button
             key={i}
             onClick={() => onAxisChange(i)}
             style={{
-              padding: "4px 12px", fontSize: 10, border: "1px solid",
-              borderColor: i === axisIdx ? TEAL : "var(--gf-line)",
-              background: i === axisIdx ? TEAL : "var(--gf-card)",
-              color: i === axisIdx ? "#EAF5F3" : "var(--gf-muted)",
+              padding: "6px 14px", fontSize: 11.5, border: "1px solid",
+              borderRadius: 6,
+              borderColor: i === axisIdx ? "#0D9488" : "var(--gf-line)",
+              background: i === axisIdx ? "var(--gf-teal-soft)" : "var(--gf-card)",
+              color: i === axisIdx ? "#2DD4BF" : "var(--gf-muted)",
               cursor: "pointer",
               fontFamily: "'Instrument Sans', sans-serif",
-              fontWeight: i === axisIdx ? 600 : 400,
+              fontWeight: i === axisIdx ? 700 : 500,
               letterSpacing: "0.02em",
+              boxShadow: i === axisIdx ? "0 0 10px rgba(45, 212, 191, 0.2)" : "none",
+              transition: "all 0.15s ease",
             }}
           >
             {ap.label}
@@ -112,10 +115,11 @@ export default function ParetoChart({
         ))}
         {filteredIds.size < solutions.length && (
           <span style={{
-            marginLeft: "auto", fontSize: 9, color: AMBER,
+            marginLeft: "auto", fontSize: 10.5, color: AMBER,
             fontFamily: "'JetBrains Mono', monospace", fontWeight: 600,
-            background: "#FFFBEB", padding: "3px 8px",
-            border: "1px solid #FDE68A", alignSelf: "center",
+            background: "var(--gf-amber-soft)", padding: "4px 10px",
+            borderRadius: 6,
+            border: "1px solid rgba(245, 158, 11, 0.3)", alignSelf: "center",
           }}>
             {filteredIds.size}/{solutions.length} visible · live front active
           </span>
@@ -126,7 +130,7 @@ export default function ParetoChart({
       <div style={{ flex: 1, minHeight: 0 }}>
         <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%" style={{ overflow: "visible" }}>
 
-          {/* Grid — very light, restrained */}
+          {/* Grid — light and clean */}
           {Array.from({ length: xTicks + 1 }, (_, i) => {
             const x = PAD.left + (i / xTicks) * PLOT_W;
             const v = xMin + (i / xTicks) * (xMax - xMin);
@@ -134,8 +138,8 @@ export default function ParetoChart({
               <g key={`xg-${i}`}>
                 <line x1={x} y1={PAD.top} x2={x} y2={PAD.top + PLOT_H}
                   stroke={i === 0 ? "var(--gf-axis)" : "var(--gf-grid)"} strokeWidth={i === 0 ? "1" : "0.75"} />
-                <text x={x} y={PAD.top + PLOT_H + 14} textAnchor="middle" fontSize="8.5"
-                  fill="var(--gf-faint)" fontFamily="'JetBrains Mono', monospace">
+                <text x={x} y={PAD.top + PLOT_H + 16} textAnchor="middle" fontSize="10"
+                  fill="var(--gf-muted)" fontFamily="'JetBrains Mono', monospace">
                   {fmtVal(v, xKey)}
                 </text>
               </g>
@@ -148,8 +152,8 @@ export default function ParetoChart({
               <g key={`yg-${i}`}>
                 <line x1={PAD.left} y1={y} x2={PAD.left + PLOT_W} y2={y}
                   stroke={i === yTicks ? "var(--gf-axis)" : "var(--gf-grid)"} strokeWidth={i === yTicks ? "1" : "0.75"} />
-                <text x={PAD.left - 6} y={y + 3} textAnchor="end" fontSize="8.5"
-                  fill="var(--gf-faint)" fontFamily="'JetBrains Mono', monospace">
+                <text x={PAD.left - 8} y={y + 3.5} textAnchor="end" fontSize="10"
+                  fill="var(--gf-muted)" fontFamily="'JetBrains Mono', monospace">
                   {fmtVal(v, yKey)}
                 </text>
               </g>
@@ -157,17 +161,17 @@ export default function ParetoChart({
           })}
 
           {/* Axis borders */}
-          <line x1={PAD.left} y1={PAD.top} x2={PAD.left} y2={PAD.top + PLOT_H} stroke="var(--gf-axis)" strokeWidth="1" />
-          <line x1={PAD.left} y1={PAD.top + PLOT_H} x2={PAD.left + PLOT_W} y2={PAD.top + PLOT_H} stroke="var(--gf-axis)" strokeWidth="1" />
+          <line x1={PAD.left} y1={PAD.top} x2={PAD.left} y2={PAD.top + PLOT_H} stroke="var(--gf-axis)" strokeWidth="1.2" />
+          <line x1={PAD.left} y1={PAD.top + PLOT_H} x2={PAD.left + PLOT_W} y2={PAD.top + PLOT_H} stroke="var(--gf-axis)" strokeWidth="1.2" />
 
           {/* Axis labels */}
-          <text x={PAD.left + PLOT_W / 2} y={H - 8} textAnchor="middle" fontSize="9.5"
-            fill="var(--gf-muted)" fontFamily="'Instrument Sans', sans-serif" fontWeight="500">
+          <text x={PAD.left + PLOT_W / 2} y={H - 6} textAnchor="middle" fontSize="11"
+            fill="var(--gf-ink)" fontFamily="'Instrument Sans', sans-serif" fontWeight="600">
             {AXIS_LABELS[xKey]}
           </text>
-          <text x={13} y={PAD.top + PLOT_H / 2} textAnchor="middle" fontSize="9.5"
-            fill="var(--gf-muted)" fontFamily="'Instrument Sans', sans-serif" fontWeight="500"
-            transform={`rotate(-90, 13, ${PAD.top + PLOT_H / 2})`}>
+          <text x={12} y={PAD.top + PLOT_H / 2} textAnchor="middle" fontSize="11"
+            fill="var(--gf-ink)" fontFamily="'Instrument Sans', sans-serif" fontWeight="600"
+            transform={`rotate(-90, 12, ${PAD.top + PLOT_H / 2})`}>
             {AXIS_LABELS[yKey]}
           </text>
 
@@ -230,14 +234,14 @@ export default function ParetoChart({
                     <line x1={sx} y1={sy + 8} x2={sx} y2={PAD.top + PLOT_H}
                       stroke={dotColor} strokeWidth="0.75" strokeDasharray="3 3" opacity="0.5" />
                     {/* Axis value callouts */}
-                    <rect x={sx - 22} y={PAD.top + PLOT_H + 1} width={44} height={13} fill={dotColor} />
-                    <text x={sx} y={PAD.top + PLOT_H + 10} textAnchor="middle" fontSize="7.5"
-                      fill="white" fontFamily="'JetBrains Mono', monospace" fontWeight="500">
+                    <rect x={sx - 26} y={PAD.top + PLOT_H + 2} width={52} height={16} rx="3" fill="#0D9488" />
+                    <text x={sx} y={PAD.top + PLOT_H + 13.5} textAnchor="middle" fontSize="9.5"
+                      fill="white" fontFamily="'JetBrains Mono', monospace" fontWeight="700">
                       {fmtVal(s[xKey] as number, xKey)}
                     </text>
-                    <rect x={PAD.left - 46} y={sy - 6} width={42} height={13} fill={dotColor} />
-                    <text x={PAD.left - 25} y={sy + 4} textAnchor="middle" fontSize="7.5"
-                      fill="white" fontFamily="'JetBrains Mono', monospace" fontWeight="500">
+                    <rect x={PAD.left - 54} y={sy - 8} width={48} height={16} rx="3" fill="#0D9488" />
+                    <text x={PAD.left - 30} y={sy + 3.5} textAnchor="middle" fontSize="9.5"
+                      fill="white" fontFamily="'JetBrains Mono', monospace" fontWeight="700">
                       {fmtVal(s[yKey] as number, yKey)}
                     </text>
                   </>
@@ -245,27 +249,28 @@ export default function ParetoChart({
 
                 {/* Point: outer ring for selected */}
                 {isSelected && (
-                  <circle cx={sx} cy={sy} r={11}
-                    fill="none" stroke={dotColor} strokeWidth="1" opacity="0.3" />
+                  <circle cx={sx} cy={sy} r={12}
+                    fill="none" stroke="#2DD4BF" strokeWidth="1.5" opacity="0.4" />
                 )}
 
                 {/* Main dot */}
                 <circle cx={sx} cy={sy}
-                  r={isSelected ? 5.5 : isHovered ? 5 : 4}
-                  fill={isSelected ? dotColor : "var(--gf-card)"}
+                  r={isSelected ? 6 : isHovered ? 5.5 : 4.5}
+                  fill={isSelected ? "#2DD4BF" : "var(--gf-card)"}
                   stroke={dotColor}
-                  strokeWidth={isSelected ? 0 : 1.5}
+                  strokeWidth={isSelected ? 0 : 2}
+                  style={{ transition: "r 0.15s ease" }}
                 />
 
                 {/* Center dot for selected */}
                 {isSelected && (
-                  <circle cx={sx} cy={sy} r={1.5} fill="white" />
+                  <circle cx={sx} cy={sy} r={2} fill="#091419" />
                 )}
 
                 {/* Label above selected */}
                 {isSelected && (
-                  <text x={sx} y={sy - 15} textAnchor="middle" fontSize="8"
-                    fontWeight="600" fill={dotColor}
+                  <text x={sx} y={sy - 16} textAnchor="middle" fontSize="10.5"
+                    fontWeight="700" fill="#2DD4BF"
                     fontFamily="'Instrument Sans', sans-serif">
                     {s.label}
                   </text>
@@ -274,13 +279,13 @@ export default function ParetoChart({
                 {/* Hover tooltip */}
                 {isHovered && !isSelected && (
                   <g>
-                    <rect x={sx - 54} y={sy - 44} width="108" height="34" fill="#1A1918" opacity="0.92" />
-                    <text x={sx} y={sy - 30} textAnchor="middle" fontSize="8.5"
-                      fontWeight="600" fill="white" fontFamily="'Instrument Sans', sans-serif">
+                    <rect x={sx - 60} y={sy - 48} width="120" height="38" rx="5" fill="#0B1E26" stroke="#2DD4BF" strokeWidth="1" opacity="0.96" />
+                    <text x={sx} y={sy - 32} textAnchor="middle" fontSize="10"
+                      fontWeight="700" fill="#F1F7F6" fontFamily="'Instrument Sans', sans-serif">
                       {s.label}
                     </text>
-                    <text x={sx} y={sy - 17} textAnchor="middle" fontSize="7.5"
-                      fill="#9A9793" fontFamily="'JetBrains Mono', monospace">
+                    <text x={sx} y={sy - 18} textAnchor="middle" fontSize="9"
+                      fill="#9FB5BA" fontFamily="'JetBrains Mono', monospace">
                       {fmtVal(s[xKey] as number, xKey)} · {fmtVal(s[yKey] as number, yKey)}
                     </text>
                   </g>
@@ -290,12 +295,12 @@ export default function ParetoChart({
           })}
 
           {/* Legend */}
-          <text x={PAD.left + 6} y={PAD.top + 12} fontSize="8" fill={TEAL}
-            fontFamily="'Instrument Sans', sans-serif" fontWeight="600" opacity="0.75">
+          <text x={PAD.left + 8} y={PAD.top + 14} fontSize="10" fill="#0D9488"
+            fontFamily="'Instrument Sans', sans-serif" fontWeight="700" opacity="0.9">
             — Pareto front
           </text>
           {liveActive && (
-            <text x={PAD.left + 6} y={PAD.top + 24} fontSize="8" fill={AMBER}
+            <text x={PAD.left + 8} y={PAD.top + 28} fontSize="10" fill={AMBER}
               fontFamily="'Instrument Sans', sans-serif" fontWeight="700">
               — Live front (filtered)
             </text>
