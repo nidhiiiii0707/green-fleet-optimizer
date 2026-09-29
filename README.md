@@ -1,5 +1,7 @@
 # Green Fleet Optimization Foundation
 
+
+
 This repository implements a full, working maritime fleet optimization pipeline. It loads the supplied datasets independently, exposes traceable parameter views, validates candidates against explicit feasibility constraints, calls the existing (un-retrained) XGBoost `XGBRegressor` fuel model, converts predictions into Fuel/Cost/GHG objectives, and searches the resulting decision space with four independent optimizers -- **NSGA-II**, **QBHO** (Quantum-Behaved Hawks Optimization -- a classical Harris-Hawks-based metaheuristic with a quantum-behaved position update), **CQM** (a real `dimod` Constrained Quadratic Model, solved by an exact/classical-annealing solver), and an exact **MILP** reference -- merging their outputs into one Pareto-optimal fleet-plan archive. A natural-language front end (`nlp/`) sits in front of this pipeline and translates plain-English fleet requests into the same structured candidates/constraints the pipeline already consumes.
 
 **QUBO-SA and MO-QIGA (the previous active set alongside NSGA-II/MILP) are retained in the repository for reference/backup** (`qubo_model.py`/`qubo_builder.py`, `mo_qiga.py`, still runnable standalone via `run_qubo.py`/`run_mo_qiga.py`) but are **no longer part of the active pipeline**; they were replaced by QBHO and CQM respectively.
