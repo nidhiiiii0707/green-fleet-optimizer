@@ -59,6 +59,13 @@ function EngrSlider({ label, min, max, step, value, onChange, format }: {
   format?: (v: number) => string;
 }) {
   const fmt = format ?? (v => String(v));
+  const hasVariation = min !== max;
+  const alertIfUnavailable = (event: React.SyntheticEvent<HTMLInputElement>) => {
+    if (!hasVariation) {
+      event.preventDefault();
+      window.alert("No variation available for this dataset");
+    }
+  };
   return (
     <div style={{ marginBottom: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 5 }}>
@@ -68,7 +75,9 @@ function EngrSlider({ label, min, max, step, value, onChange, format }: {
         </span>
       </div>
       <input type="range" min={min} max={max} step={step} value={value}
-        onChange={e => onChange(+e.target.value)}
+        onMouseDown={alertIfUnavailable}
+        onKeyDown={alertIfUnavailable}
+        onChange={e => { if (hasVariation) onChange(+e.target.value); }}
         style={{ width: "100%", accentColor: "#0D9488", height: 5 }} />
       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "var(--gf-muted)", fontFamily: "'JetBrains Mono', monospace", marginTop: 3 }}>
         <span>{fmt(min)}</span><span>{fmt(max)}</span>
@@ -84,6 +93,13 @@ function EngrRangeSlider({ label, min, max, step, value, onChange, format }: {
 }) {
   const fmt = format ?? (v => String(v));
   const [lo, hi] = value;
+  const hasVariation = min !== max;
+  const alertIfUnavailable = (event: React.SyntheticEvent<HTMLInputElement>) => {
+    if (!hasVariation) {
+      event.preventDefault();
+      window.alert("No variation available for this dataset");
+    }
+  };
   return (
     <div style={{ marginBottom: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 5 }}>
@@ -94,11 +110,15 @@ function EngrRangeSlider({ label, min, max, step, value, onChange, format }: {
       </div>
       <div style={{ fontSize: 10, color: "var(--gf-muted)", marginBottom: 2, fontFamily: "'Instrument Sans', sans-serif" }}>Min</div>
       <input type="range" min={min} max={max} step={step} value={lo}
-        onChange={e => { const v = +e.target.value; onChange([Math.min(v, hi - step), hi]); }}
+        onMouseDown={alertIfUnavailable}
+        onKeyDown={alertIfUnavailable}
+        onChange={e => { if (hasVariation) { const v = +e.target.value; onChange([Math.min(v, hi - step), hi]); } }}
         style={{ width: "100%", marginBottom: 6, accentColor: "#0D9488", height: 5 }} />
       <div style={{ fontSize: 10, color: "var(--gf-muted)", marginBottom: 2, fontFamily: "'Instrument Sans', sans-serif" }}>Max</div>
       <input type="range" min={min} max={max} step={step} value={hi}
-        onChange={e => { const v = +e.target.value; onChange([lo, Math.max(v, lo + step)]); }}
+        onMouseDown={alertIfUnavailable}
+        onKeyDown={alertIfUnavailable}
+        onChange={e => { if (hasVariation) { const v = +e.target.value; onChange([lo, Math.max(v, lo + step)]); } }}
         style={{ width: "100%", accentColor: "#0D9488", height: 5 }} />
       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "var(--gf-muted)", fontFamily: "'JetBrains Mono', monospace", marginTop: 3 }}>
         <span>{fmt(min)}</span><span>{fmt(max)}</span>
