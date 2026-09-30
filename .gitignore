@@ -8,3 +8,4 @@ frontend-local.*.log
 .pytest_cache/
 __pycache__/
 *.py[cod]
+.vercel/
