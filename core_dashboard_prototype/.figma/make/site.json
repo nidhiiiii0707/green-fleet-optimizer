@@ -1,4 +1,5 @@
 {
+  "title": "Green Fleet",
   "description": "Visualize and analyze fleet operations through an interactive dashboard guiding users from overview to detailed scenario reports for optimized decision-making.",
   "robots": {
     "index": false
