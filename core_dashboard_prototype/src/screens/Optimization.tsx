@@ -107,18 +107,6 @@ function EngrRangeSlider({ label, min, max, step, value, onChange, format }: {
   );
 }
 
-function NoVariation({ label, value, format = v => String(v) }: { label: string; value: number; format?: (v: number) => string }) {
-  return (
-    <div style={{ marginBottom: 14, padding: "8px 10px", border: "1px dashed var(--gf-line-medium)", borderRadius: 6, background: "var(--gf-row-alt)" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
-        <span style={{ fontSize: 12, color: "var(--gf-ink)", fontWeight: 600, fontFamily: "'Instrument Sans', sans-serif" }}>{label}</span>
-        <span style={{ fontSize: 11, color: "var(--gf-muted)", fontFamily: "'JetBrains Mono', monospace" }}>{format(value)}</span>
-      </div>
-      <div style={{ marginTop: 4, fontSize: 10, color: "var(--gf-faint)", fontFamily: "'Instrument Sans', sans-serif" }}>No variation available in this result</div>
-    </div>
-  );
-}
-
 // ── Solution analytical summary ───────────────────────────────────────────────
 export function SolutionPanel({ sol, onViewPlan, onCompare, compareRunning, inFilter, requestedCargo }: { sol: ParetoSolution; onViewPlan: () => void; onCompare: () => void; compareRunning: boolean; inFilter: boolean; requestedCargo: number | null }) {
   const cargoDemand = cargoDemandDisplay(requestedCargo);
@@ -802,9 +790,7 @@ export default function Optimization({ selectedId, result: liveResult, loading: 
 
           {/* Constraint window */}
           <PanelLabel>Constraint Window</PanelLabel>
-          {vesselBounds[0] === vesselBounds[1] ? (
-            <NoVariation label="Vessels" value={vesselBounds[0]} format={v => `${v}`} />
-          ) : fixedParam === "vessels" ? (
+          {fixedParam === "vessels" ? (
             <EngrSlider label="Vessels (fixed)" min={vesselBounds[0]} max={vesselBounds[1]} step={1}
               value={vesselFixedVal} onChange={setVesselFixed} format={v => `${v} vessels`} />
           ) : (
@@ -822,9 +808,7 @@ export default function Optimization({ selectedId, result: liveResult, loading: 
             <EngrRangeSlider label="Cargo Fulfillment" min={cargoBounds[0]} max={cargoBounds[1]} step={0.5}
               value={cargoRange} onChange={setCargoRangeOverride} format={v => `${v}%`} />
           )}
-          {routeBounds[0] === routeBounds[1] ? (
-            <NoVariation label="Routes" value={routeBounds[0]} format={v => `${v}`} />
-          ) : fixedParam === "routes" ? (
+          {fixedParam === "routes" ? (
             <EngrSlider label="Routes (fixed)" min={routeBounds[0]} max={routeBounds[1]} step={1}
               value={routeFixedVal} onChange={setRouteFixed} format={v => `${v} routes`} />
           ) : (
