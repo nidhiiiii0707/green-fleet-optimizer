@@ -4,6 +4,7 @@ import type { ComparisonChartSeries } from "../components/ParetoChart";
 import type { OptimizationResult, ParetoSolution, StructuredRequest, Objective } from "../api/types";
 import { useOptimizationRun, useNLPQuery } from "../api/hooks";
 import { cargoDemandDisplay, cargoFulfillmentPct } from "../lib/cargo";
+import { formatMillionsAsUsd, formatUsd } from "../lib/currency";
 
 interface Props {
   selectedId: string;
@@ -166,7 +167,7 @@ export function SolutionPanel({ sol, onViewPlan, onCompare, compareRunning, inFi
       {/* Objectives — primary analytical data */}
       <div style={{ borderTop: "1px solid var(--gf-line)", borderBottom: "1px solid var(--gf-line)", padding: "12px 0", marginBottom: 12 }}>
         {[
-          { label: "Operating Cost",  val: `$${sol.cost}M`,                          color: "#10B981" },
+          { label: "Operating Cost",  val: sol.costUsd != null ? formatUsd(sol.costUsd) : formatMillionsAsUsd(sol.cost), color: "#10B981" },
           { label: "Lifecycle GHG",   val: `${(sol.ghg / 1000).toFixed(1)}k kgCO₂`, color: "var(--gf-ink)" },
           { label: "Fuel Consump.",   val: `${sol.fuel.toLocaleString()} t`, color: "#0EA5E9" },
           { label: "Cargo Demand",    val: fulfillmentPct != null ? `${cargoDemand.value} (${fulfillmentPct}% assigned)` : cargoDemand.value, color: "var(--gf-ink)" },
@@ -539,7 +540,7 @@ export default function Optimization({ selectedId, result: liveResult, loading: 
   type MetricKey = "fuel" | "cost" | "ghg" | "cargoFulfillment" | "vessels" | "routes";
   const compareMetrics: { key: MetricKey; label: string; fmt: (v: number | null) => string }[] = [
     { key: "fuel",             label: "Fuel Consumption", fmt: v => v == null ? "Unavailable" : `${v.toLocaleString()} t` },
-    { key: "cost",             label: "Operating Cost",   fmt: v => v == null ? "Unavailable" : `$${v}M` },
+    { key: "cost",             label: "Operating Cost",   fmt: v => v == null ? "Unavailable" : formatMillionsAsUsd(v) },
     { key: "ghg",              label: "Lifecycle GHG",    fmt: v => v == null ? "Unavailable" : `${v.toLocaleString()} kgCO₂` },
     { key: "cargoFulfillment", label: "Cargo Fulfil.",    fmt: v => v == null ? "Unavailable" : `${v}%` },
     { key: "vessels",          label: "Vessels",          fmt: v => v == null ? "Unavailable" : `${v}` },
@@ -996,8 +997,8 @@ export default function Optimization({ selectedId, result: liveResult, loading: 
                   const lowestCost = compareSols.reduce((a, b) => b.cost < a.cost ? b : a);
                   return (
                     <>
-                      <strong style={{ color: T.text }}>{lowestGhg.label}</strong> has the lowest lifecycle GHG among these ({lowestGhg.ghg.toLocaleString()} kgCO₂) at ${lowestGhg.cost}M operating cost.{" "}
-                      <strong style={{ color: T.text }}>{lowestCost.label}</strong> has the lowest operating cost (${lowestCost.cost}M) at {lowestCost.ghg.toLocaleString()} kgCO₂.{" "}
+                      <strong style={{ color: T.text }}>{lowestGhg.label}</strong> has the lowest lifecycle GHG among these ({lowestGhg.ghg.toLocaleString()} kgCO₂) at {formatMillionsAsUsd(lowestGhg.cost)} operating cost.{" "}
+                      <strong style={{ color: T.text }}>{lowestCost.label}</strong> has the lowest operating cost ({formatMillionsAsUsd(lowestCost.cost)}) at {lowestCost.ghg.toLocaleString()} kgCO₂.{" "}
                       Selection depends on the operator{"'"}s ESG and financial priorities.
                     </>
                   );

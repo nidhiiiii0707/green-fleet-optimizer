@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useScenario } from "../api/hooks";
 import type { ScenarioControls } from "../api/types";
+import { formatMillionsAsUsd } from "../lib/currency";
 
 interface Props {
   onGoToFleetPlan: () => void;
@@ -465,7 +466,7 @@ export default function ScenarioAnalysis({ onGoToFleetPlan }: Props) {
                   },
                   {
                     title: "Financial Cost Variance",
-                    desc: "Calculates total OPEX changes against the baseline plan in millions ($M).",
+                    desc: "Calculates total OPEX changes against the baseline plan in USD.",
                     icon: "💵",
                   },
                   {
@@ -565,8 +566,8 @@ export default function ScenarioAnalysis({ onGoToFleetPlan }: Props) {
                     val: fmtDelta(result.costChange),
                     num: result.costChange,
                     higherIsBad: true,
-                    scenarioVal: `$${result.scenarioCost}M`,
-                    base: `$${result.baselineCost}M`,
+                    scenarioVal: formatMillionsAsUsd(result.scenarioCost),
+                    base: formatMillionsAsUsd(result.baselineCost),
                   },
                   {
                     label: "Lifecycle GHG",
@@ -667,7 +668,7 @@ export default function ScenarioAnalysis({ onGoToFleetPlan }: Props) {
                   <tbody>
                     {[
                       { metric: "Fuel Consumption", base: `${result.baselineFuel.toLocaleString()} t`, scenario: `${result.scenarioFuel.toLocaleString()} t`, delta: result.fuelChange, higherIsBad: true },
-                      { metric: "Operating Cost",   base: `$${result.baselineCost}M`,   scenario: `$${result.scenarioCost}M`, delta: result.costChange, higherIsBad: true },
+                      { metric: "Operating Cost",   base: formatMillionsAsUsd(result.baselineCost),   scenario: formatMillionsAsUsd(result.scenarioCost), delta: result.costChange, higherIsBad: true },
                       { metric: "Lifecycle GHG",    base: `${result.baselineGhg.toLocaleString()} kgCO₂`, scenario: `${result.scenarioGhg.toLocaleString()} kgCO₂`, delta: result.ghgChange, higherIsBad: true },
                       { metric: "Cargo Fulfillment", base: "100%", scenario: result.cargoFulfillment == null ? "100%" : `${result.cargoFulfillment.toFixed(1)}%`, delta: null, higherIsBad: false },
                     ].map((row, i) => (

@@ -92,6 +92,7 @@ export interface ParetoSolution {
   label: string;
   fuel: number;
   cost: number;
+  costUsd?: number;
   ghg: number;
   cargoFulfillment: number | null;
   vessels: number;

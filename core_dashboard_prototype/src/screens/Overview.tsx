@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import GoogleFleetMap from "../components/GoogleFleetMap";
 import { useFleetData } from "../api/hooks";
 import type { OptimizationResult, ParetoSolution } from "../api/types";
+import { formatMillionsAsUsd } from "../lib/currency";
 
 interface Props {
   solutionId: string;
@@ -81,14 +82,14 @@ function ParetoMiniChart({ solutions, selectedId }: { solutions: ParetoSolution[
   const yTicks = [minY, (minY + maxY) / 2, maxY];
   return (
     <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" style={{ width: "100%", height: 128, display: "block" }}>
-      {yTicks.map(tick => <g key={tick}><line x1={pad.l} x2={width - pad.r} y1={y(tick)} y2={y(tick)} stroke="var(--gf-grid)" /><text x={pad.l - 5} y={y(tick) + 3} fontSize="7" fill={C.muted} textAnchor="end">${tick.toFixed(3)}M</text></g>)}
+      {yTicks.map(tick => <g key={tick}><line x1={pad.l} x2={width - pad.r} y1={y(tick)} y2={y(tick)} stroke="var(--gf-grid)" /><text x={pad.l - 5} y={y(tick) + 3} fontSize="7" fill={C.muted} textAnchor="end">{formatMillionsAsUsd(tick)}</text></g>)}
       <line x1={pad.l} x2={pad.l} y1={pad.t} y2={height - pad.b} stroke="var(--gf-axis)" />
       <line x1={pad.l} x2={width - pad.r} y1={height - pad.b} y2={height - pad.b} stroke="var(--gf-axis)" />
       {xTicks.map(tick => <text key={tick} x={x(tick)} y={height - pad.b + 11} fontSize="7" fill={C.muted} textAnchor="middle">{tick.toFixed(1)} t</text>)}
       {ordered.length > 1 && <polyline points={ordered.map(s => `${x(s.fuel)},${y(s.cost)}`).join(" ")} fill="none" stroke={C.gold} strokeWidth="1.2" />}
       {solutions.map(s => <circle key={s.id} cx={x(s.fuel)} cy={y(s.cost)} r={s.id === selectedId ? 5 : 3.7} fill={s.id === selectedId ? C.teal : "#70a4a0"} stroke="white" strokeWidth="1.4" />)}
       <text x={width / 2} y={height - 5} fontSize="8" fill={C.muted} textAnchor="middle">Fuel consumption (t)</text>
-      <text x="10" y={height / 2} fontSize="8" fill={C.muted} textAnchor="middle" transform={`rotate(-90 10 ${height / 2})`}>Cost ($M)</text>
+      <text x="10" y={height / 2} fontSize="8" fill={C.muted} textAnchor="middle" transform={`rotate(-90 10 ${height / 2})`}>Cost (USD)</text>
     </svg>
   );
 }
@@ -144,7 +145,7 @@ export default function Overview({ solutionId, result, loading, error, onGoToOpt
 
       <section style={{ display: "grid", gridTemplateColumns: "repeat(5, minmax(0, 1fr))", gap: 9, marginBottom: 9 }}>
         <KpiCard title="Fleet Fuel Consumption" value={selected ? `${selected.fuel.toLocaleString()} t` : "—"} delta={fuelDelta == null ? undefined : `${Math.abs(fuelDelta).toFixed(1)}% vs. baseline`} detail={selected?.label ?? "No solution"} base={baseline?.fuel} current={selected?.fuel} />
-        <KpiCard title="Total Operating Cost" value={selected ? `$${selected.cost.toFixed(3)}M` : "—"} delta={costDelta == null ? undefined : `${Math.abs(costDelta).toFixed(1)}% reduction`} detail="Selected fleet plan" base={baseline?.cost} current={selected?.cost} color={C.gold} />
+        <KpiCard title="Total Operating Cost" value={selected ? formatMillionsAsUsd(selected.cost) : "—"} delta={costDelta == null ? undefined : `${Math.abs(costDelta).toFixed(1)}% reduction`} detail="Selected fleet plan" base={baseline?.cost} current={selected?.cost} color={C.gold} />
         <KpiCard title="GHG Emissions" value={selected ? `${selected.ghg.toLocaleString()} kgCO₂` : "—"} delta={ghgDelta == null ? undefined : `${Math.abs(ghgDelta).toFixed(1)}% reduction`} detail="Lifecycle emissions" base={baseline?.ghg} current={selected?.ghg} color={C.green} />
         <KpiCard title="Average Vessel Utilization" value={averageUtilization == null ? "Unavailable" : `${averageUtilization.toFixed(0)}%`} detail={`${utilizationRows.length} vessel classes`} base={100} current={averageUtilization ?? undefined} color={C.tealDark} />
         <KpiCard title="Fleet On-Time Performance" value={onTime == null ? "Unavailable" : `${onTime.toFixed(1)}%`} detail={`${assignments.length} route assignments`} base={100} current={onTime ?? undefined} />

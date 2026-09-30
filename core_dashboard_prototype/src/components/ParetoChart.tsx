@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import type { ParetoSolution } from "../api/types";
+import { formatMillionsAsUsd } from "../lib/currency";
 
 export interface ComparisonChartSeries {
   name: "MO-QIGA" | "NSGA-II" | "MILP Reference";
@@ -21,7 +22,7 @@ interface Props {
 }
 
 export const AXIS_LABELS: Record<AxisKey, string> = {
-  cost: "Operating Cost ($M)",
+  cost: "Operating Cost (USD)",
   ghg:  "Lifecycle GHG (kgCO₂)",
   fuel: "Fuel Consumption (t)",
 };
@@ -47,7 +48,7 @@ function mapVal(val: number, min: number, max: number, out0: number, out1: numbe
 }
 
 function fmtVal(v: number, key: AxisKey) {
-  if (key === "cost") return `$${v.toFixed(2)}M`;
+  if (key === "cost") return formatMillionsAsUsd(v);
   return `${(v / 1000).toFixed(1)}k`;
 }
 

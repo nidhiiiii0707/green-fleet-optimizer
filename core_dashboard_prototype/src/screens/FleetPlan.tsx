@@ -6,6 +6,7 @@ import type { Assignment, OptimizationResult } from "../api/types";
 import { useFleetData } from "../api/hooks";
 import { cargoDemandDisplay, cargoFulfillmentPct } from "../lib/cargo";
 import { buildSimVessels, useVesselSimulation } from "../lib/vesselSimulation";
+import { formatMillionsAsUsd } from "../lib/currency";
 
 interface Props {
   solutionId: string;
@@ -90,7 +91,7 @@ export default function FleetPlan({ solutionId, result: liveResult, loading, err
       <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
         {[
           { label: "Total Fuel",          val: `${sol.fuel.toLocaleString()} t`,      color: "#1D4ED8", bg: "#EFF6FF" },
-          { label: "Total Cost",          val: `$${sol.cost}M`,                         color: "#059669", bg: "#F0FDF4" },
+          { label: "Total Cost",          val: sol.costUsd != null ? `$${sol.costUsd.toLocaleString("en-US", { maximumFractionDigits: 2 })}` : formatMillionsAsUsd(sol.cost), color: "#059669", bg: "#F0FDF4" },
           { label: "Lifecycle GHG",       val: `${sol.ghg.toLocaleString()} kgCO₂`,    color: "#0F172A", bg: "#F8FAFC" },
           { label: "Cargo Demand",        val: cargoDemand.value,                       color: "#059669", bg: "#F0FDF4", sub: fulfillmentPct != null ? `${fulfillmentPct}% assigned` : cargoDemand.sub },
           { label: "Vessels Deployed",    val: `${sol.vessels}`,                        color: "#0F172A", bg: "#F8FAFC" },
