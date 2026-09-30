@@ -7,27 +7,34 @@
 
 :root {
   color-scheme: light;
-  --gf-canvas: #f2f0eb;
-  --gf-card: #fffefb;
-  --gf-ink: #171a17;
-  --gf-muted: #71746e;
-  --gf-faint: #a3a59f;
-  --gf-line: #d9d8d1;
-  --gf-line-medium: #c4c2be;
-  --gf-grid: #e8e7e1;
-  --gf-axis: #a9aaa5;
-  --gf-teal-soft: #eef8f7;
-  --gf-green-soft: #eef8f1;
-  --gf-amber-soft: #fff8e7;
-  --gf-red-soft: #fdf0ef;
-  --gf-row-alt: #f7f7f3;
-  --gf-row-hover: #edf6f5;
-  --gf-selected: #e4f3f2;
-  --gf-info-soft: #edf3fb;
-  --gf-report-purple: #f1edfb;
+  --gf-canvas: #f4f7f7;
+  --gf-card: #ffffff;
+  --gf-ink: #102a2e;
+  --gf-muted: #587075;
+  --gf-faint: #8aa0a2;
+  --gf-line: #d8e5e4;
+  --gf-line-medium: #b9cecc;
+  --gf-grid: #e7efee;
+  --gf-axis: #9aafaf;
+  --gf-teal-soft: #e8f6f4;
+  --gf-green-soft: #eaf7ef;
+  --gf-amber-soft: #fff5df;
+  --gf-red-soft: #fff0ef;
+  --gf-row-alt: #f8fbfb;
+  --gf-row-hover: #eef8f7;
+  --gf-selected: #ddf2ef;
+  --gf-info-soft: #edf5fc;
+  --gf-report-purple: #f3effb;
   --gf-report-green: #eaf7f0;
-  --gf-report-blue: #eaf1fa;
-  --gf-report-amber: #fbf4e5;
+  --gf-report-blue: #edf4fb;
+  --gf-report-amber: #fff5e5;
+  --gf-prediction-bg: linear-gradient(145deg, #effaf8 0%, #dff2f0 100%);
+  --gf-prediction-border: #b9dfda;
+  --gf-prediction-eyebrow: #36777a;
+  --gf-prediction-unit: #36777a;
+  --gf-prediction-subtle: #537b7d;
+  --gf-prediction-track: #c7e1de;
+  --gf-prediction-divider: #c1dfdc;
 }
 
 :root[data-theme="dark"] {
@@ -53,6 +60,13 @@
   --gf-report-green: #142f28;
   --gf-report-blue: #17283b;
   --gf-report-amber: #342b19;
+  --gf-prediction-bg: linear-gradient(145deg, #0b252b 0%, #12383d 100%);
+  --gf-prediction-border: #285b61;
+  --gf-prediction-eyebrow: #7bc8c2;
+  --gf-prediction-unit: #9ec7c6;
+  --gf-prediction-subtle: #a8c9c8;
+  --gf-prediction-track: #1b454b;
+  --gf-prediction-divider: #2b555a;
 }
 
 body {
@@ -136,7 +150,7 @@ input[type=range]::-webkit-slider-thumb {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background: #0A6C70;
+  background: #087f7b;
   border: 2px solid #FFFFFF;
   cursor: pointer;
   box-shadow: 0 1px 4px rgba(0,0,0,0.3);
@@ -155,7 +169,7 @@ input[type=range]::-moz-range-thumb {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background: #0A6C70;
+  background: #087f7b;
   border: 2px solid #FFFFFF;
   cursor: pointer;
   box-shadow: none;

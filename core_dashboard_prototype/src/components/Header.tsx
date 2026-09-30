@@ -1,6 +1,6 @@
 import React from "react";
 
-type Screen = "overview" | "fleet" | "fuelprediction" | "optimization" | "fleetplan" | "scenarios" | "alerts" | "reports";
+type Screen = "overview" | "fleet" | "fuelprediction" | "optimization" | "fleetplan" | "scenarios" | "alerts" | "reports" | "algcompare";
 
 interface RunMeta {
   method: string;
@@ -51,6 +51,8 @@ function titlesFor(screen: Screen, selectedSolutionId: string, runMeta: RunMeta 
       return { title: "Operational Alerts", sub: "Active notifications for fleet, environmental and optimization events" };
     case "reports":
       return { title: "Reports & Exports", sub: "Generate and download compliance and optimization reports" };
+    case "algcompare":
+      return { title: "Algorithm Comparison", sub: "MO-QIGA vs NSGA-II with MILP Reference" };
   }
 }
 

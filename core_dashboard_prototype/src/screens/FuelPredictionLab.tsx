@@ -203,19 +203,19 @@ export default function FuelPredictionLab() {
     <div style={{ padding: 14, minHeight: "100%", color: "var(--gf-ink)" }}>
       <section style={{ ...CARD, marginBottom: 12, padding: "15px 18px", background: "linear-gradient(120deg, var(--gf-card) 0%, var(--gf-teal-soft) 100%)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 13, minWidth: 0 }}>
-          <div style={{ width: 38, height: 38, borderRadius: 9, display: "grid", placeItems: "center", color: "#5EEAD4", background: "linear-gradient(145deg, #0A6C70, #12363B)", boxShadow: "0 7px 18px rgba(10,108,112,.24)" }}>
+          <div style={{ width: 38, height: 38, borderRadius: 9, display: "grid", placeItems: "center", color: "#d9fffa", background: "linear-gradient(145deg, #087f7b, #075b68)", boxShadow: "0 7px 18px rgba(8,127,123,.22)" }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M4 18c3-1 5-1 8 0s5 1 8 0"/><path d="M7 14l2-7h6l2 7M10 7V4h4v3"/><path d="M3 21h18"/></svg>
           </div>
           <div style={{ minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <h1 style={{ margin: 0, fontSize: 18, letterSpacing: "-0.03em" }}>Fuel Prediction Lab</h1>
-              <span style={{ padding: "2px 6px", borderRadius: 4, color: "#2DD4BF", background: "rgba(45,212,191,.1)", border: "1px solid rgba(45,212,191,.25)", font: "700 8px 'JetBrains Mono', monospace" }}>XGBOOST</span>
+              <span style={{ padding: "2px 6px", borderRadius: 4, color: "#087f7b", background: "var(--gf-teal-soft)", border: "1px solid #bce5df", font: "700 8px 'JetBrains Mono', monospace" }}>XGBOOST</span>
             </div>
             <div style={{ marginTop: 3, color: "var(--gf-muted)", fontSize: 10.5, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>Model-backed consumption forecasting across vessel, route and operating conditions.</div>
           </div>
         </div>
         <div style={{ display: "flex", gap: 7, flexWrap: "wrap", justifyContent: "flex-end" }}>
-          <span style={{ ...LABEL, padding: "5px 8px", color: "#40C9B7", background: "rgba(45,212,191,.08)", border: "1px solid rgba(45,212,191,.18)", borderRadius: 5 }}>Model R² {result?.model.test_r2.toFixed(3) ?? "0.970"}</span>
+          <span style={{ ...LABEL, padding: "5px 8px", color: "#087f7b", background: "var(--gf-teal-soft)", border: "1px solid #bce5df", borderRadius: 5 }}>Model R² {result?.model.test_r2.toFixed(3) ?? "0.970"}</span>
           <span style={{ ...LABEL, padding: "5px 8px", color: "var(--gf-muted)", background: "var(--gf-row-alt)", border: "1px solid var(--gf-line)", borderRadius: 5 }}>{routeLabel}</span>
         </div>
       </section>
@@ -247,7 +247,7 @@ export default function FuelPredictionLab() {
               <option value="DM">DM · distillate marine fuel</option>
             </SelectField>
 
-            <button onClick={() => void runPrediction()} disabled={loading || fleetLoading || !selectedRoute} style={{ height: 40, border: 0, borderRadius: 6, cursor: loading ? "wait" : "pointer", color: "#E9FFFB", background: loading ? "#31575B" : "linear-gradient(135deg, #0D9488, #0A6C70)", boxShadow: "0 7px 18px rgba(13,148,136,.22)", font: "700 11px 'Instrument Sans', sans-serif", letterSpacing: ".02em" }}>
+            <button onClick={() => void runPrediction()} disabled={loading || fleetLoading || !selectedRoute} style={{ height: 40, border: 0, borderRadius: 6, cursor: loading ? "wait" : "pointer", color: "#effffc", background: loading ? "#6d8e90" : "linear-gradient(135deg, #0b9188, #087f7b)", boxShadow: "0 7px 18px rgba(8,127,123,.2)", font: "700 11px 'Instrument Sans', sans-serif", letterSpacing: ".02em" }}>
               {loading ? "RUNNING MODEL…" : "RUN FUEL PREDICTION"}
             </button>
           </div>
@@ -256,26 +256,26 @@ export default function FuelPredictionLab() {
 
         <div style={{ display: "grid", alignContent: "start", gap: 12, minWidth: 0 }}>
           <div className="fuel-result-grid">
-            <section style={{ ...CARD, padding: 18, minHeight: 245, position: "relative", overflow: "hidden", background: "linear-gradient(145deg, #0A2028 0%, #102C31 100%)", borderColor: "#28505A", color: "#ECFEFF" }}>
-              <div style={{ position: "absolute", width: 190, height: 190, borderRadius: "50%", right: -45, top: -75, background: "radial-gradient(circle, rgba(45,212,191,.18), rgba(45,212,191,0) 68%)" }} />
-              <div style={{ color: "#80AEB0", fontSize: 9.5, fontWeight: 700, letterSpacing: ".14em" }}>PREDICTED CONSUMPTION</div>
+            <section style={{ ...CARD, padding: 18, minHeight: 245, position: "relative", overflow: "hidden", background: "var(--gf-prediction-bg)", borderColor: "var(--gf-prediction-border)", color: "var(--gf-ink)" }}>
+              <div style={{ position: "absolute", width: 190, height: 190, borderRadius: "50%", right: -45, top: -75, background: "radial-gradient(circle, rgba(8,127,123,.13), rgba(8,127,123,0) 68%)" }} />
+              <div style={{ color: "var(--gf-prediction-eyebrow)", fontSize: 9.5, fontWeight: 700, letterSpacing: ".14em" }}>PREDICTED CONSUMPTION</div>
               {result ? (
                 <>
                   <div style={{ marginTop: 23, display: "flex", alignItems: "baseline", gap: 9 }}>
                     <span style={{ font: "700 43px 'JetBrains Mono', monospace", letterSpacing: "-.08em" }}>{result.prediction.consumption_tonnes_per_day.toFixed(1)}</span>
-                    <span style={{ color: "#9EC7C6", font: "600 13px 'JetBrains Mono', monospace" }}>t/day</span>
+                    <span style={{ color: "var(--gf-prediction-unit)", font: "600 13px 'JetBrains Mono', monospace" }}>t/day</span>
                   </div>
-                  <div style={{ marginTop: 5, color: "#8FB3B4", font: "500 11px 'JetBrains Mono', monospace" }}>± {result.prediction.uncertainty_tonnes_per_day.toFixed(1)} t/day · 95% interval</div>
+                  <div style={{ marginTop: 5, color: "var(--gf-prediction-subtle)", font: "500 11px 'JetBrains Mono', monospace" }}>± {result.prediction.uncertainty_tonnes_per_day.toFixed(1)} t/day · 95% interval</div>
                   <div style={{ marginTop: 26 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", color: "#A8C9C8", fontSize: 10 }}><span>Model confidence</span><strong style={{ color: "#5EEAD4", fontFamily: "JetBrains Mono" }}>{result.prediction.confidence_pct}%</strong></div>
-                    <div style={{ marginTop: 7, height: 5, background: "#1B3C43", borderRadius: 4, overflow: "hidden" }}><div style={{ width: `${result.prediction.confidence_pct}%`, height: "100%", background: "linear-gradient(90deg, #0D9488, #5EEAD4)" }} /></div>
+                    <div style={{ display: "flex", justifyContent: "space-between", color: "var(--gf-prediction-subtle)", fontSize: 10 }}><span>Model confidence</span><strong style={{ color: "#2dd4bf", fontFamily: "JetBrains Mono" }}>{result.prediction.confidence_pct}%</strong></div>
+                    <div style={{ marginTop: 7, height: 5, background: "var(--gf-prediction-track)", borderRadius: 4, overflow: "hidden" }}><div style={{ width: `${result.prediction.confidence_pct}%`, height: "100%", background: "linear-gradient(90deg, #0b9188, #2dd4bf)" }} /></div>
                   </div>
-                  <div style={{ marginTop: 15, paddingTop: 12, borderTop: "1px solid #27434A", display: "flex", justifyContent: "space-between", gap: 12, color: "#83A4A6", fontSize: 9.5 }}>
+                  <div style={{ marginTop: 15, paddingTop: 12, borderTop: "1px solid var(--gf-prediction-divider)", display: "flex", justifyContent: "space-between", gap: 12, color: "var(--gf-prediction-subtle)", fontSize: 9.5 }}>
                     <span>Range {result.prediction.lower_tonnes_per_day.toFixed(1)}–{result.prediction.upper_tonnes_per_day.toFixed(1)} t/day</span>
                     <span>{result.model.speed_extrapolation_applied ? "V³ speed extrapolation" : "Within model range"}</span>
                   </div>
                 </>
-              ) : <div style={{ minHeight: 175, display: "grid", placeItems: "center", color: "#78999D", fontSize: 11 }}>{loading ? "Evaluating operating conditions…" : "Run a scenario to generate a prediction"}</div>}
+              ) : <div style={{ minHeight: 175, display: "grid", placeItems: "center", color: "var(--gf-prediction-subtle)", fontSize: 11 }}>{loading ? "Evaluating operating conditions…" : "Run a scenario to generate a prediction"}</div>}
             </section>
 
             <section style={{ ...CARD, padding: 18, minHeight: 245 }}>

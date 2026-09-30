@@ -109,7 +109,7 @@ export default function ParetoChart({
               borderRadius: 6,
               borderColor: i === axisIdx ? "#0D9488" : "var(--gf-line)",
               background: i === axisIdx ? "var(--gf-teal-soft)" : "var(--gf-card)",
-              color: i === axisIdx ? "#2DD4BF" : "var(--gf-muted)",
+              color: i === axisIdx ? "#0D9488" : "var(--gf-muted)",
               cursor: "pointer",
               fontFamily: "'Instrument Sans', sans-serif",
               fontWeight: i === axisIdx ? 700 : 500,
@@ -258,13 +258,13 @@ export default function ParetoChart({
                 {/* Point: outer ring for selected */}
                 {isSelected && (
                   <circle cx={sx} cy={sy} r={12}
-                    fill="none" stroke="#2DD4BF" strokeWidth="1.5" opacity="0.4" />
+                    fill="none" stroke="#0D9488" strokeWidth="1.5" opacity="0.4" />
                 )}
 
                 {/* Main dot */}
                 <circle cx={sx} cy={sy}
                   r={isSelected ? 6 : isHovered ? 5.5 : 4.5}
-                  fill={isSelected ? "#2DD4BF" : "var(--gf-card)"}
+                  fill={isSelected ? "#0D9488" : "var(--gf-card)"}
                   stroke={dotColor}
                   strokeWidth={isSelected ? 0 : 2}
                   style={{ transition: "r 0.15s ease" }}
@@ -272,13 +272,13 @@ export default function ParetoChart({
 
                 {/* Center dot for selected */}
                 {isSelected && (
-                  <circle cx={sx} cy={sy} r={2} fill="#091419" />
+                  <circle cx={sx} cy={sy} r={2} fill="white" />
                 )}
 
                 {/* Label above selected */}
                 {isSelected && (
                   <text x={sx} y={sy - 16} textAnchor="middle" fontSize="10.5"
-                    fontWeight="700" fill="#2DD4BF"
+                    fontWeight="700" fill="#0D9488"
                     fontFamily="'Instrument Sans', sans-serif">
                     {s.label}
                   </text>

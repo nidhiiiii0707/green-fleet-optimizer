@@ -1,12 +1,13 @@
 import React from "react";
 
-type Screen = "overview" | "fleet" | "fuelprediction" | "optimization" | "fleetplan" | "scenarios" | "alerts" | "reports";
+type Screen = "overview" | "fleet" | "fuelprediction" | "optimization" | "fleetplan" | "scenarios" | "alerts" | "reports" | "algcompare";
 
 interface Props {
   current: Screen;
   onNav: (s: Screen) => void;
   alertCount: number;
   runId?: string | null;
+  darkMode?: boolean;
 }
 
 const NAV = [
@@ -23,18 +24,33 @@ const BOTTOM = [
   { id: "reports", label: "System Config",      icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z" },
 ] as { id: Screen; label: string; icon: string }[];
 
-// High-contrast tokens for sidebar
-const SB = {
-  bg:          "#08161D",
-  borderColor: "#17313A",
-  text:        "#8FAAB0",
-  textHover:   "#D4E6EA",
-  textActive:  "#F1F7F6",
-  activeBg:    "rgba(13, 148, 136, 0.15)",
-  accentTeal:  "#0D9488",
-};
+export default function Sidebar({ current, onNav, alertCount, runId, darkMode = true }: Props) {
+  const SB = darkMode ? {
+    bg:          "#08161D",
+    borderColor: "#17313A",
+    text:        "#8FAAB0",
+    textHover:   "#D4E6EA",
+    textActive:  "#F1F7F6",
+    activeBg:    "rgba(13, 148, 136, 0.15)",
+    accentTeal:  "#0D9488",
+    logoText:    "#F1F7F6",
+    activeRunBg: "rgba(0, 0, 0, 0.15)",
+    hoverBg:     "rgba(255, 255, 255, 0.05)",
+    userTitle:   "#D4E6EA",
+  } : {
+    bg:          "#FFFFFF",
+    borderColor: "#E4E2DE",
+    text:        "#64748B",
+    textHover:   "#0F172A",
+    textActive:  "#0D9488",
+    activeBg:    "rgba(13, 148, 136, 0.1)",
+    accentTeal:  "#0D9488",
+    logoText:    "#0F172A",
+    activeRunBg: "rgba(0, 0, 0, 0.03)",
+    hoverBg:     "rgba(0, 0, 0, 0.04)",
+    userTitle:   "#0F172A",
+  };
 
-export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
   return (
     <aside style={{
       width: 185, minWidth: 185,
@@ -62,7 +78,7 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
           </div>
           <div>
             <div style={{
-              fontSize: 12.5, fontWeight: 750, color: "#F1F7F6",
+              fontSize: 12.5, fontWeight: 750, color: SB.logoText,
               fontFamily: "'Instrument Sans', sans-serif",
               letterSpacing: "0.04em", textTransform: "uppercase",
             }}>
@@ -76,7 +92,7 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
       </div>
 
       {/* Active run indicator */}
-      <div style={{ padding: "10px 14px", borderBottom: `1px solid ${SB.borderColor}`, background: "rgba(0, 0, 0, 0.15)" }}>
+      <div style={{ padding: "10px 14px", borderBottom: `1px solid ${SB.borderColor}`, background: SB.activeRunBg }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <div style={{ width: 6, height: 6, borderRadius: "50%", background: runId ? "#22C55E" : "#6A6763", flexShrink: 0, boxShadow: runId ? "0 0 6px #22C55E" : "none" }} />
           <span style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: SB.textHover, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontWeight: 500 }}>
@@ -119,7 +135,7 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
                 if (!active) {
                   const el = e.currentTarget as HTMLButtonElement;
                   el.style.color = SB.textHover;
-                  el.style.background = "rgba(255, 255, 255, 0.05)";
+                  el.style.background = SB.hoverBg;
                 }
               }}
               onMouseLeave={e => {
@@ -165,7 +181,7 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
                 if (!active) {
                   const el = e.currentTarget as HTMLButtonElement;
                   el.style.color = SB.textHover;
-                  el.style.background = "rgba(255, 255, 255, 0.05)";
+                  el.style.background = SB.hoverBg;
                 }
               }}
               onMouseLeave={e => {
@@ -213,7 +229,7 @@ export default function Sidebar({ current, onNav, alertCount, runId }: Props) {
             AK
           </div>
           <div>
-            <div style={{ fontSize: 11, color: SB.textHover, fontWeight: 600, fontFamily: "'Instrument Sans', sans-serif" }}>Alex Kim</div>
+            <div style={{ fontSize: 11, color: SB.userTitle, fontWeight: 600, fontFamily: "'Instrument Sans', sans-serif" }}>Alex Kim</div>
             <div style={{ fontSize: 9, color: SB.text, marginTop: 1 }}>Fleet Operations</div>
           </div>
         </div>

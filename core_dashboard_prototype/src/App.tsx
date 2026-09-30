@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Overview from "./screens/Overview";
 import FleetRoutes from "./screens/FleetRoutes";
 import Optimization from "./screens/Optimization";
+import AlgorithmComparisonPage from "./screens/AlgorithmComparisonPage";
 import FleetPlan from "./screens/FleetPlan";
 import ScenarioAnalysis from "./screens/ScenarioAnalysis";
 import Alerts from "./screens/Alerts";
@@ -12,7 +13,7 @@ import Reports from "./screens/Reports";
 import FuelPredictionLab from "./screens/FuelPredictionLab";
 import type { OptimizationResult } from "./api/types";
 
-type Screen = "overview" | "fleet" | "fuelprediction" | "optimization" | "fleetplan" | "scenarios" | "alerts" | "reports";
+type Screen = "overview" | "fleet" | "fuelprediction" | "optimization" | "fleetplan" | "scenarios" | "alerts" | "reports" | "algcompare";
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>("overview");
@@ -21,6 +22,7 @@ export default function App() {
     return saved !== null ? saved === "dark" : true;
   });
   const [selectedSolutionId, setSelectedSolutionId] = useState<string | null>(null);
+  const [compareRunId, setCompareRunId] = useState<string | null>(null);
   const [requestResult, setRequestResult] = useState<OptimizationResult | null>(null);
   const { data: baselineResult, loading: optimizationLoading, error: optimizationError } = useLatestOptimization();
   const optimizationResult = requestResult ?? baselineResult;
@@ -58,6 +60,15 @@ export default function App() {
     setSelectedSolutionId(baselineResult?.selected_solution_id ?? null);
   }, [baselineResult]);
 
+  const handleOpenCompare = useCallback((runId: string) => {
+    setCompareRunId(runId);
+    setScreen("algcompare");
+  }, []);
+
+  const handleBackFromCompare = useCallback(() => {
+    setScreen("optimization");
+  }, []);
+
   function renderScreen() {
     switch (screen) {
       case "overview":
@@ -78,6 +89,14 @@ export default function App() {
             onViewPlan={handleViewPlan}
             onRequestResult={handleRequestResult}
             onReturnToBaseline={handleReturnToBaseline}
+            onCompare={handleOpenCompare}
+          />
+        );
+      case "algcompare":
+        return (
+          <AlgorithmComparisonPage
+            runId={compareRunId ?? optimizationResult?.run_id ?? ""}
+            onBack={handleBackFromCompare}
           />
         );
       case "fleetplan":
@@ -109,6 +128,7 @@ export default function App() {
         onNav={s => setScreen(s)}
         alertCount={activeAlerts}
         runId={optimizationResult?.run_id}
+        darkMode={darkMode}
       />
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", height: "100vh" }}>
         <Header
